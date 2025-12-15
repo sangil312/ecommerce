@@ -2,6 +2,8 @@ spring.application.name: commerce
 
 spring:
   datasource.hikari.auto-commit: false
+  sql.init.mode: always
+  data.web.pageable.max-page-size: 100
   jpa:
     open-in-view: false
     hibernate.ddl-auto: none
