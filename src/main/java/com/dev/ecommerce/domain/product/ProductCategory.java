@@ -4,12 +4,9 @@ import com.dev.ecommerce.common.BaseEntity;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 
-import java.math.BigDecimal;
-
 @Getter
 @Entity
-public class Product extends BaseEntity {
-    private String name;
-    private String description;
-    private BigDecimal price;
+public class ProductCategory extends BaseEntity {
+    private Long productId;
+    private Long categoryId;
 }
