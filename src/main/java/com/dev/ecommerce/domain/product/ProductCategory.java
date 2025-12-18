@@ -3,10 +3,13 @@ package com.dev.ecommerce.domain.product;
 import com.dev.ecommerce.common.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "product_category")
 public class ProductCategory extends BaseEntity {
     private Long productId;
