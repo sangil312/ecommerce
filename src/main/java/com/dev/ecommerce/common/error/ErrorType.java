@@ -1,0 +1,21 @@
+package com.dev.ecommerce.common.error;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.logging.LogLevel;
+import org.springframework.http.HttpStatus;
+
+@Getter
+@RequiredArgsConstructor
+public enum ErrorType {
+    DEFAULT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, LogLevel.ERROR, "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요."),
+    INVALID_REQUEST(HttpStatus.BAD_REQUEST, LogLevel.INFO, "요청이 올바르지 않습니다."),
+
+    // 상품
+    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, LogLevel.INFO, "상품이 존재하지 않습니다."),
+    ;
+
+    private final HttpStatus httpStatus;
+    private final LogLevel logLevel;
+    private final String message;
+}
