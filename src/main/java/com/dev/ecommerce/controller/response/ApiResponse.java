@@ -1,6 +1,9 @@
 package com.dev.ecommerce.controller.response;
 
 
+import com.dev.ecommerce.common.error.ErrorResponse;
+import com.dev.ecommerce.common.error.ErrorType;
+
 public record ApiResponse<T>(
         ResultType resultType,
         T data,
@@ -8,5 +11,9 @@ public record ApiResponse<T>(
 ) {
     public static <T> ApiResponse<T> success(T data) {
         return new ApiResponse<>(ResultType.SUCCESS, data, null);
+    }
+
+    public static <T> ApiResponse<T> error(ErrorType errorType) {
+        return new ApiResponse<>(ResultType.ERROR, null, ErrorResponse.of(errorType));
     }
 }

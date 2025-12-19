@@ -22,6 +22,14 @@ public class BaseEntity {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-//    @Enumerated(EnumType.STRING)
-//    private EntityState state;
+    @Enumerated(EnumType.STRING)
+    private EntityState state = EntityState.ACTIVE;
+
+    public void active() {
+        state = EntityState.ACTIVE;
+    }
+
+    public void delete() {
+        state = EntityState.DELETED;
+    }
 }

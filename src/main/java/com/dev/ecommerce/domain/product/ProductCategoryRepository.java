@@ -1,9 +1,10 @@
 package com.dev.ecommerce.domain.product;
 
+import com.dev.ecommerce.common.EntityState;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Long> {
-    Slice<ProductCategory> findByCategoryId(Long categoryId, Pageable pageable);
+    Slice<ProductCategory> findByCategoryIdAndState(Long categoryId, EntityState state, Pageable pageable);
 }
