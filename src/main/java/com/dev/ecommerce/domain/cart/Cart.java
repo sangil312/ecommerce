@@ -1,18 +1,23 @@
 package com.dev.ecommerce.domain.cart;
 
-import lombok.Getter;
+import com.dev.ecommerce.domain.order.request.NewOrder;
+import com.dev.ecommerce.domain.order.request.NewOrderItem;
 
 import java.util.List;
 
-@Getter
-public class Cart {
-    private Long userId;
-    private List<CartItem> items;
+public record Cart(
+    Long userId,
+    List<CartItem> items
+) {
+    public static Cart of(Long userId, List<CartItem> items) {
+        return new Cart(userId, items);
+    }
 
-    public Cart create(Long userId, List<CartItem> items) {
-        Cart cart = new Cart();
-        cart.userId = userId;
-        cart.items = items;
-        return cart;
+    public NewOrder toNewOrder() {
+        List<NewOrderItem> newOrderItems = items.stream()
+                .map(it -> new NewOrderItem(it.getProduct().getId(), it.getQuantity()))
+                .toList();
+
+        return new NewOrder(userId, newOrderItems);
     }
 }

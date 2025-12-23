@@ -2,7 +2,7 @@ package com.dev.ecommerce.service.order;
 
 import com.dev.ecommerce.common.EntityState;
 import com.dev.ecommerce.common.error.ApiException;
-import com.dev.ecommerce.domain.User;
+import com.dev.ecommerce.common.auth.User;
 import com.dev.ecommerce.domain.order.Order;
 import com.dev.ecommerce.domain.order.OrderItem;
 import com.dev.ecommerce.domain.order.request.NewOrder;
@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import static com.dev.ecommerce.common.error.ErrorType.PRODUCT_MISMATCH_IN_ORDER;
 import static com.dev.ecommerce.common.error.ErrorType.PRODUCT_NOT_FOUND;
+import static java.util.stream.Collectors.toMap;
 
 @Component
 @RequiredArgsConstructor
@@ -33,15 +34,15 @@ public class OrderWriter {
 
     @Transactional
     public String create(User user, NewOrder newOrder) {
-        Set<Long> orderProductIds = newOrder.items().stream()
+        Set<Long> productIds = newOrder.items().stream()
                 .map(NewOrderItem::productId)
                 .collect(Collectors.toSet());
 
-        Map<Long, Product> productMap = productRepository.findByIdInAndState(orderProductIds, EntityState.ACTIVE)
+        Map<Long, Product> productMap = productRepository.findByIdInAndState(productIds, EntityState.ACTIVE)
                 .stream()
-                .collect(Collectors.toMap(Product::getId, product -> product));
+                .collect(toMap(Product::getId, product -> product));
 
-        validateNewOrderItem(orderProductIds, productMap);
+        validateNewOrderItem(productIds, productMap);
 
         BigDecimal totalPrice = calculateTotalPrice(newOrder.items(), productMap);
 

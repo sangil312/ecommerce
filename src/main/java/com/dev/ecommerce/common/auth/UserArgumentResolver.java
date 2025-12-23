@@ -1,7 +1,6 @@
 package com.dev.ecommerce.common.auth;
 
 
-import com.dev.ecommerce.domain.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.Assert;

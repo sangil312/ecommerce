@@ -1,9 +1,10 @@
 package com.dev.ecommerce.service.order;
 
-import com.dev.ecommerce.domain.User;
+import com.dev.ecommerce.common.auth.User;
 import com.dev.ecommerce.domain.order.request.NewOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor

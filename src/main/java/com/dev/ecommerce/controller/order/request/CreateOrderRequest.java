@@ -1,6 +1,6 @@
 package com.dev.ecommerce.controller.order.request;
 
-import com.dev.ecommerce.domain.User;
+import com.dev.ecommerce.common.auth.User;
 import com.dev.ecommerce.domain.order.request.NewOrder;
 import com.dev.ecommerce.domain.order.request.NewOrderItem;
 import jakarta.validation.constraints.NotNull;

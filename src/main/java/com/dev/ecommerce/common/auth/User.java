@@ -1,4 +1,4 @@
-package com.dev.ecommerce.domain;
+package com.dev.ecommerce.common.auth;
 
 
 public record User(

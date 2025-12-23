@@ -4,7 +4,8 @@ import com.dev.ecommerce.controller.order.request.CreateOrderFromCartRequest;
 import com.dev.ecommerce.controller.order.request.CreateOrderRequest;
 import com.dev.ecommerce.controller.order.response.CreateOrderResponse;
 import com.dev.ecommerce.controller.response.ApiResponse;
-import com.dev.ecommerce.domain.User;
+import com.dev.ecommerce.common.auth.User;
+import com.dev.ecommerce.service.cart.CartService;
 import com.dev.ecommerce.service.order.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final CartService cartService;
 
     @PostMapping("/api/orders")
     public ApiResponse<CreateOrderResponse> create(
@@ -27,11 +29,12 @@ public class OrderController {
     }
 
     @PostMapping("/api/cart-orders")
-    public ApiResponse<?> createFromCart(
+    public ApiResponse<CreateOrderResponse> createFromCart(
             User user,
             @Valid @RequestBody CreateOrderFromCartRequest request
     ) {
-
-        return ApiResponse.success(null);
+        var cart = cartService.find(user, request.cartItemIds());
+        var orderKey = orderService.create(user, cart.toNewOrder());
+        return ApiResponse.success(new CreateOrderResponse(orderKey));
     }
 }

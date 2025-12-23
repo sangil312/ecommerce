@@ -3,7 +3,7 @@ package com.dev.ecommerce.service.order;
 import com.dev.ecommerce.IntegrationTestSupport;
 import com.dev.ecommerce.common.EntityState;
 import com.dev.ecommerce.common.error.ApiException;
-import com.dev.ecommerce.domain.User;
+import com.dev.ecommerce.common.auth.User;
 import com.dev.ecommerce.domain.order.Order;
 import com.dev.ecommerce.domain.order.OrderItem;
 import com.dev.ecommerce.domain.order.OrderStatus;
@@ -13,6 +13,7 @@ import com.dev.ecommerce.domain.product.Product;
 import com.dev.ecommerce.repository.order.OrderItemRepository;
 import com.dev.ecommerce.repository.order.OrderRepository;
 import com.dev.ecommerce.repository.product.ProductRepository;
+import com.dev.ecommerce.service.product.ProductBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +40,11 @@ class OrderWriterTest extends IntegrationTestSupport {
     private ProductRepository productRepository;
 
     @Test
-    @DisplayName("주문을 생성한다.")
+    @DisplayName("단품 주문 생성")
     void create() {
         //given
-        Product product = Product.create(
-                "상품1",
-                "https://~",
-                "설명",
-                "짧은 설명",
-                BigDecimal.valueOf(1_000L)
-        );
-        Product savedProduct = productRepository.save(product);
+        Product savedProduct = new ProductBuilder().name("상품1").price(BigDecimal.valueOf(1_000)).build();
+        productRepository.save(savedProduct);
 
         User user = new User(1L);
         NewOrder newOrder = new NewOrder(user.id(), List.of(new NewOrderItem(savedProduct.getId(), 1L)));
@@ -77,18 +72,9 @@ class OrderWriterTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("주문 생성 시 상품이 존재하지 않으면 예외가 발생한다.")
+    @DisplayName("주문 생성 시 상품이 존재하지 않으면 예외가 발생")
     void createWithException() {
         //given
-        Product product = Product.create(
-                "상품1",
-                "https://~",
-                "설명",
-                "짧은 설명",
-                BigDecimal.valueOf(1_000L)
-        );
-        productRepository.save(product);
-
         Long notExistProductId = 99L;
         User user = new User(1L);
         NewOrder newOrder = new NewOrder(user.id(), List.of(new NewOrderItem(notExistProductId, 1L)));
