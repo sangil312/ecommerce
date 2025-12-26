@@ -3,11 +3,14 @@ package com.dev.ecommerce.domain.product;
 import com.dev.ecommerce.common.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Getter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "product")
 public class Product extends BaseEntity {
@@ -32,4 +35,5 @@ public class Product extends BaseEntity {
         product.price = price;
         return product;
     }
+
 }
