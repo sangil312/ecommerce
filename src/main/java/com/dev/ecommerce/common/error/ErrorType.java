@@ -14,6 +14,12 @@ public enum ErrorType {
     // 상품
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, LogLevel.INFO, "상품이 존재하지 않습니다."),
     PRODUCT_MISMATCH_IN_ORDER(HttpStatus.BAD_REQUEST, LogLevel.INFO,"요청한 상품 정보와 일치하지 않습니다."),
+
+    // 주문
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, LogLevel.INFO, "주문이 존재하지 않습니다."),
+
+    // 결제
+    PAYMENT_ALREADY_PAID(HttpStatus.BAD_REQUEST, LogLevel.INFO, "이미 결제가 완료된 주문입니다."),
     ;
 
     private final HttpStatus httpStatus;

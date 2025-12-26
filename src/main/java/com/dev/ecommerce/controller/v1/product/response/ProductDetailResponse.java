@@ -1,4 +1,4 @@
-package com.dev.ecommerce.controller.product.response;
+package com.dev.ecommerce.controller.v1.product.response;
 
 import com.dev.ecommerce.domain.product.Product;
 

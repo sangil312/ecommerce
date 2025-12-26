@@ -19,7 +19,6 @@ public class CartItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
-
     private Long quantity;
 
     public static CartItem create(Long userId, Product product, Long quantity) {

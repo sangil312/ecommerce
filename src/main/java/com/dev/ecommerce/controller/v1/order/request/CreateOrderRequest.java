@@ -1,4 +1,4 @@
-package com.dev.ecommerce.controller.order.request;
+package com.dev.ecommerce.controller.v1.order.request;
 
 import com.dev.ecommerce.common.auth.User;
 import com.dev.ecommerce.domain.order.request.NewOrder;

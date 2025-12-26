@@ -1,9 +1,9 @@
-package com.dev.ecommerce.controller.order;
+package com.dev.ecommerce.controller.v1.order;
 
-import com.dev.ecommerce.controller.order.request.CreateOrderFromCartRequest;
-import com.dev.ecommerce.controller.order.request.CreateOrderRequest;
-import com.dev.ecommerce.controller.order.response.CreateOrderResponse;
-import com.dev.ecommerce.controller.response.ApiResponse;
+import com.dev.ecommerce.controller.v1.order.request.CreateOrderFromCartRequest;
+import com.dev.ecommerce.controller.v1.order.request.CreateOrderRequest;
+import com.dev.ecommerce.controller.v1.order.response.CreateOrderResponse;
+import com.dev.ecommerce.controller.v1.response.ApiResponse;
 import com.dev.ecommerce.common.auth.User;
 import com.dev.ecommerce.service.cart.CartService;
 import com.dev.ecommerce.service.order.OrderService;

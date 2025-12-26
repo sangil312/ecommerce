@@ -1,4 +1,4 @@
-package com.dev.ecommerce.controller.response;
+package com.dev.ecommerce.controller.v1.response;
 
 
 import com.dev.ecommerce.common.error.ErrorResponse;

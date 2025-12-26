@@ -1,4 +1,4 @@
-package com.dev.ecommerce.controller.order.request;
+package com.dev.ecommerce.controller.v1.order.request;
 
 import jakarta.validation.constraints.NotEmpty;
 

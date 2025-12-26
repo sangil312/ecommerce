@@ -1,9 +1,9 @@
-package com.dev.ecommerce.controller.product;
+package com.dev.ecommerce.controller.v1.product;
 
-import com.dev.ecommerce.controller.product.response.ProductDetailResponse;
-import com.dev.ecommerce.controller.product.response.ProductResponse;
-import com.dev.ecommerce.controller.response.ApiResponse;
-import com.dev.ecommerce.controller.response.PageResponse;
+import com.dev.ecommerce.controller.v1.product.response.ProductDetailResponse;
+import com.dev.ecommerce.controller.v1.product.response.ProductResponse;
+import com.dev.ecommerce.controller.v1.response.ApiResponse;
+import com.dev.ecommerce.controller.v1.response.PageResponse;
 import com.dev.ecommerce.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
