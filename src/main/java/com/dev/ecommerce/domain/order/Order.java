@@ -32,4 +32,8 @@ public class Order extends BaseEntity {
         order.status = OrderStatus.CREATED;
         return order;
     }
+
+    public void paid() {
+        this.status = OrderStatus.PAID;
+    }
 }

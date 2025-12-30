@@ -20,6 +20,11 @@ public enum ErrorType {
 
     // 결제
     PAYMENT_ALREADY_PAID(HttpStatus.BAD_REQUEST, LogLevel.INFO, "이미 결제가 완료된 주문입니다."),
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, LogLevel.INFO, "결제 정보가 존재하지 않습니다."),
+    PAYMENT_INVALID_STATUS(HttpStatus.BAD_REQUEST, LogLevel.INFO, "결제 상태가 유효하지 않습니다."),
+    PAYMENT_AMOUNT_MISMATCH(HttpStatus.BAD_REQUEST, LogLevel.INFO, "결제 금액이 일치하지 않습니다."),
+    PAYMENT_PG_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, LogLevel.ERROR, "결제 요청이 지연되고 있습니다. 잠시 후 다시 시도해주세요."),
+    PAYMENT_KEY_MISMATCH(HttpStatus.INTERNAL_SERVER_ERROR, LogLevel.ERROR, "paymentKey가 일치하지 않습니다."),
     ;
 
     private final HttpStatus httpStatus;

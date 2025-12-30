@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
     private final ProductService productService;
 
-    @GetMapping("/api/products")
+    @GetMapping("/v1/products")
     public ApiResponse<PageResponse<ProductResponse>> findProduct(
             @RequestParam Long categoryId,
             Pageable pageable
@@ -26,7 +26,7 @@ public class ProductController {
         return ApiResponse.success(PageResponse.of(ProductResponse.of(result.contents()), result.hasNext()));
     }
 
-    @GetMapping("/api/products/{productId}")
+    @GetMapping("/v1/products/{productId}")
     public ApiResponse<ProductDetailResponse> findProduct(
             @PathVariable Long productId
     ) {

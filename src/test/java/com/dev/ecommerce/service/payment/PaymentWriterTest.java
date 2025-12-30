@@ -4,8 +4,9 @@ import com.dev.ecommerce.IntegrationTestSupport;
 import com.dev.ecommerce.common.error.ApiException;
 import com.dev.ecommerce.domain.order.Order;
 import com.dev.ecommerce.domain.payment.Payment;
+import com.dev.ecommerce.domain.payment.PaymentMethod;
 import com.dev.ecommerce.domain.payment.PaymentStatus;
-import com.dev.ecommerce.repository.PaymentRepository;
+import com.dev.ecommerce.repository.payment.PaymentRepository;
 import com.dev.ecommerce.repository.order.OrderRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,9 +45,9 @@ class PaymentWriterTest extends IntegrationTestSupport {
         assertThat(createdPayment.getUserId()).isEqualTo(savedOrder.getUserId());
         assertThat(createdPayment.getOrderId()).isEqualTo(savedOrder.getId());
         assertThat(createdPayment.getAmount()).isEqualTo(savedOrder.getTotalPrice());
-        assertThat(createdPayment.getStatus()).isEqualTo(PaymentStatus.PENDING);
+        assertThat(createdPayment.getStatus()).isEqualTo(PaymentStatus.READY);
         assertThat(createdPayment.getExternalPaymentKey()).isNull();
-        assertThat(createdPayment.getApproveCode()).isNull();
+        assertThat(createdPayment.getMethod()).isNull();
         assertThat(createdPayment.getPaidAt()).isNull();
     }
 
@@ -59,10 +60,9 @@ class PaymentWriterTest extends IntegrationTestSupport {
         Long paymentId = paymentWriter.create(savedOrder);
 
         Payment createdPayment = paymentRepository.findById(paymentId).orElseThrow();
-        createdPayment.success(null, null);
+        createdPayment.success(null, PaymentMethod.CARD);
 
         assertThatThrownBy(() -> paymentWriter.create(savedOrder))
                 .isInstanceOf(ApiException.class);
-
     }
 }

@@ -1,6 +1,8 @@
 package com.dev.ecommerce.domain.payment;
 
 public enum PaymentStatus {
-    PENDING,
+    READY,
     SUCCESS,
+    PENDING,
+    CANCELED
 }

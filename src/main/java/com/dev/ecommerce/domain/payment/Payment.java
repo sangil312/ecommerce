@@ -24,7 +24,7 @@ public class Payment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
     private String externalPaymentKey;
-    private String approveCode;
+    private PaymentMethod method;
     private LocalDateTime paidAt;
 
     public static Payment create(
@@ -35,15 +35,21 @@ public class Payment extends BaseEntity {
         Payment payment = new Payment();
         payment.userId = userId;
         payment.orderId = orderId;
-        payment.status = PaymentStatus.PENDING;
         payment.amount = amount;
+        payment.status = PaymentStatus.READY;
         return payment;
     }
 
-    public void success(String externalPaymentKey, String approveCode) {
+    public void success(String externalPaymentKey, PaymentMethod method) {
         this.status = PaymentStatus.SUCCESS;
         this.externalPaymentKey = externalPaymentKey;
-        this.approveCode = approveCode;
+        this.method = method;
         this.paidAt = LocalDateTime.now();
+    }
+
+    public void pending(String externalPaymentKey, PaymentMethod method) {
+        this.status = PaymentStatus.PENDING;
+        this.externalPaymentKey = externalPaymentKey;
+        this.method = method;
     }
 }

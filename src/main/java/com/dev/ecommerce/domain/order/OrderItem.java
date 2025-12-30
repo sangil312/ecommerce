@@ -3,12 +3,15 @@ package com.dev.ecommerce.domain.order;
 import com.dev.ecommerce.common.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "order_item")
 public class OrderItem extends BaseEntity {
     private Long orderId;

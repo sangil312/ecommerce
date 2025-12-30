@@ -1,5 +1,6 @@
-package com.dev.ecommerce.common.auth;
+package com.dev.ecommerce.controller.config;
 
+import com.dev.ecommerce.common.auth.UserArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

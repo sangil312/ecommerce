@@ -15,10 +15,10 @@ class PaymentTest {
 
         assertThat(payment.getUserId()).isEqualTo(1L);
         assertThat(payment.getOrderId()).isEqualTo(1L);
-        assertThat(payment.getStatus()).isEqualTo(PaymentStatus.PENDING);
+        assertThat(payment.getStatus()).isEqualTo(PaymentStatus.READY);
         assertThat(payment.getAmount()).isEqualByComparingTo(BigDecimal.valueOf(1000));
         assertThat(payment.getExternalPaymentKey()).isNull();
-        assertThat(payment.getApproveCode()).isNull();
+        assertThat(payment.getMethod()).isNull();
         assertThat(payment.getPaidAt()).isNull();
     }
 }

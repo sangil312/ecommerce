@@ -5,7 +5,7 @@ import com.dev.ecommerce.common.error.ErrorType;
 import com.dev.ecommerce.domain.order.Order;
 import com.dev.ecommerce.domain.payment.Payment;
 import com.dev.ecommerce.domain.payment.PaymentStatus;
-import com.dev.ecommerce.repository.PaymentRepository;
+import com.dev.ecommerce.repository.payment.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
