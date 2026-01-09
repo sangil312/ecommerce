@@ -3,6 +3,7 @@ package com.dev.ecommerce.service.order;
 import com.dev.ecommerce.common.EntityState;
 import com.dev.ecommerce.common.error.ApiException;
 import com.dev.ecommerce.common.auth.User;
+import com.dev.ecommerce.common.error.ErrorType;
 import com.dev.ecommerce.domain.order.Order;
 import com.dev.ecommerce.domain.order.OrderItem;
 import com.dev.ecommerce.domain.order.request.NewOrder;
@@ -21,8 +22,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.dev.ecommerce.common.error.ErrorType.PRODUCT_MISMATCH_IN_ORDER;
-import static com.dev.ecommerce.common.error.ErrorType.PRODUCT_NOT_FOUND;
 import static java.util.stream.Collectors.toMap;
 
 @Component
@@ -68,8 +67,8 @@ public class OrderWriter {
     }
 
     private void validateNewOrderItem(Set<Long> orderProductIds, Map<Long, Product> productMap) {
-        if (productMap.isEmpty()) throw new ApiException(PRODUCT_NOT_FOUND);
-        if (!productMap.keySet().containsAll(orderProductIds)) throw new ApiException(PRODUCT_MISMATCH_IN_ORDER);
+        if (productMap.isEmpty()) throw new ApiException(ErrorType.PRODUCT_NOT_FOUND);
+        if (!productMap.keySet().containsAll(orderProductIds)) throw new ApiException(ErrorType.PRODUCT_MISMATCH_IN_ORDER);
     }
 
     private BigDecimal calculateTotalPrice(List<NewOrderItem> newOrderItems, Map<Long, Product> productMap) {

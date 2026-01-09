@@ -1,6 +1,6 @@
 package com.dev.ecommerce;
 
-import com.dev.ecommerce.controller.product.ProductController;
+import com.dev.ecommerce.controller.v1.product.ProductController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;

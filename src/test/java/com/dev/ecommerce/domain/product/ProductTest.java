@@ -2,7 +2,8 @@ package com.dev.ecommerce.domain.product;
 
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
-import static org.assertj.core.api.Assertions.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class ProductTest {

@@ -2,7 +2,7 @@ package com.dev.ecommerce.controller;
 
 import com.dev.ecommerce.common.error.ApiException;
 import com.dev.ecommerce.common.error.ErrorType;
-import com.dev.ecommerce.controller.response.ApiResponse;
+import com.dev.ecommerce.controller.v1.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
