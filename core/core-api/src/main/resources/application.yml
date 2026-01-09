@@ -1,0 +1,51 @@
+spring.application.name: commerce
+spring.profiles.active: local
+
+spring:
+  config:
+    import:
+      - client.yml
+  datasource.hikari.auto-commit: false
+  sql.init.mode: always
+  data.web.pageable.max-page-size: 100
+  jpa:
+    open-in-view: false
+    hibernate.ddl-auto: none
+    properties.hibernate.default_batch_fetch_size: 100
+
+---
+spring.config.activate.on-profile: prod
+
+---
+spring.config.activate.on-profile: local
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_log: true
+        format_sql: true
+    show-sql: true
+
+---
+spring.config.activate.on-profile: local-test
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL;
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2.console.enabled: true
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_log: true
+        format_sql: true
+    show-sql: true
+
+  sql.init.mode: never

@@ -1,16 +1,12 @@
 plugins {
 	id 'java-library'
-	id 'org.springframework.boot' version '3.5.8'
+	id 'org.springframework.boot' version '3.5.8' apply(false)
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
 ext {
 	springCloudVersion = "2025.0.1"
 }
-
-group = 'com.dev'
-version = '0.0.1-SNAPSHOT'
-description = 'dev ecommerce'
 
 java {
 	toolchain {
@@ -24,36 +20,36 @@ configurations {
 	}
 }
 
-repositories {
-	mavenCentral()
-}
+allprojects {
+	group = 'com.dev'
+	version = '0.0.1-SNAPSHOT'
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
-
-	runtimeOnly 'com.mysql:mysql-connector-j'
-
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-
-	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
-
-	testRuntimeOnly 'com.h2database:h2'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+	repositories {
+		mavenCentral()
 	}
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+subprojects {
+	apply plugin: 'java-library'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+		}
+	}
+
+	dependencies {
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+	}
+
+	bootJar.enabled = false
+	jar.enabled = true
+
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
 }

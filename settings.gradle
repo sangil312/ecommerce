@@ -1,1 +1,6 @@
 rootProject.name = 'ecommerce'
+
+include 'core'
+include 'core:core-api'
+include 'clients'
+include 'core:core-enum'
