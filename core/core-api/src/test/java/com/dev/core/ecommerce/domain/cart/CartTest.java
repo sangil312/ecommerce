@@ -1,9 +1,7 @@
-package com.dev.ecommerce.domain.cart;
+package com.dev.core.ecommerce.domain.cart;
 
-import com.dev.core.ecommerce.domain.cart.Cart;
-import com.dev.core.ecommerce.domain.cart.CartItem;
 import com.dev.core.ecommerce.domain.order.request.NewOrder;
-import com.dev.ecommerce.service.product.ProductBuilder;
+import com.dev.core.ecommerce.service.product.ProductBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

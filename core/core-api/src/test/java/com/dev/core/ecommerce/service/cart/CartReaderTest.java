@@ -1,13 +1,13 @@
 package com.dev.core.ecommerce.service.cart;
 
-import com.dev.ecommerce.IntegrationTestSupport;
+import com.dev.core.ecommerce.IntegrationTestSupport;
 import com.dev.core.ecommerce.common.auth.User;
 import com.dev.core.ecommerce.domain.cart.Cart;
 import com.dev.core.ecommerce.domain.cart.CartItem;
 import com.dev.core.ecommerce.domain.product.Product;
 import com.dev.core.ecommerce.repository.cart.CartItemRepository;
 import com.dev.core.ecommerce.repository.product.ProductRepository;
-import com.dev.ecommerce.service.product.ProductBuilder;
+import com.dev.core.ecommerce.service.product.ProductBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

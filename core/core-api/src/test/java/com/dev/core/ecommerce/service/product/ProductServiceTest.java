@@ -1,7 +1,6 @@
-package com.dev.ecommerce.service.product;
+package com.dev.core.ecommerce.service.product;
 
-import com.dev.core.ecommerce.service.product.ProductService;
-import com.dev.ecommerce.IntegrationTestSupport;
+import com.dev.core.ecommerce.IntegrationTestSupport;
 import com.dev.core.ecommerce.common.response.Page;
 import com.dev.core.ecommerce.domain.category.Category;
 import com.dev.core.ecommerce.domain.product.Product;

@@ -66,9 +66,9 @@ public class OrderWriter {
         return savedOrder.getOrderKey();
     }
 
-    private void validateNewOrderItem(Set<Long> orderProductIds, Map<Long, Product> productMap) {
+    private void validateNewOrderItem(Set<Long> productIds, Map<Long, Product> productMap) {
         if (productMap.isEmpty()) throw new ApiException(ErrorType.PRODUCT_NOT_FOUND);
-        if (!productMap.keySet().containsAll(orderProductIds)) throw new ApiException(ErrorType.PRODUCT_MISMATCH_IN_ORDER);
+        if (!productMap.keySet().containsAll(productIds)) throw new ApiException(ErrorType.PRODUCT_MISMATCH_IN_ORDER);
     }
 
     private BigDecimal calculateTotalPrice(List<NewOrderItem> newOrderItems, Map<Long, Product> productMap) {

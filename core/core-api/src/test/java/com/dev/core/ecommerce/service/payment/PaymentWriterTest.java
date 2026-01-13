@@ -1,9 +1,8 @@
-package com.dev.ecommerce.service.payment;
+package com.dev.core.ecommerce.service.payment;
 
-import com.dev.core.ecommerce.service.payment.PaymentWriter;
 import com.dev.core.enums.payment.PaymentMethod;
 import com.dev.core.enums.payment.PaymentStatus;
-import com.dev.ecommerce.IntegrationTestSupport;
+import com.dev.core.ecommerce.IntegrationTestSupport;
 import com.dev.core.ecommerce.common.error.ApiException;
 import com.dev.core.ecommerce.domain.order.Order;
 import com.dev.core.ecommerce.domain.payment.Payment;

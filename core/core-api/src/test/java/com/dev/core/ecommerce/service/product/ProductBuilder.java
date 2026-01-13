@@ -1,4 +1,4 @@
-package com.dev.ecommerce.service.product;
+package com.dev.core.ecommerce.service.product;
 
 import com.dev.core.ecommerce.domain.product.Product;
 

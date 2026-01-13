@@ -1,6 +1,5 @@
-package com.dev.ecommerce.domain.payment;
+package com.dev.core.ecommerce.domain.payment;
 
-import com.dev.core.ecommerce.domain.payment.Payment;
 import com.dev.core.enums.payment.PaymentStatus;
 import org.junit.jupiter.api.Test;
 

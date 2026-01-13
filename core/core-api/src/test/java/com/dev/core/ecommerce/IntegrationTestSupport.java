@@ -1,6 +1,5 @@
-package com.dev.ecommerce;
+package com.dev.core.ecommerce;
 
-import com.dev.core.ecommerce.CoreApiApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 

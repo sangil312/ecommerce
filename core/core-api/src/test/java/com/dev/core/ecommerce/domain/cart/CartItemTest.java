@@ -1,8 +1,7 @@
-package com.dev.ecommerce.domain.cart;
+package com.dev.core.ecommerce.domain.cart;
 
-import com.dev.core.ecommerce.domain.cart.CartItem;
 import com.dev.core.ecommerce.domain.product.Product;
-import com.dev.ecommerce.service.product.ProductBuilder;
+import com.dev.core.ecommerce.service.product.ProductBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

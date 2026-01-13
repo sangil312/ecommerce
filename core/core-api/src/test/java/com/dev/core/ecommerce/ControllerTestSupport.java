@@ -1,4 +1,4 @@
-package com.dev.ecommerce;
+package com.dev.core.ecommerce;
 
 import com.dev.core.ecommerce.controller.v1.product.ProductController;
 import com.fasterxml.jackson.databind.ObjectMapper;

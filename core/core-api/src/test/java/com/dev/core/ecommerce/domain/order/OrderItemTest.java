@@ -1,6 +1,5 @@
-package com.dev.ecommerce.domain.order;
+package com.dev.core.ecommerce.domain.order;
 
-import com.dev.core.ecommerce.domain.order.OrderItem;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

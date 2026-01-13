@@ -1,6 +1,5 @@
-package com.dev.ecommerce.domain.order;
+package com.dev.core.ecommerce.domain.order;
 
-import com.dev.core.ecommerce.domain.order.Order;
 import com.dev.core.enums.EntityState;
 import com.dev.core.enums.order.OrderStatus;
 import org.junit.jupiter.api.Test;

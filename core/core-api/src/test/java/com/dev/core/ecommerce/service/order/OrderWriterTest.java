@@ -1,9 +1,9 @@
-package com.dev.ecommerce.service.order;
+package com.dev.core.ecommerce.service.order;
 
-import com.dev.core.ecommerce.service.order.OrderWriter;
+import com.dev.core.ecommerce.common.error.ErrorType;
 import com.dev.core.enums.EntityState;
 import com.dev.core.enums.order.OrderStatus;
-import com.dev.ecommerce.IntegrationTestSupport;
+import com.dev.core.ecommerce.IntegrationTestSupport;
 import com.dev.core.ecommerce.common.auth.User;
 import com.dev.core.ecommerce.common.error.ApiException;
 import com.dev.core.ecommerce.domain.order.Order;
@@ -14,7 +14,8 @@ import com.dev.core.ecommerce.domain.product.Product;
 import com.dev.core.ecommerce.repository.order.OrderItemRepository;
 import com.dev.core.ecommerce.repository.order.OrderRepository;
 import com.dev.core.ecommerce.repository.product.ProductRepository;
-import com.dev.ecommerce.service.product.ProductBuilder;
+import com.dev.core.ecommerce.service.product.ProductBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,24 +41,30 @@ class OrderWriterTest extends IntegrationTestSupport {
     @Autowired
     private ProductRepository productRepository;
 
+    private User testUser;
+    private Product testProduct;
+
+    @BeforeEach
+    void setUp() {
+        testUser = new User(1L);
+        testProduct = new ProductBuilder().name("상품1").price(BigDecimal.valueOf(1_000)).build();
+        testProduct = productRepository.save(testProduct);
+    }
+
     @Test
     @DisplayName("단품 주문 생성")
     void create() {
         //given
-        Product savedProduct = new ProductBuilder().name("상품1").price(BigDecimal.valueOf(1_000)).build();
-        productRepository.save(savedProduct);
-
-        User user = new User(1L);
-        NewOrder newOrder = new NewOrder(user.id(), List.of(new NewOrderItem(savedProduct.getId(), 1L)));
+        NewOrder newOrder = new NewOrder(testUser.id(), List.of(new NewOrderItem(testProduct.getId(), 1L)));
 
         //when
-        String orderKey = orderWriter.create(user, newOrder);
+        String orderKey = orderWriter.create(testUser, newOrder);
 
         //then
         assertThat(orderKey).isNotBlank();
 
         Order savedOrder = orderRepository.findByOrderKeyAndState(orderKey, EntityState.ACTIVE).orElseThrow();
-        assertThat(savedOrder.getUserId()).isEqualTo(user.id());
+        assertThat(savedOrder.getUserId()).isEqualTo(testUser.id());
         assertThat(savedOrder.getOrderKey()).isEqualTo(orderKey);
         assertThat(savedOrder.getTotalPrice()).isEqualByComparingTo(BigDecimal.valueOf(1_000L));
         assertThat(savedOrder.getStatus()).isEqualTo(OrderStatus.CREATED);
@@ -67,14 +74,14 @@ class OrderWriterTest extends IntegrationTestSupport {
         assertThat(savedOrderItems.getFirst().getOrderId()).isEqualTo(savedOrder.getId());
         assertThat(savedOrderItems.getFirst().getProductId()).isEqualTo(newOrder.items().getFirst().productId());
         assertThat(savedOrderItems.getFirst().getQuantity()).isEqualTo(newOrder.items().getFirst().quantity());
-        assertThat(savedOrderItems.getFirst().getProductName()).isEqualTo(savedProduct.getName());
+        assertThat(savedOrderItems.getFirst().getProductName()).isEqualTo(testProduct.getName());
         assertThat(savedOrderItems.getFirst().getUnitPrice()).isEqualByComparingTo(BigDecimal.valueOf(1_000L));
         assertThat(savedOrderItems.getFirst().getTotalPrice()).isEqualByComparingTo(BigDecimal.valueOf(1_000L));
     }
 
     @Test
-    @DisplayName("주문 생성 시 상품이 존재하지 않으면 예외가 발생")
-    void createWithException() {
+    @DisplayName("단품 주문 생성: 상품이 존재하지 않으면 PRODUCT_NOT_FOUND 타입 예외를 발생")
+    void createWithProductNotFound() {
         //given
         Long notExistProductId = 99L;
         User user = new User(1L);
@@ -82,6 +89,22 @@ class OrderWriterTest extends IntegrationTestSupport {
 
         //when then
         assertThatThrownBy(() -> orderWriter.create(user, newOrder))
-                .isInstanceOf(ApiException.class);
+                .isInstanceOf(ApiException.class)
+                .hasFieldOrPropertyWithValue("errorType", ErrorType.PRODUCT_NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("단품 주문 생성: 주문 요청 상품 중 존재하지 않는 상품이 있을 경우 PRODUCT_MISMATCH_IN_ORDER 타입 예외를 발생")
+    void createWithProductMismatch() {
+        //given
+        User user = new User(1L);
+        NewOrderItem newOrderItem1 = new NewOrderItem(testProduct.getId(), 1L);
+        NewOrderItem newOrderItem2 = new NewOrderItem(999L, 1L);
+        NewOrder newOrder = new NewOrder(user.id(), List.of(newOrderItem1, newOrderItem2));
+
+        //when then
+        assertThatThrownBy(() -> orderWriter.create(user, newOrder))
+                .isInstanceOf(ApiException.class)
+                .hasFieldOrPropertyWithValue("errorType", ErrorType.PRODUCT_MISMATCH_IN_ORDER);
     }
 }
