@@ -1,16 +1,16 @@
 package com.dev.infra.pg.toss.response;
 
 
-import com.dev.infra.pg.dto.ApproveFail;
-import com.dev.infra.pg.dto.ApproveClientResult;
+import com.dev.infra.pg.dto.ConfirmFail;
+import com.dev.infra.pg.dto.ConfirmResult;
 
 public record TossPaymentsFailResponse(
         String version,
         String traceId,
         Error error
 ) {
-    public ApproveClientResult toPaymentResult() {
-        ApproveFail approveFail = new ApproveFail(error.code(), error.message());
-        return new ApproveClientResult(false, approveFail, null);
+    public ConfirmResult toPaymentResult() {
+        ConfirmFail confirmFail = new ConfirmFail(error.code(), error.message());
+        return new ConfirmResult(false, confirmFail, null);
     }
 }

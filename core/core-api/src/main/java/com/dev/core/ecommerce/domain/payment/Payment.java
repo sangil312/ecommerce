@@ -54,4 +54,10 @@ public class Payment extends BaseEntity {
         this.externalPaymentKey = externalPaymentKey;
         this.method = method;
     }
+
+    public void error(String externalPaymentKey, PaymentMethod method) {
+        this.status = PaymentStatus.ERROR;
+        this.externalPaymentKey = externalPaymentKey;
+        this.method = method;
+    }
 }

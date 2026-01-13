@@ -5,29 +5,25 @@ import com.dev.core.ecommerce.common.error.ApiException;
 import com.dev.core.ecommerce.common.error.ErrorType;
 import com.dev.core.ecommerce.domain.order.Order;
 import com.dev.core.ecommerce.domain.payment.Payment;
-import com.dev.core.ecommerce.domain.payment.TransactionHistory;
 import com.dev.core.ecommerce.repository.payment.PaymentRepository;
-import com.dev.core.ecommerce.repository.payment.TransactionHistoryRepository;
 import com.dev.core.ecommerce.service.order.OrderReader;
 import com.dev.core.enums.order.OrderStatus;
-import com.dev.core.enums.payment.PaymentMethod;
 import com.dev.core.enums.payment.PaymentStatus;
-import com.dev.core.enums.payment.TransactionType;
-import com.dev.infra.pg.dto.ApproveFail;
-import com.dev.infra.pg.dto.ApproveSuccess;
+import com.dev.infra.pg.PGClient;
+import com.dev.infra.pg.dto.ConfirmResult;
+import com.dev.infra.pg.dto.ConfirmSuccess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
 public class PaymentProcessor {
     private final OrderReader orderReader;
     private final PaymentRepository paymentRepository;
-    private final TransactionHistoryRepository transactionHistoryRepository;
+    private final PGClient pgClient;
+    private final PaymentConfirmHandler paymentConfirmHandler;
 
     public Payment validatePayment(User user, String orderKey, BigDecimal amount) {
         Order order = orderReader.find(user, orderKey, OrderStatus.CREATED);
@@ -42,46 +38,29 @@ public class PaymentProcessor {
         return payment;
     }
 
-    @Transactional
-    public void approveSuccess(User user, Payment validPayment, ApproveSuccess result) {
-        Payment payment = paymentRepository.findById(validPayment.getId())
-                .orElseThrow(() -> new ApiException(ErrorType.PAYMENT_NOT_FOUND));
-        payment.success(result.externalPaymentKey(), PaymentMethod.CARD);
-
-        Order order = orderReader.find(user, result.orderKey(), OrderStatus.CREATED);
-        order.paid();
-
-        TransactionHistory transactionHistory = TransactionHistory.create(
-                payment.getUserId(),
-                payment.getOrderId(),
-                payment.getId(),
-                TransactionType.PAYMENT,
-                result.externalPaymentKey(),
-                result.amount(),
-                "결제 성공",
-                result.approvedAt()
-        );
-
-        transactionHistoryRepository.save(transactionHistory);
+    public ConfirmResult requestConfirm(String paymentKey, String orderKey, BigDecimal amount) {
+        return pgClient.requestPaymentConfirm(paymentKey, orderKey, amount);
     }
 
-    @Transactional
-    public void approveFail(Payment validPayment, String externalPaymentKey, ApproveFail result) {
-        Payment payment = paymentRepository.findById(validPayment.getId())
-                .orElseThrow(() -> new ApiException(ErrorType.PAYMENT_NOT_FOUND));
-        payment.pending(externalPaymentKey, PaymentMethod.CARD);
+    public void validateConfirmResult(
+            User user,
+            Payment validPayment,
+            String orderKey,
+            String externalPaymentKey,
+            BigDecimal amount,
+            ConfirmResult confirmResult
+    ) {
+        if (confirmResult.isSuccess()) {
+            ConfirmSuccess success = confirmResult.success();
 
-        TransactionHistory transactionHistory = TransactionHistory.create(
-                payment.getUserId(),
-                payment.getOrderId(),
-                payment.getId(),
-                TransactionType.PAYMENT_FAIL,
-                "",
-                payment.getAmount(),
-                "[" + result.code() + "] " + result.message(),
-                LocalDateTime.now()
-        );
+            if (!success.orderKey().equals(orderKey) || !success.amount().equals(amount)) {
+                paymentConfirmHandler.confirmDataMismatch(validPayment, externalPaymentKey, success);
+                throw new ApiException(ErrorType.PAYMENT_APPROVE_MISMATCH);
+            }
 
-        transactionHistoryRepository.save(transactionHistory);
+            paymentConfirmHandler.success(user, validPayment, success);
+        } else {
+            paymentConfirmHandler.fail(validPayment, externalPaymentKey, confirmResult.fail());
+        }
     }
 }

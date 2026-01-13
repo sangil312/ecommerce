@@ -1,9 +1,9 @@
 package com.dev.infra.pg;
 
-import com.dev.infra.pg.dto.ApproveClientResult;
+import com.dev.infra.pg.dto.ConfirmResult;
 
 import java.math.BigDecimal;
 
 public interface PGClient {
-    ApproveClientResult approvePayment(String paymentKey, String orderKey, BigDecimal amount);
+    ConfirmResult requestPaymentConfirm(String paymentKey, String orderKey, BigDecimal amount);
 }

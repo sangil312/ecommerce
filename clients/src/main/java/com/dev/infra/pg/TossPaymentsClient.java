@@ -1,9 +1,9 @@
 package com.dev.infra.pg;
 
-import com.dev.infra.pg.dto.ApproveClientResult;
-import com.dev.infra.pg.dto.ApproveFail;
+import com.dev.infra.pg.dto.ConfirmResult;
+import com.dev.infra.pg.dto.ConfirmFail;
 import com.dev.infra.pg.toss.TossPaymentsException;
-import com.dev.infra.pg.toss.request.ApproveRequest;
+import com.dev.infra.pg.toss.request.ConfirmRequest;
 import com.dev.infra.pg.toss.response.TossPaymentsFailResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,19 +20,19 @@ public class TossPaymentsClient implements PGClient {
     private final CircuitBreaker circuitBreaker;
 
     @Override
-    public ApproveClientResult approvePayment(String paymentKey, String orderKey, BigDecimal amount) {
+    public ConfirmResult requestPaymentConfirm(String paymentKey, String orderKey, BigDecimal amount) {
         log.info("[PG] 결제 승인 요청: paymentKey: {}, orderKey: {}, amount: {}", paymentKey, orderKey, amount);
-        ApproveRequest request = new ApproveRequest(paymentKey, orderKey, amount);
+        ConfirmRequest request = new ConfirmRequest(paymentKey, orderKey, amount);
 
         return circuitBreaker.run(
-                () -> requestApprove(request),
+                () -> confirm(request),
                 ex -> fallback(ex, request)
         );
     }
 
-    private ApproveClientResult requestApprove(ApproveRequest request) {
+    private ConfirmResult confirm(ConfirmRequest request) {
         try {
-            return tossPaymentsClientApi.approve(request).toPaymentResult();
+            return tossPaymentsClientApi.confirm(request).toPaymentResult();
         } catch (TossPaymentsException e) {
             TossPaymentsFailResponse failResponse = e.getTossPaymentsFailResponse();
 
@@ -48,13 +48,13 @@ public class TossPaymentsClient implements PGClient {
         }
     }
 
-    private ApproveClientResult fallback(Throwable ex, ApproveRequest request) {
+    private ConfirmResult fallback(Throwable ex, ConfirmRequest request) {
         log.error("[PG] 결제 승인 실패: paymentKey: {}, orderKey: {}, amount: {}, Exception: {}",
                 request.paymentKey(), request.orderId(), request.amount(), ex.getMessage());
 
-        return new ApproveClientResult(
+        return new ConfirmResult(
                 false,
-                new ApproveFail("", "결제 승인 요청 오류 발생"),
+                new ConfirmFail("", "결제 승인 요청 오류 발생"),
                 null
         );
     }

@@ -53,7 +53,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("카테고리 ID 로 상품 조회")
+    @DisplayName("상품 조회: 카테고리 ID로 상품 조회")
     void findProductsByCategory() {
         Page<Product> products = productService.findProductsByCategory(
                 saveCategory.getId(), PageRequest.of(0, 20));
@@ -63,7 +63,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("상품 ID 로 상품 조회")
+    @DisplayName("상품 조회: 상품 ID로 상품 조회")
     void findProduct() {
         Product product = productService.findProduct(saveProduct.getId());
 
