@@ -80,7 +80,7 @@ class OrderWriterTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("단품 주문 생성: 상품이 존재하지 않으면 PRODUCT_NOT_FOUND 타입 예외를 발생")
+    @DisplayName("단품 주문 생성: 상품이 존재하지 않으면 예외 발생")
     void createWithProductNotFound() {
         //given
         Long notExistProductId = 99L;
@@ -94,7 +94,7 @@ class OrderWriterTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("단품 주문 생성: 주문 요청 상품 중 존재하지 않는 상품이 있을 경우 PRODUCT_MISMATCH_IN_ORDER 타입 예외를 발생")
+    @DisplayName("단품 주문 생성: 주문 요청 상품 중 존재하지 않는 상품이 있을 경우 타입 예외 발생")
     void createWithProductMismatch() {
         //given
         User user = new User(1L);

@@ -6,7 +6,7 @@ import com.dev.core.enums.payment.PaymentMethod;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record ApproveSuccess(
+public record ConfirmSuccess(
         String externalPaymentKey,
         String orderKey,
         PaymentMethod method,

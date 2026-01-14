@@ -24,7 +24,7 @@ public enum ErrorType {
     PAYMENT_INVALID_STATUS(HttpStatus.BAD_REQUEST, LogLevel.INFO, "결제 상태가 유효하지 않습니다."),
     PAYMENT_AMOUNT_MISMATCH(HttpStatus.BAD_REQUEST, LogLevel.INFO, "결제 금액이 일치하지 않습니다."),
     PAYMENT_PG_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, LogLevel.ERROR, "결제 요청이 지연되고 있습니다. 잠시 후 다시 시도해주세요."),
-    PAYMENT_KEY_MISMATCH(HttpStatus.INTERNAL_SERVER_ERROR, LogLevel.ERROR, "paymentKey가 일치하지 않습니다."),
+    PAYMENT_APPROVE_MISMATCH(HttpStatus.INTERNAL_SERVER_ERROR, LogLevel.ERROR, "결제 승인 정보가 일치하지 않습니다. 고객센터에 문의해주세요."),
     ;
 
     private final HttpStatus httpStatus;

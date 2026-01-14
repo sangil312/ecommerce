@@ -5,8 +5,7 @@ import com.dev.core.ecommerce.domain.order.Order;
 import com.dev.core.ecommerce.domain.payment.Payment;
 import com.dev.core.enums.order.OrderStatus;
 import com.dev.core.ecommerce.service.order.OrderReader;
-import com.dev.infra.pg.dto.ApproveClientResult;
-import com.dev.infra.pg.PGClient;
+import com.dev.infra.pg.dto.ConfirmResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,6 @@ import java.math.BigDecimal;
 public class PaymentService {
     private final PaymentWriter paymentWriter;
     private final OrderReader orderReader;
-    private final PGClient pgClient;
     private final PaymentProcessor  paymentProcessor;
 
     public Long create(User user, String orderKey) {
@@ -25,17 +23,18 @@ public class PaymentService {
         return paymentWriter.create(order);
     }
 
-    public ApproveClientResult approve(User user, String orderKey, String externalPaymentKey, BigDecimal amount) {
+    public ConfirmResult confirm(
+            User user,
+            String orderKey,
+            String externalPaymentKey,
+            BigDecimal amount
+    ) {
         Payment validPayment = paymentProcessor.validatePayment(user, orderKey, amount);
 
-        ApproveClientResult approveClientResult = pgClient.approvePayment(externalPaymentKey, orderKey, amount);
+        ConfirmResult confirmResult = paymentProcessor.requestConfirm(externalPaymentKey, orderKey, amount);
 
-        if (approveClientResult.isSuccess()) {
-            paymentProcessor.approveSuccess(user, validPayment, approveClientResult.success());
-        } else {
-            paymentProcessor.approveFail(validPayment, externalPaymentKey, approveClientResult.fail());
-        }
+        paymentProcessor.validateConfirmResult(user, validPayment, orderKey, externalPaymentKey, amount, confirmResult);
 
-        return approveClientResult;
+        return confirmResult;
     }
 }

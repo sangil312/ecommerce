@@ -36,7 +36,7 @@ public class PaymentController {
             @RequestParam String paymentKey,
             @RequestParam BigDecimal amount
     ) {
-        var paymentResult = paymentService.approve(user, orderId, paymentKey, amount);
+        var paymentResult = paymentService.confirm(user, orderId, paymentKey, amount);
         return paymentResult.isSuccess()
                 ? ApiResponse.success()
                 : ApiResponse.success(

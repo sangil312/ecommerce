@@ -35,26 +35,25 @@ class OrderReaderTest extends IntegrationTestSupport {
     @BeforeEach
     void setUp() {
         testUser = new User(1L);
-
-        // 테스트용 주문 생성
-        testOrder = Order.create(testUser.id(), BigDecimal.valueOf(10000));
-        testOrder = orderRepository.save(testOrder);
-
-        // 테스트용 주문 상품 생성
-        OrderItem orderItem = OrderItem.create(
-                testOrder.getId(),
-                1L,
-                1L,
-                "테스트 상품",
-                BigDecimal.valueOf(10000),
-                BigDecimal.valueOf(10000)
+        testOrder = orderRepository.save(
+                Order.create(testUser.id(), BigDecimal.valueOf(10000))
         );
-        orderItemRepository.save(orderItem);
+
+        orderItemRepository.save(
+                OrderItem.create(
+                        testOrder.getId(),
+                        1L,
+                        1L,
+                        "테스트 상품",
+                        BigDecimal.valueOf(10000),
+                        BigDecimal.valueOf(10000)
+                )
+        );
     }
 
 
     @Test
-    @DisplayName("주문 조회: 사용자, orderKey, status에 해당하는 Order를 반환한다")
+    @DisplayName("주문 조회: 사용자, orderKey, status에 해당하는 Order를 반환")
     void find() {
         // when
         Order result = orderReader.find(testUser, testOrder.getOrderKey(), OrderStatus.CREATED);
@@ -68,7 +67,7 @@ class OrderReaderTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("주문 조회: 존재하지 않는 orderKey가 주어지면 ORDER_NOT_FOUND 타입 예외를 발생")
+    @DisplayName("주문 조회: 존재하지 않는 orderKey가 주어지면 예외 발생")
     void findWithInvalidOrderKeyThrowOrderNotFound() {
         // when then
         assertThatThrownBy(() -> orderReader.find(testUser, "invalid-order-key", OrderStatus.CREATED))
@@ -77,7 +76,7 @@ class OrderReaderTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("주문 조회: 요청한 사용자와 조회한 주문의 사용자가 다르면 ORDER_NOT_FOUND 타입 예외를 발생")
+    @DisplayName("주문 조회: 요청한 사용자와 조회한 주문의 사용자가 다르면 타입 예외 발생")
     void findWithInvalidUserThrowOrderNotFound() {
         // given
         User differentUser = new User(999L);
@@ -89,7 +88,7 @@ class OrderReaderTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("주문 조회: 주문 상태가 맞지 않으면 ORDER_NOT_FOUND 예외를 발생")
+    @DisplayName("주문 조회: 주문 상태가 맞지 않으면 예외 발생")
     void findWithMismatchStatusThrowOrderNotFound() {
         // when then
         assertThatThrownBy(() -> orderReader.find(testUser, testOrder.getOrderKey(), OrderStatus.PAID))
@@ -98,7 +97,7 @@ class OrderReaderTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("주문 조회: 삭제된 주문(EntityState.DELETED)을 조회하면 ORDER_NOT_FOUND 예외를 발생")
+    @DisplayName("주문 조회: 삭제된 주문(EntityState.DELETED)을 조회하면 예외 발생")
     void findWithDeletedEntityThrowOrderNotFound() {
         // given
         testOrder.delete(); // EntityState.DELETED로 변경
@@ -111,7 +110,7 @@ class OrderReaderTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("주문 조회: 주문에 주문 상품이 없으면 ORDER_NOT_FOUND 예외를 발생")
+    @DisplayName("주문 조회: 주문에 주문 상품이 없으면 예외 발생")
     void findWithNotFoundOrderItemThrowOrderNotFound() {
         // given
         orderItemRepository.deleteAll();
