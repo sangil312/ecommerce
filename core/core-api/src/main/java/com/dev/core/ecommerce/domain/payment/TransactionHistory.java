@@ -27,7 +27,7 @@ public class TransactionHistory extends BaseEntity {
     private String externalPaymentKey;
     private BigDecimal amount;
     private String message;
-    private LocalDateTime approvedAt;
+    private LocalDateTime occurredAt;
 
     public static TransactionHistory create(
             Long userId,
@@ -47,7 +47,7 @@ public class TransactionHistory extends BaseEntity {
         transactionHistory.externalPaymentKey = externalPaymentKey;
         transactionHistory.amount = amount;
         transactionHistory.message = message;
-        transactionHistory.approvedAt = approvedAt;
+        transactionHistory.occurredAt = approvedAt;
         return transactionHistory;
     }
 }

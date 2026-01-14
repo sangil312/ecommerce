@@ -23,7 +23,7 @@ public class PaymentProcessor {
     private final OrderReader orderReader;
     private final PaymentRepository paymentRepository;
     private final PGClient pgClient;
-    private final PaymentConfirmHandler paymentConfirmHandler;
+    private final PaymentWriter paymentWriter;
 
     public Payment validatePayment(User user, String orderKey, BigDecimal amount) {
         Order order = orderReader.find(user, orderKey, OrderStatus.CREATED);
@@ -54,13 +54,13 @@ public class PaymentProcessor {
             ConfirmSuccess success = confirmResult.success();
 
             if (!success.orderKey().equals(orderKey) || !success.amount().equals(amount)) {
-                paymentConfirmHandler.confirmDataMismatch(validPayment, externalPaymentKey, success);
+                paymentWriter.paymentMismatch(validPayment, externalPaymentKey, success);
                 throw new ApiException(ErrorType.PAYMENT_APPROVE_MISMATCH);
             }
 
-            paymentConfirmHandler.success(user, validPayment, success);
+            paymentWriter.paymentSuccess(user, validPayment, success);
         } else {
-            paymentConfirmHandler.fail(validPayment, externalPaymentKey, confirmResult.fail());
+            paymentWriter.paymentFail(validPayment, externalPaymentKey, confirmResult.fail());
         }
     }
 }
