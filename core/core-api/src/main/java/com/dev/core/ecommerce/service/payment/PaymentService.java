@@ -20,10 +20,10 @@ public class PaymentService {
 
     public Long create(User user, String orderKey) {
         Order order = orderReader.find(user, orderKey, OrderStatus.CREATED);
-        return paymentWriter.create(order);
+        return paymentWriter.paymentCreate(order);
     }
 
-    public ConfirmResult confirm(
+    public ConfirmResult success(
             User user,
             String orderKey,
             String externalPaymentKey,
@@ -36,5 +36,10 @@ public class PaymentService {
         paymentProcessor.validateConfirmResult(user, validPayment, orderKey, externalPaymentKey, amount, confirmResult);
 
         return confirmResult;
+    }
+
+    public void fail(User user, String orderKey, String code, String message) {
+        Order order = orderReader.find(user, orderKey, OrderStatus.CREATED);
+        paymentWriter.callBackFail(order, code, message);
     }
 }

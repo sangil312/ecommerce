@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 class PaymentProcessorUnitTest {
 
     @Mock
-    private PaymentConfirmHandler paymentConfirmHandler;
+    private PaymentWriter paymentWriter;
 
     @InjectMocks
     private PaymentProcessor paymentProcessor;
@@ -57,9 +57,9 @@ class PaymentProcessorUnitTest {
         );
 
         // then
-        verify(paymentConfirmHandler).success(user, payment, confirmSuccess);
-        verify(paymentConfirmHandler, never()).fail(any(), any(), any());
-        verify(paymentConfirmHandler, never()).confirmDataMismatch(any(), any(), any());
+        verify(paymentWriter).paymentSuccess(user, payment, confirmSuccess);
+        verify(paymentWriter, never()).paymentFail(any(), any(), any());
+        verify(paymentWriter, never()).paymentMismatch(any(), any(), any());
     }
 
     @Test
@@ -82,8 +82,8 @@ class PaymentProcessorUnitTest {
         );
 
         // then
-        verify(paymentConfirmHandler).fail(payment, "ext_key", confirmFail);
-        verify(paymentConfirmHandler, never()).success(any(), any(), any());
+        verify(paymentWriter).paymentFail(payment, "ext_key", confirmFail);
+        verify(paymentWriter, never()).paymentSuccess(any(), any(), any());
     }
 
     @Test
@@ -112,9 +112,9 @@ class PaymentProcessorUnitTest {
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_APPROVE_MISMATCH);
 
-        verify(paymentConfirmHandler).confirmDataMismatch(payment, "ext_key", confirmSuccess);
-        verify(paymentConfirmHandler, never()).success(any(), any(), any());
-        verify(paymentConfirmHandler, never()).fail(any(), any(), any());
+        verify(paymentWriter).paymentMismatch(payment, "ext_key", confirmSuccess);
+        verify(paymentWriter, never()).paymentSuccess(any(), any(), any());
+        verify(paymentWriter, never()).paymentFail(any(), any(), any());
     }
 
     @Test
@@ -150,8 +150,8 @@ class PaymentProcessorUnitTest {
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_APPROVE_MISMATCH);
 
-        verify(paymentConfirmHandler).confirmDataMismatch(payment, "ext_key", confirmSuccess);
-        verify(paymentConfirmHandler, never()).success(any(), any(), any());
-        verify(paymentConfirmHandler, never()).fail(any(), any(), any());
+        verify(paymentWriter).paymentMismatch(payment, "ext_key", confirmSuccess);
+        verify(paymentWriter, never()).paymentSuccess(any(), any(), any());
+        verify(paymentWriter, never()).paymentFail(any(), any(), any());
     }
 }

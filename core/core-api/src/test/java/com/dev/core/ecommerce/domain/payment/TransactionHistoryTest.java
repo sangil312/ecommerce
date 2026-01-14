@@ -32,6 +32,6 @@ class TransactionHistoryTest {
         assertThat(transactionHistory.getExternalPaymentKey()).isEqualTo("external-payment-key");
         assertThat(transactionHistory.getAmount()).isEqualByComparingTo(BigDecimal.valueOf(1000));
         assertThat(transactionHistory.getMessage()).isEqualTo("결제 성공");
-        assertThat(transactionHistory.getApprovedAt()).isEqualTo(now);
+        assertThat(transactionHistory.getOccurredAt()).isEqualTo(now);
     }
 }

@@ -36,11 +36,22 @@ public class PaymentController {
             @RequestParam String paymentKey,
             @RequestParam BigDecimal amount
     ) {
-        var paymentResult = paymentService.confirm(user, orderId, paymentKey, amount);
+        var paymentResult = paymentService.success(user, orderId, paymentKey, amount);
         return paymentResult.isSuccess()
                 ? ApiResponse.success()
                 : ApiResponse.success(
                         new CallbackSuccessResponse(paymentResult.fail().code(), paymentResult.fail().message())
                 );
+    }
+
+    @PostMapping("/v1/payment/callback/fail")
+    public ApiResponse<Object> callbackFail(
+            User user,
+            @RequestParam String orderId,
+            @RequestParam String code,
+            @RequestParam String message
+    ) {
+        paymentService.fail(user, orderId, code, message);
+        return ApiResponse.success();
     }
 }

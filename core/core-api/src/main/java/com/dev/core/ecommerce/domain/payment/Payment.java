@@ -49,15 +49,18 @@ public class Payment extends BaseEntity {
         this.paidAt = LocalDateTime.now();
     }
 
-    public void pending(String externalPaymentKey, PaymentMethod method) {
+    public void pending(String externalPaymentKey) {
         this.status = PaymentStatus.PENDING;
         this.externalPaymentKey = externalPaymentKey;
-        this.method = method;
     }
 
     public void error(String externalPaymentKey, PaymentMethod method) {
         this.status = PaymentStatus.ERROR;
         this.externalPaymentKey = externalPaymentKey;
         this.method = method;
+    }
+
+    public void fail() {
+        this.status = PaymentStatus.FAIL;
     }
 }
