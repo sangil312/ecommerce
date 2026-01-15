@@ -1,6 +1,5 @@
-repositories {
-    mavenCentral()
-}
+
+
 
 dependencies {
     implementation project(":clients")
@@ -11,9 +10,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
-
-    testRuntimeOnly 'com.h2database:h2'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 }

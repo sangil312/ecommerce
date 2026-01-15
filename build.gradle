@@ -2,10 +2,12 @@ plugins {
 	id 'java-library'
 	id 'org.springframework.boot' version '3.5.8' apply(false)
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.asciidoctor.jvm.convert' version '4.0.4' apply(false)
 }
 
 ext {
 	springCloudVersion = "2025.0.1"
+	snippetsDir = file("build/generated-snippets")
 }
 
 java {
@@ -33,6 +35,7 @@ subprojects {
 	apply plugin: 'java-library'
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'org.asciidoctor.jvm.convert'
 
 	dependencyManagement {
 		imports {
@@ -42,6 +45,13 @@ subprojects {
 
 	dependencies {
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+		testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
+		testImplementation 'io.rest-assured:spring-mock-mvc'
+
+		testRuntimeOnly 'com.h2database:h2'
+		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 		compileOnly 'org.projectlombok:lombok'
 		annotationProcessor 'org.projectlombok:lombok'
 	}
@@ -49,7 +59,34 @@ subprojects {
 	bootJar.enabled = false
 	jar.enabled = true
 
-	tasks.named('test') {
-		useJUnitPlatform()
+	test {
+		useJUnitPlatform {
+			excludeTags('restdocs')
+		}
+	}
+
+	tasks.register('unitTest', Test) {
+		group = 'verification'
+		useJUnitPlatform {
+			excludeTags('integration', 'restdocs')
+		}
+	}
+
+	tasks.register('integrationTest', Test) {
+		group = 'verification'
+		useJUnitPlatform {
+			includeTags('integration')
+		}
+	}
+
+	tasks.register('restDocsTest', Test) {
+		group = 'verification'
+		useJUnitPlatform {
+			includeTags('restdocs')
+		}
+	}
+
+	tasks.named('asciidoctor') {
+		dependsOn restDocsTest
 	}
 }
