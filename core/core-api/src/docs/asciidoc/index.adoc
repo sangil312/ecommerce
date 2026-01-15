@@ -1,0 +1,66 @@
+= API Docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectanchors:
+
+== 공통 응답
+=== 실패 응답 형식 (예시 결과)
+include::{snippets}/common-error/http-response.adoc[]
+include::{snippets}/common-error/response-fields.adoc[]
+
+== Order API
+
+=== 주문 생성
+include::{snippets}/orders-create/http-request.adoc[]
+include::{snippets}/orders-create/request-fields.adoc[]
+include::{snippets}/orders-create/http-response.adoc[]
+include::{snippets}/orders-create/response-fields.adoc[]
+
+=== 장바구니 주문 생성
+include::{snippets}/orders-create-from-cart/http-request.adoc[]
+include::{snippets}/orders-create-from-cart/request-fields.adoc[]
+include::{snippets}/orders-create-from-cart/http-response.adoc[]
+include::{snippets}/orders-create-from-cart/response-fields.adoc[]
+
+== Payment API
+
+=== 결제 생성
+include::{snippets}/payments-create/http-request.adoc[]
+include::{snippets}/payments-create/request-fields.adoc[]
+include::{snippets}/payments-create/http-response.adoc[]
+include::{snippets}/payments-create/response-fields.adoc[]
+
+=== 결제 요청 성공 콜백 > 결제 승인 성공
+include::{snippets}/payments-callback-success/http-request.adoc[]
+include::{snippets}/payments-callback-success/form-parameters.adoc[]
+include::{snippets}/payments-callback-success/http-response.adoc[]
+include::{snippets}/payments-callback-success/response-fields.adoc[]
+
+=== 결제 요청 성공 콜백 > 결제 승인 실패
+include::{snippets}/payments-callback-success-fail/http-request.adoc[]
+include::{snippets}/payments-callback-success-fail/form-parameters.adoc[]
+include::{snippets}/payments-callback-success-fail/http-response.adoc[]
+include::{snippets}/payments-callback-success-fail/response-fields.adoc[]
+
+=== 결제 요청 실패 콜백
+include::{snippets}/payments-callback-fail/http-request.adoc[]
+include::{snippets}/payments-callback-fail/form-parameters.adoc[]
+include::{snippets}/payments-callback-fail/http-response.adoc[]
+include::{snippets}/payments-callback-fail/response-fields.adoc[]
+
+== Product API
+
+=== 상품 목록 조회
+include::{snippets}/products-find/http-request.adoc[]
+include::{snippets}/products-find/query-parameters.adoc[]
+include::{snippets}/products-find/http-response.adoc[]
+include::{snippets}/products-find/response-fields.adoc[]
+
+=== 상품 상세 조회
+include::{snippets}/products-find-detail/http-request.adoc[]
+include::{snippets}/products-find-detail/path-parameters.adoc[]
+include::{snippets}/products-find-detail/http-response.adoc[]
+include::{snippets}/products-find-detail/response-fields.adoc[]
