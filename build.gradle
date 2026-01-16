@@ -7,7 +7,6 @@ plugins {
 
 ext {
 	springCloudVersion = "2025.0.1"
-	snippetsDir = file("build/generated-snippets")
 }
 
 java {
@@ -87,6 +86,25 @@ subprojects {
 	}
 
 	tasks.named('asciidoctor') {
-		dependsOn restDocsTest
+		inputs.dir snippetsDir
+		dependsOn tasks.named('restDocsTest')
+		attributes 'snippets': snippetsDir
+	}
+
+	ext {
+		snippetsDir = file("build/generated-snippets")
+	}
+}
+
+// 로컬 환경에서 docs 파일(API 문서) 생성 tasks
+tasks.register('restDocsCopy', Copy) {
+	dependsOn(':core:core-api:asciidoctor')
+	from(project(':core:core-api').tasks.named('asciidoctor').map { it.outputDir })
+	into "$rootDir/docs"
+}
+
+project(':core:core-api') {
+	tasks.named('restDocsTest') {
+		finalizedBy rootProject.tasks.named('restDocsCopy')
 	}
 }

@@ -1,6 +1,7 @@
 package com.dev.core.ecommerce;
 
 
+import com.dev.core.ecommerce.controller.ApiControllerAdvice;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -8,6 +9,7 @@ import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -41,6 +43,8 @@ public abstract class RestDocsSupport {
 
         return MockMvcBuilders.standaloneSetup(controller)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(restDocumentation))
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
+                .setControllerAdvice(new ApiControllerAdvice())
                 .setMessageConverters(converter)
                 .build();
     }
