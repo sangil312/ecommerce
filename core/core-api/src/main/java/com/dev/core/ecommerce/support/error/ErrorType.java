@@ -1,4 +1,4 @@
-package com.dev.core.ecommerce.common.error;
+package com.dev.core.ecommerce.support.error;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,9 @@ public enum ErrorType {
     PAYMENT_AMOUNT_MISMATCH(HttpStatus.BAD_REQUEST, LogLevel.INFO, "결제 금액이 일치하지 않습니다."),
     PAYMENT_PG_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, LogLevel.ERROR, "결제 요청이 지연되고 있습니다. 잠시 후 다시 시도해주세요."),
     PAYMENT_APPROVE_MISMATCH(HttpStatus.INTERNAL_SERVER_ERROR, LogLevel.ERROR, "결제 승인 정보가 일치하지 않습니다. 고객센터에 문의해주세요."),
+
+    // 리뷰
+    REVIEW_HAS_NOT_ORDER(HttpStatus.BAD_REQUEST, LogLevel.INFO, "리뷰 작성 가능한 주문이 없습니다."),
     ;
 
     private final HttpStatus httpStatus;

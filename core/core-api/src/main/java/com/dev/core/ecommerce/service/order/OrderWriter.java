@@ -1,12 +1,12 @@
 package com.dev.core.ecommerce.service.order;
 
-import com.dev.core.ecommerce.common.auth.User;
-import com.dev.core.ecommerce.common.error.ApiException;
-import com.dev.core.ecommerce.common.error.ErrorType;
+import com.dev.core.ecommerce.support.auth.User;
+import com.dev.core.ecommerce.support.error.ApiException;
+import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.ecommerce.domain.order.Order;
 import com.dev.core.ecommerce.domain.order.OrderItem;
-import com.dev.core.ecommerce.domain.order.request.NewOrder;
-import com.dev.core.ecommerce.domain.order.request.NewOrderItem;
+import com.dev.core.ecommerce.service.order.request.NewOrder;
+import com.dev.core.ecommerce.service.order.request.NewOrderItem;
 import com.dev.core.ecommerce.domain.product.Product;
 import com.dev.core.ecommerce.repository.order.OrderItemRepository;
 import com.dev.core.ecommerce.repository.order.OrderRepository;
@@ -32,7 +32,7 @@ public class OrderWriter {
     private final OrderItemRepository orderItemRepository;
 
     @Transactional
-    public String create(User user, NewOrder newOrder) {
+    public String createOrder(User user, NewOrder newOrder) {
         Set<Long> productIds = newOrder.items().stream()
                 .map(NewOrderItem::productId)
                 .collect(Collectors.toSet());

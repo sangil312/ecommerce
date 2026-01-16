@@ -1,15 +1,15 @@
 package com.dev.core.ecommerce.service.order;
 
-import com.dev.core.ecommerce.common.error.ErrorType;
+import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.enums.EntityState;
 import com.dev.core.enums.order.OrderStatus;
 import com.dev.core.ecommerce.IntegrationTestSupport;
-import com.dev.core.ecommerce.common.auth.User;
-import com.dev.core.ecommerce.common.error.ApiException;
+import com.dev.core.ecommerce.support.auth.User;
+import com.dev.core.ecommerce.support.error.ApiException;
 import com.dev.core.ecommerce.domain.order.Order;
 import com.dev.core.ecommerce.domain.order.OrderItem;
-import com.dev.core.ecommerce.domain.order.request.NewOrder;
-import com.dev.core.ecommerce.domain.order.request.NewOrderItem;
+import com.dev.core.ecommerce.service.order.request.NewOrder;
+import com.dev.core.ecommerce.service.order.request.NewOrderItem;
 import com.dev.core.ecommerce.domain.product.Product;
 import com.dev.core.ecommerce.repository.order.OrderItemRepository;
 import com.dev.core.ecommerce.repository.order.OrderRepository;
@@ -53,12 +53,12 @@ class OrderWriterTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("주문 생성")
-    void create() {
+    void createOrder() {
         //given
         NewOrder newOrder = new NewOrder(testUser.id(), List.of(new NewOrderItem(testProduct.getId(), 1L)));
 
         //when
-        String orderKey = orderWriter.create(testUser, newOrder);
+        String orderKey = orderWriter.createOrder(testUser, newOrder);
 
         //then
         assertThat(orderKey).isNotBlank();
@@ -81,21 +81,21 @@ class OrderWriterTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("주문 생성: 상품이 존재하지 않으면 예외 발생")
-    void createWithProductNotFound() {
+    void createOrderWithProductNotFound() {
         //given
         Long notExistProductId = 99L;
         User user = new User(1L);
         NewOrder newOrder = new NewOrder(user.id(), List.of(new NewOrderItem(notExistProductId, 1L)));
 
         //when then
-        assertThatThrownBy(() -> orderWriter.create(user, newOrder))
+        assertThatThrownBy(() -> orderWriter.createOrder(user, newOrder))
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PRODUCT_NOT_FOUND);
     }
 
     @Test
     @DisplayName("주문 생성: 주문 요청 상품 중 존재하지 않는 상품이 있을 경우 타입 예외 발생")
-    void createWithProductMismatch() {
+    void createOrderWithProductMismatch() {
         //given
         User user = new User(1L);
         NewOrderItem newOrderItem1 = new NewOrderItem(testProduct.getId(), 1L);
@@ -103,7 +103,7 @@ class OrderWriterTest extends IntegrationTestSupport {
         NewOrder newOrder = new NewOrder(user.id(), List.of(newOrderItem1, newOrderItem2));
 
         //when then
-        assertThatThrownBy(() -> orderWriter.create(user, newOrder))
+        assertThatThrownBy(() -> orderWriter.createOrder(user, newOrder))
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PRODUCT_MISMATCH_IN_ORDER);
     }

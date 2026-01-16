@@ -22,8 +22,9 @@ public class ProductController {
             @RequestParam Long categoryId,
             Pageable pageable
     ) {
-        var result = productService.findProductsByCategory(categoryId, pageable);
-        return ApiResponse.success(PageResponse.of(ProductResponse.of(result.contents()), result.hasNext()));
+        var result = productService.findProducts(categoryId, pageable);
+        return ApiResponse.success(PageResponse.of(ProductResponse.of(result.contents()), result.hasNext())
+        );
     }
 
     @GetMapping("/v1/products/{productId}")

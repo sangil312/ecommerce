@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.domain.cart;
 
-import com.dev.core.ecommerce.domain.order.request.NewOrder;
-import com.dev.core.ecommerce.domain.order.request.NewOrderItem;
+import com.dev.core.ecommerce.service.order.request.NewOrder;
+import com.dev.core.ecommerce.service.order.request.NewOrderItem;
 
 import java.util.List;
 

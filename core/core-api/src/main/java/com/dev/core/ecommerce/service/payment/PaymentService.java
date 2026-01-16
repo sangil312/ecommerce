@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.service.payment;
 
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.domain.order.Order;
 import com.dev.core.ecommerce.domain.payment.Payment;
 import com.dev.core.enums.order.OrderStatus;
@@ -19,7 +19,7 @@ public class PaymentService {
     private final PaymentProcessor  paymentProcessor;
 
     public Long create(User user, String orderKey) {
-        Order order = orderReader.find(user, orderKey, OrderStatus.CREATED);
+        Order order = orderReader.findOrder(user, orderKey, OrderStatus.CREATED);
         return paymentWriter.paymentCreate(order);
     }
 
@@ -39,7 +39,7 @@ public class PaymentService {
     }
 
     public void fail(User user, String orderKey, String code, String message) {
-        Order order = orderReader.find(user, orderKey, OrderStatus.CREATED);
+        Order order = orderReader.findOrder(user, orderKey, OrderStatus.CREATED);
         paymentWriter.callBackFail(order, code, message);
     }
 }

@@ -47,8 +47,8 @@ subprojects {
 		testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 		testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
 		testImplementation 'io.rest-assured:spring-mock-mvc'
+		annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-		testRuntimeOnly 'com.h2database:h2'
 		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 		compileOnly 'org.projectlombok:lombok'
@@ -60,7 +60,6 @@ subprojects {
 
 	test {
 		useJUnitPlatform {
-			excludeTags('restdocs')
 		}
 	}
 
@@ -104,7 +103,13 @@ tasks.register('restDocsCopy', Copy) {
 }
 
 project(':core:core-api') {
+	tasks.named('test') {
+		finalizedBy tasks.named('asciidoctor')
+	}
 	tasks.named('restDocsTest') {
 		finalizedBy rootProject.tasks.named('restDocsCopy')
 	}
+
+	bootJar.enabled = true
+	jar.enabled = false
 }

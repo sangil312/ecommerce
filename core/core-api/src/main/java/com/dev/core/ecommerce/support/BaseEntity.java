@@ -1,4 +1,4 @@
-package com.dev.core.ecommerce.common;
+package com.dev.core.ecommerce.support;
 
 import com.dev.core.enums.EntityState;
 import jakarta.persistence.EnumType;

@@ -1,11 +1,12 @@
 package com.dev.core.ecommerce.domain.payment;
 
-import com.dev.core.ecommerce.common.BaseEntity;
+import com.dev.core.ecommerce.support.BaseEntity;
 import com.dev.core.enums.payment.TransactionType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,16 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "transaction_history")
+@Table(
+        name = "transaction_history",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_transaction_history_order_id", columnNames = "order_id")
+        }
+)
 public class TransactionHistory extends BaseEntity {
     private Long userId;
     private Long orderId;
     private Long paymentId;
-
     @Enumerated(EnumType.STRING)
     private TransactionType type;
     private String externalPaymentKey;

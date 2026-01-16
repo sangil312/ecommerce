@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.controller.v1.product;
 
 import com.dev.core.ecommerce.RestDocsSupport;
-import com.dev.core.ecommerce.common.response.Page;
+import com.dev.core.ecommerce.support.response.Page;
 import com.dev.core.ecommerce.domain.product.Product;
 import com.dev.core.ecommerce.service.product.ProductService;
 import io.restassured.http.ContentType;
@@ -43,19 +43,19 @@ class ProductControllerRestDocsTest extends RestDocsSupport {
         when(testProduct.getId()).thenReturn(1L);
         when(testProduct.getName()).thenReturn("상품1");
         when(testProduct.getDescription()).thenReturn("상품1 설명");
-        when(testProduct.getPrice()).thenReturn(BigDecimal.valueOf(1000));
+        when(testProduct.getPrice()).thenReturn(BigDecimal.valueOf(1_000));
     }
 
     @Test
-    @DisplayName("상품 목록 조회")
+    @DisplayName("상품 목록 조회 API")
     void findProducts() {
         Product product2 = mock(Product.class);
         when(product2.getId()).thenReturn(2L);
         when(product2.getName()).thenReturn("상품2");
         when(product2.getDescription()).thenReturn("상품2 설명");
-        when(product2.getPrice()).thenReturn(BigDecimal.valueOf(2000));
+        when(product2.getPrice()).thenReturn(BigDecimal.valueOf(2_000));
 
-        when(productService.findProductsByCategory(eq(1L), any(Pageable.class)))
+        when(productService.findProducts(eq(1L), any(Pageable.class)))
                 .thenReturn(Page.of(List.of(testProduct, product2), false));
 
         given().contentType(ContentType.JSON)
@@ -71,7 +71,7 @@ class ProductControllerRestDocsTest extends RestDocsSupport {
                                 parameterWithName("categoryId").description("카테고리 ID"),
                                 parameterWithName("page").description("페이지 번호").optional(),
                                 parameterWithName("size").description("페이지 사이즈").optional(),
-                                parameterWithName("sort").description("정렬").optional()
+                                parameterWithName("sort").description("정렬 (price,asc or desc)").optional()
                         ),
                         responseFields(
                                 fieldWithPath("resultType").type(JsonFieldType.STRING).description("요청 결과"),
@@ -90,7 +90,7 @@ class ProductControllerRestDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("상품 상세 조회")
+    @DisplayName("상품 상세 조회 API")
     void findProductDetail() {
         when(productService.findProduct(1L)).thenReturn(testProduct);
 

@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.service.cart;
 
 import com.dev.core.ecommerce.IntegrationTestSupport;
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.domain.cart.Cart;
 import com.dev.core.ecommerce.domain.cart.CartItem;
 import com.dev.core.ecommerce.domain.product.Product;
@@ -32,7 +32,7 @@ class CartReaderTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("장바구니 조회")
-    void find() {
+    void findCart() {
         //given
         User user = new User(1L);
         Product product1 = new ProductBuilder().name("상품1").price(BigDecimal.valueOf(1_000)).build();
@@ -44,7 +44,7 @@ class CartReaderTest extends IntegrationTestSupport {
         cartItemRepository.saveAll(List.of(cartItem1, cartItem2));
 
         //when
-        Cart cart = cartReader.find(user, List.of(cartItem1.getId(), cartItem2.getId()));
+        Cart cart = cartReader.findCart(user, List.of(cartItem1.getId(), cartItem2.getId()));
 
         //then
         assertThat(cart.userId()).isEqualTo(user.id());

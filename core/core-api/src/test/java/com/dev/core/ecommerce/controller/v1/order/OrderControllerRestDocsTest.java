@@ -1,10 +1,10 @@
 package com.dev.core.ecommerce.controller.v1.order;
 
 import com.dev.core.ecommerce.RestDocsSupport;
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.controller.v1.order.request.CreateOrderFromCartRequest;
 import com.dev.core.ecommerce.controller.v1.order.request.CreateOrderRequest;
-import com.dev.core.ecommerce.domain.order.request.NewOrder;
+import com.dev.core.ecommerce.service.order.request.NewOrder;
 import com.dev.core.ecommerce.service.order.OrderService;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,7 +59,7 @@ class OrderControllerRestDocsTest extends RestDocsSupport {
                         responseFields(
                                 fieldWithPath("resultType").type(JsonFieldType.STRING).description("요청 결과"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 객체"),
-                                fieldWithPath("data.orderKey").type(JsonFieldType.STRING).description("주문 KEY"),
+                                fieldWithPath("data.orderKey").type(JsonFieldType.STRING).description("주문 KEY").attributes(),
                                 fieldWithPath("error").type(JsonFieldType.NULL).description("에러 응답 객체").optional()
                         )
                 ));

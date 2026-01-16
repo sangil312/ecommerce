@@ -20,7 +20,7 @@ class TransactionHistoryTest {
                 3L,
                 TransactionType.PAYMENT,
                 "external-payment-key",
-                BigDecimal.valueOf(1000),
+                BigDecimal.valueOf(1_000),
                 "결제 성공",
                 now
         );
@@ -30,7 +30,7 @@ class TransactionHistoryTest {
         assertThat(transactionHistory.getPaymentId()).isEqualTo(3L);
         assertThat(transactionHistory.getType()).isEqualTo(TransactionType.PAYMENT);
         assertThat(transactionHistory.getExternalPaymentKey()).isEqualTo("external-payment-key");
-        assertThat(transactionHistory.getAmount()).isEqualByComparingTo(BigDecimal.valueOf(1000));
+        assertThat(transactionHistory.getAmount()).isEqualByComparingTo(BigDecimal.valueOf(1_000));
         assertThat(transactionHistory.getMessage()).isEqualTo("결제 성공");
         assertThat(transactionHistory.getOccurredAt()).isEqualTo(now);
     }

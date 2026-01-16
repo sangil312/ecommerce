@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.service.cart;
 
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.domain.cart.Cart;
 import com.dev.core.ecommerce.domain.cart.CartItem;
 import com.dev.core.ecommerce.repository.cart.CartItemRepository;
@@ -17,7 +17,7 @@ import java.util.List;
 public class CartReader {
     private final CartItemRepository cartItemRepository;
 
-    public Cart find(User user, Collection<Long> cartItemIds) {
+    public Cart findCart(User user, Collection<Long> cartItemIds) {
         List<CartItem> cartItems = cartItemRepository.findWithProduct(user.id(), cartItemIds, EntityState.ACTIVE);
         return Cart.of(user.id(), cartItems);
     }

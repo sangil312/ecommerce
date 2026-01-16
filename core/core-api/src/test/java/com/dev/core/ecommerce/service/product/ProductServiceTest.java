@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.service.product;
 
 import com.dev.core.ecommerce.IntegrationTestSupport;
-import com.dev.core.ecommerce.common.response.Page;
+import com.dev.core.ecommerce.support.response.Page;
 import com.dev.core.ecommerce.domain.category.Category;
 import com.dev.core.ecommerce.domain.product.Product;
 import com.dev.core.ecommerce.domain.product.ProductCategory;
@@ -54,8 +54,8 @@ class ProductServiceTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("상품 조회: 카테고리 ID로 상품 조회")
-    void findProductsByCategory() {
-        Page<Product> products = productService.findProductsByCategory(
+    void findProducts() {
+        Page<Product> products = productService.findProducts(
                 saveCategory.getId(), PageRequest.of(0, 20));
 
         assertThat(products.contents()).hasSize(1);

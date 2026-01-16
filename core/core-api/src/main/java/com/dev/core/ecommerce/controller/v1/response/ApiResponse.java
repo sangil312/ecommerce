@@ -1,8 +1,8 @@
 package com.dev.core.ecommerce.controller.v1.response;
 
 
-import com.dev.core.ecommerce.common.error.ErrorResponse;
-import com.dev.core.ecommerce.common.error.ErrorType;
+import com.dev.core.ecommerce.support.error.ErrorResponse;
+import com.dev.core.ecommerce.support.error.ErrorType;
 
 public record ApiResponse<T>(
         ResultType resultType,

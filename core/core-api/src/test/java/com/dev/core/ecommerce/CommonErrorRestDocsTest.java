@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce;
 
-import com.dev.core.ecommerce.common.error.ApiException;
-import com.dev.core.ecommerce.common.error.ErrorType;
+import com.dev.core.ecommerce.support.error.ApiException;
+import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.ecommerce.controller.v1.product.ProductController;
 import com.dev.core.ecommerce.service.product.ProductService;
 import io.restassured.http.ContentType;

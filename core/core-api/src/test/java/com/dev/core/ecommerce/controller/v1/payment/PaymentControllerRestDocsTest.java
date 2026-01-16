@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.controller.v1.payment;
 
 import com.dev.core.ecommerce.RestDocsSupport;
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.controller.v1.payment.request.CreatePaymentRequest;
 import com.dev.core.ecommerce.service.payment.PaymentService;
 import com.dev.core.enums.payment.PaymentMethod;
@@ -24,7 +24,6 @@ import static com.dev.core.ecommerce.RestDocsUtils.requestPreprocessor;
 import static com.dev.core.ecommerce.RestDocsUtils.responsePreprocessor;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -79,7 +78,7 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
                         "pay-1",
                         "order-123",
                         PaymentMethod.CARD,
-                        BigDecimal.valueOf(1000),
+                        BigDecimal.valueOf(1_000),
                         "결제 성공",
                         LocalDateTime.now()
                 )
@@ -146,13 +145,11 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("결제 요청 실패 콜백 API")
     void callbackFail() {
-        doNothing().when(paymentService).fail(any(User.class), anyString(), anyString(), anyString());
-
         given().contentType(ContentType.URLENC)
                 .formParam("orderId", "order-123")
                 .formParam("code", "FAIL")
                 .formParam("message", "failed")
-                .post("/v1/payment/callback/fail")
+                .post("/v1/payments/callback/fail")
                 .then()
                 .status(HttpStatus.OK)
                 .apply(document("payments-callback-fail",

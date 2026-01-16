@@ -1,4 +1,4 @@
-package com.dev.core.ecommerce.common.error;
+package com.dev.core.ecommerce.support.error;
 
 
 public record ErrorResponse(
