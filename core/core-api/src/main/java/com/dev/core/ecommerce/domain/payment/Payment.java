@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,12 +18,16 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "payment")
+@Table(
+        name = "payment",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_order_id", columnNames = "order_id")
+        }
+)
 public class Payment extends BaseEntity {
     private Long userId;
     private Long orderId;
     private BigDecimal amount;
-
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
     private String externalPaymentKey;

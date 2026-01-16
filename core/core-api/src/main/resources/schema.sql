@@ -112,3 +112,15 @@ CREATE TABLE IF NOT EXISTS `transaction_history` (
 
     UNIQUE KEY uk_order_id (order_id)
 );
+
+CREATE TABLE IF NOT EXISTS `review` (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    review_key VARCHAR(150) NOT NULL,
+    target_type VARCHAR(20) NOT NULL,
+    target_id BIGINT NOT NULL,
+    rate DECIMAL(2,1),
+    content VARCHAR(255) NOT NULL,
+
+    UNIQUE KEY uk_user_id_review_key (user_id, review_key)
+);
