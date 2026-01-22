@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.service.order;
 
 import com.dev.core.ecommerce.common.auth.User;
-import com.dev.core.ecommerce.domain.order.request.NewOrder;
+import com.dev.core.ecommerce.service.order.request.NewOrder;
 import com.dev.core.ecommerce.service.cart.CartReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

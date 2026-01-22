@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Table(
         name = "transaction_history",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uk_order_id", columnNames = "order_id")
+                @UniqueConstraint(name = "uk_transaction_history_order_id", columnNames = "order_id")
         }
 )
 public class TransactionHistory extends BaseEntity {

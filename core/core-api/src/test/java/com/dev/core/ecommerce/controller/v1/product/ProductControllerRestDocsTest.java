@@ -43,7 +43,7 @@ class ProductControllerRestDocsTest extends RestDocsSupport {
         when(testProduct.getId()).thenReturn(1L);
         when(testProduct.getName()).thenReturn("상품1");
         when(testProduct.getDescription()).thenReturn("상품1 설명");
-        when(testProduct.getPrice()).thenReturn(BigDecimal.valueOf(1000));
+        when(testProduct.getPrice()).thenReturn(BigDecimal.valueOf(1_000));
     }
 
     @Test
@@ -53,7 +53,7 @@ class ProductControllerRestDocsTest extends RestDocsSupport {
         when(product2.getId()).thenReturn(2L);
         when(product2.getName()).thenReturn("상품2");
         when(product2.getDescription()).thenReturn("상품2 설명");
-        when(product2.getPrice()).thenReturn(BigDecimal.valueOf(2000));
+        when(product2.getPrice()).thenReturn(BigDecimal.valueOf(2_000));
 
         when(productService.findProductsByCategory(eq(1L), any(Pageable.class)))
                 .thenReturn(Page.of(List.of(testProduct, product2), false));

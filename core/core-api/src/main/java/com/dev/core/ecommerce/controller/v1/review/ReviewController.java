@@ -19,7 +19,7 @@ public class ReviewController {
             User user,
             @RequestBody CreateReviewRequest request
     ) {
-        reviewService.creatReview(user, request.toTarget(), request.toContent());
+        reviewService.creat(user, request.toTarget(), request.toContent());
         return ApiResponse.success();
     }
 }

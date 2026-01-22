@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS `payment`;
 DROP TABLE IF EXISTS `orders`;
 DROP TABLE IF EXISTS `order_item`;
 DROP TABLE IF EXISTS `transaction_history`;
+DROP TABLE IF EXISTS `review`;
 
 CREATE TABLE IF NOT EXISTS `product` (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -110,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `transaction_history` (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     state VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
 
-    UNIQUE KEY uk_order_id (order_id)
+    UNIQUE KEY uk_transaction_history_order_id (order_id)
 );
 
 CREATE TABLE IF NOT EXISTS `review` (

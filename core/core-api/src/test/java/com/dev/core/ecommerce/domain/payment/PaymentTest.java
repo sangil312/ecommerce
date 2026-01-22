@@ -12,12 +12,12 @@ class PaymentTest {
 
     @Test
     void create() {
-        Payment payment = Payment.create(1L, 1L, BigDecimal.valueOf(1000));
+        Payment payment = Payment.create(1L, 1L, BigDecimal.valueOf(1_000));
 
         assertThat(payment.getUserId()).isEqualTo(1L);
         assertThat(payment.getOrderId()).isEqualTo(1L);
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.READY);
-        assertThat(payment.getAmount()).isEqualByComparingTo(BigDecimal.valueOf(1000));
+        assertThat(payment.getAmount()).isEqualByComparingTo(BigDecimal.valueOf(1_000));
         assertThat(payment.getExternalPaymentKey()).isNull();
         assertThat(payment.getMethod()).isNull();
         assertThat(payment.getPaidAt()).isNull();

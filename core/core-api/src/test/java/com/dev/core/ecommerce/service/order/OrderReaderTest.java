@@ -38,7 +38,7 @@ class OrderReaderTest extends IntegrationTestSupport {
     void setUp() {
         testUser = new User(1L);
         testOrder = orderRepository.save(
-                Order.create(testUser.id(), BigDecimal.valueOf(10000))
+                Order.create(testUser.id(), BigDecimal.valueOf(10_000))
         );
 
         orderItemRepository.save(
@@ -47,8 +47,8 @@ class OrderReaderTest extends IntegrationTestSupport {
                         1L,
                         1L,
                         "테스트 상품",
-                        BigDecimal.valueOf(10000),
-                        BigDecimal.valueOf(10000)
+                        BigDecimal.valueOf(10_000),
+                        BigDecimal.valueOf(10_000)
                 )
         );
     }

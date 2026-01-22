@@ -79,7 +79,7 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
                         "pay-1",
                         "order-123",
                         PaymentMethod.CARD,
-                        BigDecimal.valueOf(1000),
+                        BigDecimal.valueOf(1_000),
                         "결제 성공",
                         LocalDateTime.now()
                 )

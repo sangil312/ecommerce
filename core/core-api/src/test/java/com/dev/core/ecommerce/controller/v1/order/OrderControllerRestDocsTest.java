@@ -4,7 +4,7 @@ import com.dev.core.ecommerce.RestDocsSupport;
 import com.dev.core.ecommerce.common.auth.User;
 import com.dev.core.ecommerce.controller.v1.order.request.CreateOrderFromCartRequest;
 import com.dev.core.ecommerce.controller.v1.order.request.CreateOrderRequest;
-import com.dev.core.ecommerce.domain.order.request.NewOrder;
+import com.dev.core.ecommerce.service.order.request.NewOrder;
 import com.dev.core.ecommerce.service.order.OrderService;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;

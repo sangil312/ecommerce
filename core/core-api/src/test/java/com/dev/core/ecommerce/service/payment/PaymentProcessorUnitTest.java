@@ -43,7 +43,7 @@ class PaymentProcessorUnitTest {
         Payment payment = Mockito.mock(Payment.class);
         String orderKey = "order_123";
         String externalPaymentKey = "ext_key";
-        BigDecimal amount = BigDecimal.valueOf(10000);
+        BigDecimal amount = BigDecimal.valueOf(10_000);
 
         ConfirmSuccess confirmSuccess = new ConfirmSuccess(
                 externalPaymentKey, orderKey, PaymentMethod.CARD, amount, "성공", LocalDateTime.now()
@@ -77,7 +77,7 @@ class PaymentProcessorUnitTest {
                 payment,
                 "order_123",
                 "ext_key",
-                BigDecimal.valueOf(10000),
+                BigDecimal.valueOf(10_000),
                 confirmResult
         );
 
@@ -94,7 +94,7 @@ class PaymentProcessorUnitTest {
         Payment payment = Mockito.mock(Payment.class);
         ConfirmSuccess confirmSuccess = new ConfirmSuccess(
                 "ext_key", "wrong_order_key", PaymentMethod.CARD,
-                BigDecimal.valueOf(10000), "성공", LocalDateTime.now()
+                BigDecimal.valueOf(10_000), "성공", LocalDateTime.now()
         );
         ConfirmResult confirmResult = new ConfirmResult(true, null, confirmSuccess);
 
@@ -105,7 +105,7 @@ class PaymentProcessorUnitTest {
                         payment,
                         "order_123",
                         "ext_key",
-                        BigDecimal.valueOf(10000),
+                        BigDecimal.valueOf(10_000),
                         confirmResult
                 )
         )
@@ -123,7 +123,7 @@ class PaymentProcessorUnitTest {
         // given
         User user = new User(1L);
         Payment payment = Mockito.mock(Payment.class);
-        BigDecimal mismatchAmount = BigDecimal.valueOf(5000);
+        BigDecimal mismatchAmount = BigDecimal.valueOf(5_000);
 
         ConfirmSuccess confirmSuccess = new ConfirmSuccess(
                 "ext_key",
@@ -143,7 +143,7 @@ class PaymentProcessorUnitTest {
                         payment,
                         "order_123",
                         "ext_key",
-                        BigDecimal.valueOf(10000),
+                        BigDecimal.valueOf(10_000),
                         confirmResult
                 )
         )

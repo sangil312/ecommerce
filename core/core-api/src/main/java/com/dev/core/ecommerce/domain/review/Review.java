@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(
-        name = "reviews",
+        name = "review",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uk_user_id_review_key", columnNames = {"user_id", "review_key"})
         }
@@ -30,4 +30,22 @@ public class Review extends BaseEntity {
     private Long targetId;
     private BigDecimal rate;
     private String content;
+
+    public static Review create(
+            Long userId,
+            String reviewKey,
+            ReviewTargetType targetType,
+            Long targetId,
+            BigDecimal rate,
+            String content
+    ) {
+        Review review = new Review();
+        review.userId = userId;
+        review.reviewKey = reviewKey;
+        review.targetType = targetType;
+        review.targetId = targetId;
+        review.rate = rate;
+        review.content = content;
+        return review;
+    }
 }

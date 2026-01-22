@@ -4,6 +4,6 @@ import com.dev.core.enums.review.ReviewTargetType;
 
 public record ReviewTarget(
         ReviewTargetType targetType,
-        Long targetId
+        Long id
 ) {
 }
