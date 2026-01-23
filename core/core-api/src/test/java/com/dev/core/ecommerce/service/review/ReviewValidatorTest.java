@@ -49,8 +49,7 @@ class ReviewValidatorTest extends IntegrationTestSupport {
     @BeforeEach
     void setUp() {
         testUser = new User(1L);
-        testProduct = new ProductBuilder().name("상품1").price(BigDecimal.valueOf(1_000)).build();
-        testProduct = productRepository.save(testProduct);
+        testProduct = productRepository.save(new ProductBuilder().build());
     }
 
     @Test
@@ -116,6 +115,7 @@ class ReviewValidatorTest extends IntegrationTestSupport {
                 product.getPrice(),
                 product.getPrice()
         );
+
         return orderItemRepository.save(orderItem);
     }
 }

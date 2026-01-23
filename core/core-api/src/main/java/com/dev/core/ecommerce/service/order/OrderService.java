@@ -16,11 +16,11 @@ public class OrderService {
     private final CartReader cartReader;
 
     public String create(User user, NewOrder newOrder) {
-        return orderWriter.create(user, newOrder);
+        return orderWriter.createOrder(user, newOrder);
     }
 
     public String createFromCart(User user, Collection<Long> cartItemIds) {
-        var cart = cartReader.find(user, cartItemIds);
+        var cart = cartReader.findCart(user, cartItemIds);
         return create(user, cart.toNewOrder());
     }
 }

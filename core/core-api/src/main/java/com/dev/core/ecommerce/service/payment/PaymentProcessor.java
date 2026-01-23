@@ -26,7 +26,7 @@ public class PaymentProcessor {
     private final PaymentWriter paymentWriter;
 
     public Payment validatePayment(User user, String orderKey, BigDecimal amount) {
-        Order order = orderReader.find(user, orderKey, OrderStatus.CREATED);
+        Order order = orderReader.findOrder(user, orderKey, OrderStatus.CREATED);
 
         Payment payment = paymentRepository.findByOrderId(order.getId())
                 .orElseThrow(() -> new ApiException(ErrorType.PAYMENT_NOT_FOUND));

@@ -122,6 +122,9 @@ CREATE TABLE IF NOT EXISTS `review` (
     target_id BIGINT NOT NULL,
     rate DECIMAL(2,1),
     content VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    state VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
 
     UNIQUE KEY uk_user_id_review_key (user_id, review_key)
 );

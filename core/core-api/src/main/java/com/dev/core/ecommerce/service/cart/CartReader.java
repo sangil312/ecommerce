@@ -17,7 +17,7 @@ import java.util.List;
 public class CartReader {
     private final CartItemRepository cartItemRepository;
 
-    public Cart find(User user, Collection<Long> cartItemIds) {
+    public Cart findCart(User user, Collection<Long> cartItemIds) {
         List<CartItem> cartItems = cartItemRepository.findWithProduct(user.id(), cartItemIds, EntityState.ACTIVE);
         return Cart.of(user.id(), cartItems);
     }

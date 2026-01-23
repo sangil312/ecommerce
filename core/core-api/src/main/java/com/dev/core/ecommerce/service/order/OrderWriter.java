@@ -32,7 +32,7 @@ public class OrderWriter {
     private final OrderItemRepository orderItemRepository;
 
     @Transactional
-    public String create(User user, NewOrder newOrder) {
+    public String createOrder(User user, NewOrder newOrder) {
         Set<Long> productIds = newOrder.items().stream()
                 .map(NewOrderItem::productId)
                 .collect(Collectors.toSet());

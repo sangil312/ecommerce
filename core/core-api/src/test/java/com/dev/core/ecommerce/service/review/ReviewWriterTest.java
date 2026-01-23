@@ -26,7 +26,7 @@ class ReviewWriterTest extends IntegrationTestSupport {
     private ReviewRepository reviewRepository;
 
     @Test
-    @DisplayName("리뷰 저장")
+    @DisplayName("리뷰 생성")
     void createReview() {
         // given
         User user = new User(1L);

@@ -7,12 +7,14 @@ import com.dev.core.ecommerce.service.review.request.ReviewContent;
 import com.dev.core.ecommerce.service.review.request.ReviewTarget;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
 public class ReviewWriter {
     private final ReviewRepository reviewRepository;
 
+    @Transactional
     public void createReview(User user, String reviewKey, ReviewTarget target, ReviewContent content) {
         reviewRepository.save(
                 Review.create(

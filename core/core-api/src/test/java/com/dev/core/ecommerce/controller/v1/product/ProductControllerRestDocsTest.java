@@ -55,7 +55,7 @@ class ProductControllerRestDocsTest extends RestDocsSupport {
         when(product2.getDescription()).thenReturn("상품2 설명");
         when(product2.getPrice()).thenReturn(BigDecimal.valueOf(2_000));
 
-        when(productService.findProductsByCategory(eq(1L), any(Pageable.class)))
+        when(productService.findProducts(eq(1L), any(Pageable.class)))
                 .thenReturn(Page.of(List.of(testProduct, product2), false));
 
         given().contentType(ContentType.JSON)

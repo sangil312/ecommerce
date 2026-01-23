@@ -48,7 +48,7 @@ public class PaymentWriter {
 
         payment.success(result.externalPaymentKey(), result.method());
 
-        Order order = orderReader.find(user, result.orderKey(), OrderStatus.CREATED);
+        Order order = orderReader.findOrder(user, result.orderKey(), OrderStatus.CREATED);
 
         order.paid();
 

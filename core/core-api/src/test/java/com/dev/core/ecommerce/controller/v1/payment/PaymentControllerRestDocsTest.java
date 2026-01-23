@@ -24,7 +24,6 @@ import static com.dev.core.ecommerce.RestDocsUtils.requestPreprocessor;
 import static com.dev.core.ecommerce.RestDocsUtils.responsePreprocessor;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -146,8 +145,6 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("결제 요청 실패 콜백 API")
     void callbackFail() {
-        doNothing().when(paymentService).fail(any(User.class), anyString(), anyString(), anyString());
-
         given().contentType(ContentType.URLENC)
                 .formParam("orderId", "order-123")
                 .formParam("code", "FAIL")

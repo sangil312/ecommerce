@@ -22,7 +22,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
 
-    public Page<Product> findProductsByCategory(Long categoryId, Pageable pageable) {
+    public Page<Product> findProducts(Long categoryId, Pageable pageable) {
         Slice<ProductCategory> productCategories =
                 productCategoryRepository.findByCategoryIdAndState(categoryId, EntityState.ACTIVE, pageable);
         List<Long> productIds = productCategories.getContent().stream().map(ProductCategory::getProductId).toList();

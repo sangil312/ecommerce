@@ -64,3 +64,17 @@ include::{snippets}/products-find-detail/http-request.adoc[]
 include::{snippets}/products-find-detail/path-parameters.adoc[]
 include::{snippets}/products-find-detail/http-response.adoc[]
 include::{snippets}/products-find-detail/response-fields.adoc[]
+
+== Review API
+
+=== 리뷰 목록 조회
+include::{snippets}/reviews-find/http-request.adoc[]
+include::{snippets}/reviews-find/query-parameters.adoc[]
+include::{snippets}/reviews-find/http-response.adoc[]
+include::{snippets}/reviews-find/response-fields.adoc[]
+
+=== 리뷰 생성
+include::{snippets}/reviews-create/http-request.adoc[]
+include::{snippets}/reviews-create/request-fields.adoc[]
+include::{snippets}/reviews-create/http-response.adoc[]
+include::{snippets}/reviews-create/response-fields.adoc[]

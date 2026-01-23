@@ -54,8 +54,8 @@ class ProductServiceTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("상품 조회: 카테고리 ID로 상품 조회")
-    void findProductsByCategory() {
-        Page<Product> products = productService.findProductsByCategory(
+    void findProducts() {
+        Page<Product> products = productService.findProducts(
                 saveCategory.getId(), PageRequest.of(0, 20));
 
         assertThat(products.contents()).hasSize(1);

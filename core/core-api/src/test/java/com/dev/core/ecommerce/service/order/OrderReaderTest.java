@@ -56,9 +56,9 @@ class OrderReaderTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("주문 조회: 사용자, orderKey, status에 해당하는 Order를 반환")
-    void find() {
+    void findOrder() {
         // when
-        Order result = orderReader.find(testUser, testOrder.getOrderKey(), OrderStatus.CREATED);
+        Order result = orderReader.findOrder(testUser, testOrder.getOrderKey(), OrderStatus.CREATED);
 
         // then
         assertThat(result).isNotNull();
@@ -70,55 +70,55 @@ class OrderReaderTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("주문 조회: 존재하지 않는 orderKey가 주어지면 예외 발생")
-    void findWithInvalidOrderKeyThrowOrderNotFound() {
+    void findOrderWithInvalidOrderKeyThrowOrderNotFound() {
         // when then
-        assertThatThrownBy(() -> orderReader.find(testUser, "invalid-order-key", OrderStatus.CREATED))
+        assertThatThrownBy(() -> orderReader.findOrder(testUser, "invalid-order-key", OrderStatus.CREATED))
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.ORDER_NOT_FOUND);
     }
 
     @Test
     @DisplayName("주문 조회: 요청한 사용자와 조회한 주문의 사용자가 다르면 타입 예외 발생")
-    void findWithInvalidUserThrowOrderNotFound() {
+    void findOrderWithInvalidUserThrowOrderNotFound() {
         // given
         User differentUser = new User(999L);
 
         // when then
-        assertThatThrownBy(() -> orderReader.find(differentUser, testOrder.getOrderKey(), OrderStatus.CREATED))
+        assertThatThrownBy(() -> orderReader.findOrder(differentUser, testOrder.getOrderKey(), OrderStatus.CREATED))
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.ORDER_NOT_FOUND);
     }
 
     @Test
     @DisplayName("주문 조회: 주문 상태가 맞지 않으면 예외 발생")
-    void findWithMismatchStatusThrowOrderNotFound() {
+    void findOrderWithMismatchStatusThrowOrderNotFound() {
         // when then
-        assertThatThrownBy(() -> orderReader.find(testUser, testOrder.getOrderKey(), OrderStatus.PAID))
+        assertThatThrownBy(() -> orderReader.findOrder(testUser, testOrder.getOrderKey(), OrderStatus.PAID))
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.ORDER_NOT_FOUND);
     }
 
     @Test
     @DisplayName("주문 조회: 삭제된 주문(EntityState.DELETED)을 조회하면 예외 발생")
-    void findWithDeletedEntityThrowOrderNotFound() {
+    void findOrderWithDeletedEntityThrowOrderNotFound() {
         // given
         testOrder.delete(); // EntityState.DELETED로 변경
         orderRepository.save(testOrder);
 
         // when then
-        assertThatThrownBy(() -> orderReader.find(testUser, testOrder.getOrderKey(), OrderStatus.CREATED))
+        assertThatThrownBy(() -> orderReader.findOrder(testUser, testOrder.getOrderKey(), OrderStatus.CREATED))
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.ORDER_NOT_FOUND);
     }
 
     @Test
     @DisplayName("주문 조회: 주문에 주문 상품이 없으면 예외 발생")
-    void findWithNotFoundOrderItemThrowOrderNotFound() {
+    void findOrderWithNotFoundOrderItemThrowOrderNotFound() {
         // given
         orderItemRepository.deleteAll();
 
         // when then
-        assertThatThrownBy(() -> orderReader.find(testUser, testOrder.getOrderKey(), OrderStatus.CREATED))
+        assertThatThrownBy(() -> orderReader.findOrder(testUser, testOrder.getOrderKey(), OrderStatus.CREATED))
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.ORDER_NOT_FOUND);
     }

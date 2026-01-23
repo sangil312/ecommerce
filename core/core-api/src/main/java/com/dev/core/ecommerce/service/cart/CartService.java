@@ -14,6 +14,6 @@ public class CartService {
     private final CartReader cartReader;
 
     public Cart find(User user, Collection<Long> cartItemIds) {
-        return cartReader.find(user, cartItemIds);
+        return cartReader.findCart(user, cartItemIds);
     }
 }

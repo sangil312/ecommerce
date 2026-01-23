@@ -60,7 +60,6 @@ subprojects {
 
 	test {
 		useJUnitPlatform {
-			excludeTags('restdocs')
 		}
 	}
 
@@ -107,4 +106,7 @@ project(':core:core-api') {
 	tasks.named('restDocsTest') {
 		finalizedBy rootProject.tasks.named('restDocsCopy')
 	}
+
+	bootJar.enabled = true
+	jar.enabled = false
 }
