@@ -22,3 +22,8 @@ VALUES
 
 INSERT INTO payment(id, user_id, order_id, amount, status)
 VALUES (1, 1, 1, 1000, 'READY');
+
+INSERT INTO review(id, user_id, review_key, target_type, target_id, rate, content)
+VALUES
+    (1, 1, 'ORDER_ITEM_1', 'PRODUCT', 1L, 5.0, '좋아요'),
+    (1, 1, 'ORDER_ITEM_1', 'PRODUCT', 1L, 4.0, '보통이에요')

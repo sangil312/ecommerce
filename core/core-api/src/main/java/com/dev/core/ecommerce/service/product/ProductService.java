@@ -1,38 +1,40 @@
 package com.dev.core.ecommerce.service.product;
 
-import com.dev.core.ecommerce.common.error.ApiException;
-import com.dev.core.ecommerce.common.error.ErrorType;
 import com.dev.core.ecommerce.common.response.Page;
 import com.dev.core.ecommerce.domain.product.Product;
-import com.dev.core.ecommerce.domain.product.ProductCategory;
-import com.dev.core.ecommerce.repository.product.ProductCategoryRepository;
-import com.dev.core.ecommerce.repository.product.ProductRepository;
-import com.dev.core.enums.EntityState;
+import com.dev.core.ecommerce.service.review.ReviewReader;
+import com.dev.core.enums.review.ReviewTargetType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-    private final ProductRepository productRepository;
-    private final ProductCategoryRepository productCategoryRepository;
+    private final ProductReader productReader;
+    private final ReviewReader reviewReader;
 
     public Page<Product> findProducts(Long categoryId, Pageable pageable) {
-        Slice<ProductCategory> productCategories =
-                productCategoryRepository.findByCategoryIdAndState(categoryId, EntityState.ACTIVE, pageable);
-        List<Long> productIds = productCategories.getContent().stream().map(ProductCategory::getProductId).toList();
-        List<Product> products = productRepository.findAllById(productIds);
-
-        return Page.of(products, productCategories.hasNext());
+        return productReader.findProductsByCategory(categoryId, pageable);
     }
 
     public Product findProduct(Long productId) {
-        return productRepository.findByIdAndState(productId, EntityState.ACTIVE)
-                .orElseThrow(() -> new ApiException(ErrorType.PRODUCT_NOT_FOUND));
+        return productReader.findProduct(productId);
     }
+
+//    public Page<ProductWithRateSummary> findProductsWithRateSummary(Long categoryId, Pageable pageable) {
+//        Page<Product> products = productReader.findProductsByCategory(categoryId, pageable);
+//        var productIds = products.contents().stream().map(Product::getId).toList();
+//        var rateSummaries = reviewReader.findRateSummaries(ReviewTargetType.PRODUCT, productIds);
+//
+//        var items = products.contents().stream()
+//                .map(product -> new ProductWithRateSummary(
+//                        product,
+//                        rateSummaries.get(product.getId())
+//                ))
+//                .toList();
+//
+//        return Page.of(items, products.hasNext());
+//    }
 }

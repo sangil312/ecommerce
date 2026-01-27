@@ -5,6 +5,7 @@ import com.dev.core.ecommerce.common.response.Page;
 import com.dev.core.ecommerce.domain.review.Review;
 import com.dev.core.ecommerce.service.review.request.ReviewContent;
 import com.dev.core.ecommerce.service.review.request.ReviewTarget;
+import com.dev.core.ecommerce.service.review.response.RateSummary;
 import com.dev.core.enums.review.ReviewTargetType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -25,5 +26,9 @@ public class ReviewService {
 
     public Page<Review> findReviews(ReviewTargetType targetType, Long targetId, Pageable pageable) {
         return reviewReader.findReviewsByTargetType(targetType, targetId, pageable);
+    }
+
+    public RateSummary findRateSummary(ReviewTargetType targetType, Long targetId) {
+        return reviewReader.findRateSummary(targetType, targetId);
     }
 }
