@@ -3,7 +3,6 @@ package com.dev.core.ecommerce.service.payment;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.support.error.ApiException;
 import com.dev.core.ecommerce.support.error.ErrorType;
-import com.dev.core.ecommerce.domain.order.Order;
 import com.dev.core.ecommerce.domain.payment.Payment;
 import com.dev.core.ecommerce.repository.payment.PaymentRepository;
 import com.dev.core.ecommerce.service.order.OrderReader;
@@ -26,9 +25,9 @@ public class PaymentProcessor {
     private final PaymentWriter paymentWriter;
 
     public Payment validatePayment(User user, String orderKey, BigDecimal amount) {
-        Order order = orderReader.findOrder(user, orderKey, OrderStatus.CREATED);
+        var order = orderReader.findOrder(user, orderKey, OrderStatus.CREATED);
 
-        Payment payment = paymentRepository.findByOrderId(order.getId())
+        var payment = paymentRepository.findByOrderId(order.getId())
                 .orElseThrow(() -> new ApiException(ErrorType.PAYMENT_NOT_FOUND));
 
         if (!payment.getUserId().equals(order.getUserId())) throw new ApiException(ErrorType.PAYMENT_NOT_FOUND);

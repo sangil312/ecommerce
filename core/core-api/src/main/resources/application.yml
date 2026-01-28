@@ -1,12 +1,12 @@
-spring.application.name: ecommerce
+spring.application.name: commerce
 spring.profiles.active: local
 
 spring:
   config:
     import:
       - client.yml
-      - logging.yml
   datasource.hikari.auto-commit: false
+  sql.init.mode: always
   data.web.pageable.max-page-size: 100
   jpa:
     open-in-view: false

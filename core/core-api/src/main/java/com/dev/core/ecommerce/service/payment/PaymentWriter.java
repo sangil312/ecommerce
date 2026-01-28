@@ -36,23 +36,23 @@ public class PaymentWriter {
             throw new ApiException(ErrorType.PAYMENT_ALREADY_PAID);
         }
 
-        Payment payment = Payment.create(order.getUserId(), order.getId(), order.getTotalPrice());
+        var payment = Payment.create(order.getUserId(), order.getId(), order.getTotalPrice());
         return paymentRepository.save(payment).getId();
     }
 
     @Transactional
     public void paymentSuccess(User user, Payment validPayment, ConfirmSuccess result) {
         log.info("[PG] 결제 승인 성공 - {}", result.toString());
-        Payment payment = paymentRepository.findById(validPayment.getId())
+        var payment = paymentRepository.findById(validPayment.getId())
                 .orElseThrow(() -> new ApiException(ErrorType.PAYMENT_NOT_FOUND));
 
         payment.success(result.externalPaymentKey(), result.method());
 
-        Order order = orderReader.findOrder(user, result.orderKey(), OrderStatus.CREATED);
+        var order = orderReader.findOrder(user, result.orderKey(), OrderStatus.CREATED);
 
         order.paid();
 
-        TransactionHistory transactionHistory = TransactionHistory.create(
+        var transactionHistory = TransactionHistory.create(
                 payment.getUserId(),
                 payment.getOrderId(),
                 payment.getId(),
@@ -69,12 +69,12 @@ public class PaymentWriter {
     @Transactional
     public void paymentMismatch(Payment validPayment, String externalPaymentKey, ConfirmSuccess result) {
         log.warn("[PG] 결제 승인 정보 불일치 - {}", result.toString());
-        Payment payment = paymentRepository.findById(validPayment.getId())
+        var payment = paymentRepository.findById(validPayment.getId())
                 .orElseThrow(() -> new ApiException(ErrorType.PAYMENT_NOT_FOUND));
 
         payment.error(externalPaymentKey, result.method());
 
-        TransactionHistory transactionHistory = TransactionHistory.create(
+        var transactionHistory = TransactionHistory.create(
                 payment.getUserId(),
                 payment.getOrderId(),
                 payment.getId(),
@@ -91,12 +91,12 @@ public class PaymentWriter {
     @Transactional
     public void paymentFail(Payment validPayment, String externalPaymentKey, ConfirmFail result) {
         log.info("[PG] 결제 승인 실패 - {}", result.toString());
-        Payment payment = paymentRepository.findById(validPayment.getId())
+        var payment = paymentRepository.findById(validPayment.getId())
                 .orElseThrow(() -> new ApiException(ErrorType.PAYMENT_NOT_FOUND));
 
         payment.pending(externalPaymentKey);
 
-        TransactionHistory transactionHistory = TransactionHistory.create(
+        var transactionHistory = TransactionHistory.create(
                 payment.getUserId(),
                 payment.getOrderId(),
                 payment.getId(),
@@ -113,12 +113,12 @@ public class PaymentWriter {
     @Transactional
     public void callBackFail(Order order, String code, String message) {
         log.info("[PG] 결제 요청 실패 - orderKey: {}, code: {}, message: {}", order.getOrderKey(), code, message);
-        Payment payment = paymentRepository.findByOrderId(order.getId())
+        var payment = paymentRepository.findByOrderId(order.getId())
                 .orElseThrow(() -> new ApiException(ErrorType.PAYMENT_NOT_FOUND));
 
         payment.fail();
 
-        TransactionHistory transactionHistory = TransactionHistory.create(
+        var transactionHistory = TransactionHistory.create(
                 payment.getUserId(),
                 payment.getOrderId(),
                 payment.getId(),

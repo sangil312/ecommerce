@@ -12,13 +12,13 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     List<CartItem> findByUserIdAndState(Long userId, EntityState state);
 
     @Query("""
-            SELECT DISTINCT ci
-            FROM CartItem ci
-                JOIN FETCH ci.product p
-            WHERE ci.userId = :userId
-                AND ci.id IN :cartItemIds
-                AND ci.state = :state
-                AND p.state = :state
+            SELECT DISTINCT cartItem
+            FROM CartItem cartItem
+                JOIN FETCH cartItem.product product
+            WHERE cartItem.userId = :userId
+                AND cartItem.id IN :cartItemIds
+                AND cartItem.state = :state
+                AND product.state = :state
     """)
     List<CartItem> findWithProduct(Long userId, Collection<Long> cartItemIds, EntityState state);
 }

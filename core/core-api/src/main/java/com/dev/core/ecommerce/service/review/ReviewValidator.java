@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -24,7 +22,7 @@ public class ReviewValidator {
     private final ReviewRepository reviewRepository;
 
     public String validateNewReview(User user, ReviewTarget target) {
-        List<String> reviewKeys = orderItemRepository.findRecentOrderItemByProduct(
+        var reviewKeys = orderItemRepository.findRecentOrderItemByProduct(
                         user.id(),
                         target.id(),
                         OrderStatus.PAID,
@@ -35,7 +33,7 @@ public class ReviewValidator {
                 .map(it -> "ORDER_ITEM_" + it.getId())
                 .toList();
 
-        Set<String> existReviewKeys = reviewRepository.findByUserIdAndReviewKeyIn(user.id(), reviewKeys)
+        var existReviewKeys = reviewRepository.findByUserIdAndReviewKeyIn(user.id(), reviewKeys)
                 .stream()
                 .map(Review::getReviewKey)
                 .collect(Collectors.toSet());

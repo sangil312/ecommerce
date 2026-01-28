@@ -1,8 +1,9 @@
 package com.dev.core.ecommerce;
 
+import com.dev.core.ecommerce.api.controller.v1.product.usecase.ProductUseCase;
 import com.dev.core.ecommerce.support.error.ApiException;
 import com.dev.core.ecommerce.support.error.ErrorType;
-import com.dev.core.ecommerce.controller.v1.product.ProductController;
+import com.dev.core.ecommerce.api.controller.v1.product.ProductController;
 import com.dev.core.ecommerce.service.product.ProductService;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ public class CommonErrorRestDocsTest extends RestDocsSupport {
     @BeforeEach
     void setUp() {
         productService = mock(ProductService.class);
-        mockMvc = mockController(new ProductController(productService));
+        mockMvc = mockController(new ProductController(productService, mock(ProductUseCase.class)));
     }
 
     @Test

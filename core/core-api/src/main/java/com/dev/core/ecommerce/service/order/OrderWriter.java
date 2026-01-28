@@ -33,21 +33,21 @@ public class OrderWriter {
 
     @Transactional
     public String createOrder(User user, NewOrder newOrder) {
-        Set<Long> productIds = newOrder.items().stream()
+        var productIds = newOrder.items().stream()
                 .map(NewOrderItem::productId)
                 .collect(Collectors.toSet());
 
-        Map<Long, Product> productMap = productRepository.findByIdInAndState(productIds, EntityState.ACTIVE)
+        var productMap = productRepository.findByIdInAndState(productIds, EntityState.ACTIVE)
                 .stream()
                 .collect(toMap(Product::getId, product -> product));
 
         validateNewOrderItem(productIds, productMap);
 
-        BigDecimal totalPrice = calculateTotalPrice(newOrder.items(), productMap);
+        var totalPrice = calculateTotalPrice(newOrder.items(), productMap);
 
-        Order savedOrder = orderRepository.save(Order.create(user.id(), totalPrice));
+        var savedOrder = orderRepository.save(Order.create(user.id(), totalPrice));
 
-        List<OrderItem> orderItems = newOrder.items().stream()
+        var orderItems = newOrder.items().stream()
                 .map(item -> {
                     Product product = productMap.get(item.productId());
                     return OrderItem.create(
