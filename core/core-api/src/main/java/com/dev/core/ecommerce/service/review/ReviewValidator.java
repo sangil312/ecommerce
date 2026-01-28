@@ -1,8 +1,8 @@
 package com.dev.core.ecommerce.service.review;
 
-import com.dev.core.ecommerce.common.auth.User;
-import com.dev.core.ecommerce.common.error.ApiException;
-import com.dev.core.ecommerce.common.error.ErrorType;
+import com.dev.core.ecommerce.support.auth.User;
+import com.dev.core.ecommerce.support.error.ApiException;
+import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.ecommerce.domain.review.Review;
 import com.dev.core.ecommerce.repository.order.OrderItemRepository;
 import com.dev.core.ecommerce.repository.review.ReviewRepository;

@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.controller.v1.review;
 
 import com.dev.core.ecommerce.RestDocsSupport;
-import com.dev.core.ecommerce.common.response.Page;
+import com.dev.core.ecommerce.support.response.Page;
 import com.dev.core.ecommerce.controller.v1.review.request.CreateReviewRequest;
 import com.dev.core.ecommerce.domain.review.Review;
 import com.dev.core.ecommerce.service.review.ReviewService;
@@ -90,7 +90,7 @@ class ReviewControllerRestDocsTest extends RestDocsSupport {
                 .queryParam("targetId", "1")
                 .queryParam("page", "0")
                 .queryParam("size", "20")
-                .queryParam("sort", "updatedAt, desc")
+                .queryParam("sort", "createdAt,desc")
                 .get("/v1/reviews")
                 .then()
                 .status(HttpStatus.OK)
@@ -100,7 +100,7 @@ class ReviewControllerRestDocsTest extends RestDocsSupport {
                                 parameterWithName("targetId").description("리뷰 대상 ID"),
                                 parameterWithName("page").description("페이지 번호").optional(),
                                 parameterWithName("size").description("페이지 사이즈").optional(),
-                                parameterWithName("sort").description("정렬").optional()
+                                parameterWithName("sort").description("정렬 (createdAt,asc or desc)").optional()
                         ),
                         responseFields(
                                 fieldWithPath("resultType").type(JsonFieldType.STRING).description("요청 결과"),

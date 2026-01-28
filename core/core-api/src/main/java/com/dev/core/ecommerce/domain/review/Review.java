@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.domain.review;
 
-import com.dev.core.ecommerce.common.BaseEntity;
+import com.dev.core.ecommerce.support.BaseEntity;
 import com.dev.core.enums.review.ReviewTargetType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

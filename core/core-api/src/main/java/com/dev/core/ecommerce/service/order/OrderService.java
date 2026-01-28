@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.service.order;
 
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.service.order.request.NewOrder;
 import com.dev.core.ecommerce.service.cart.CartReader;
 import lombok.RequiredArgsConstructor;

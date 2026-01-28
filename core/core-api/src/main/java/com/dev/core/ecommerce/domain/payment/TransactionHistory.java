@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.domain.payment;
 
-import com.dev.core.ecommerce.common.BaseEntity;
+import com.dev.core.ecommerce.support.BaseEntity;
 import com.dev.core.enums.payment.TransactionType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

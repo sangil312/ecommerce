@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.controller;
 
-import com.dev.core.ecommerce.common.error.ApiException;
-import com.dev.core.ecommerce.common.error.ErrorType;
+import com.dev.core.ecommerce.support.error.ApiException;
+import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.ecommerce.controller.v1.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

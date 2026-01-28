@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.domain.product;
 
-import com.dev.core.ecommerce.common.BaseEntity;
+import com.dev.core.ecommerce.support.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;

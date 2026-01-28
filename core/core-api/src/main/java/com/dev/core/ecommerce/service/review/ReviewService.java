@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.service.review;
 
-import com.dev.core.ecommerce.common.auth.User;
-import com.dev.core.ecommerce.common.response.Page;
+import com.dev.core.ecommerce.support.auth.User;
+import com.dev.core.ecommerce.support.response.Page;
 import com.dev.core.ecommerce.domain.review.Review;
 import com.dev.core.ecommerce.service.review.request.ReviewContent;
 import com.dev.core.ecommerce.service.review.request.ReviewTarget;

@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.controller.v1.order;
 
 import com.dev.core.ecommerce.RestDocsSupport;
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.controller.v1.order.request.CreateOrderFromCartRequest;
 import com.dev.core.ecommerce.controller.v1.order.request.CreateOrderRequest;
 import com.dev.core.ecommerce.service.order.request.NewOrder;

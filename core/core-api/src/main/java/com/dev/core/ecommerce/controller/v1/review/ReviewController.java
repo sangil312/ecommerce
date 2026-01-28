@@ -1,6 +1,5 @@
 package com.dev.core.ecommerce.controller.v1.review;
 
-import com.dev.core.ecommerce.common.auth.User;
 import com.dev.core.ecommerce.controller.v1.response.ApiResponse;
 import com.dev.core.ecommerce.controller.v1.response.PageResponse;
 import com.dev.core.ecommerce.controller.v1.review.request.CreateReviewRequest;

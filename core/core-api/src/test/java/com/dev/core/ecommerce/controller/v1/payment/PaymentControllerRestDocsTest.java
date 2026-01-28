@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.controller.v1.payment;
 
 import com.dev.core.ecommerce.RestDocsSupport;
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.controller.v1.payment.request.CreatePaymentRequest;
 import com.dev.core.ecommerce.service.payment.PaymentService;
 import com.dev.core.enums.payment.PaymentMethod;
@@ -149,7 +149,7 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
                 .formParam("orderId", "order-123")
                 .formParam("code", "FAIL")
                 .formParam("message", "failed")
-                .post("/v1/payment/callback/fail")
+                .post("/v1/payments/callback/fail")
                 .then()
                 .status(HttpStatus.OK)
                 .apply(document("payments-callback-fail",

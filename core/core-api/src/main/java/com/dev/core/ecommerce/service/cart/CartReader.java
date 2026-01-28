@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.service.cart;
 
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.domain.cart.Cart;
 import com.dev.core.ecommerce.domain.cart.CartItem;
 import com.dev.core.ecommerce.repository.cart.CartItemRepository;

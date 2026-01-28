@@ -1,4 +1,4 @@
-package com.dev.core.ecommerce.common.auth;
+package com.dev.core.ecommerce.support.auth;
 
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,7 +9,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import static com.dev.core.ecommerce.common.error.ErrorType.INVALID_REQUEST;
+import static com.dev.core.ecommerce.support.error.ErrorType.INVALID_REQUEST;
 
 /**
  * 해당 서버는 API Gateway 뒷 단에 private 존에 있는 서버라고 가정

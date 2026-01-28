@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.controller.v1.payment;
 
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.controller.v1.payment.request.CreatePaymentRequest;
 import com.dev.core.ecommerce.controller.v1.payment.response.CallbackSuccessResponse;
 import com.dev.core.ecommerce.controller.v1.payment.response.CreatePaymentResponse;
@@ -44,7 +44,7 @@ public class PaymentController {
                 );
     }
 
-    @PostMapping("/v1/payment/callback/fail")
+    @PostMapping("/v1/payments/callback/fail")
     public ApiResponse<Object> callbackFail(
             User user,
             @RequestParam String orderId,

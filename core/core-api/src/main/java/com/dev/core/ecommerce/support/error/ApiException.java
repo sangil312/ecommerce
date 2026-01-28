@@ -1,4 +1,4 @@
-package com.dev.core.ecommerce.common.error;
+package com.dev.core.ecommerce.support.error;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

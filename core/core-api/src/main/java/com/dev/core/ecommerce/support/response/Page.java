@@ -1,4 +1,4 @@
-package com.dev.core.ecommerce.common.response;
+package com.dev.core.ecommerce.support.response;
 
 import java.util.List;
 

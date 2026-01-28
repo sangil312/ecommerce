@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.controller.v1.review.request;
 
-import com.dev.core.ecommerce.common.error.ApiException;
-import com.dev.core.ecommerce.common.error.ErrorType;
+import com.dev.core.ecommerce.support.error.ApiException;
+import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.ecommerce.service.review.request.ReviewContent;
 import com.dev.core.ecommerce.service.review.request.ReviewTarget;
 import com.dev.core.enums.review.ReviewTargetType;

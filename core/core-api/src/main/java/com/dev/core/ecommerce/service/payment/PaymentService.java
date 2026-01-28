@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.service.payment;
 
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.domain.order.Order;
 import com.dev.core.ecommerce.domain.payment.Payment;
 import com.dev.core.enums.order.OrderStatus;

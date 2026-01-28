@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.service.cart;
 
-import com.dev.core.ecommerce.common.auth.User;
+import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.domain.cart.Cart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

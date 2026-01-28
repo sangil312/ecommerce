@@ -1,11 +1,11 @@
 package com.dev.core.ecommerce.service.order;
 
-import com.dev.core.ecommerce.common.error.ErrorType;
+import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.enums.EntityState;
 import com.dev.core.enums.order.OrderStatus;
 import com.dev.core.ecommerce.IntegrationTestSupport;
-import com.dev.core.ecommerce.common.auth.User;
-import com.dev.core.ecommerce.common.error.ApiException;
+import com.dev.core.ecommerce.support.auth.User;
+import com.dev.core.ecommerce.support.error.ApiException;
 import com.dev.core.ecommerce.domain.order.Order;
 import com.dev.core.ecommerce.domain.order.OrderItem;
 import com.dev.core.ecommerce.service.order.request.NewOrder;

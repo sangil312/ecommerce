@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.service.review;
 
-import com.dev.core.ecommerce.common.response.Page;
+import com.dev.core.ecommerce.support.response.Page;
 import com.dev.core.ecommerce.domain.review.Review;
 import com.dev.core.ecommerce.repository.review.ReviewRepository;
 import com.dev.core.ecommerce.repository.review.response.ReviewRateSummary;
