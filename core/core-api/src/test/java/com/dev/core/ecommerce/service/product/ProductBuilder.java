@@ -1,12 +1,10 @@
 package com.dev.core.ecommerce.service.product;
 
 import com.dev.core.ecommerce.domain.product.Product;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 
 public class ProductBuilder {
-    private Long id = 1L;
     private String name = "상품1";
     private String thumbnailUrl = "https://~";
     private String description = "상품 본문 설명1";
@@ -39,8 +37,6 @@ public class ProductBuilder {
     }
 
     public Product build() {
-        Product product = Product.create(name, thumbnailUrl, description, shortDescription, price);
-        ReflectionTestUtils.setField(product, "id", id);
-        return product;
+        return Product.create(name, thumbnailUrl, description, shortDescription, price);
     }
 }

@@ -1,5 +1,6 @@
 package com.dev.core.ecommerce.api.controller.v1.product.usecase;
 
+import com.dev.core.ecommerce.api.controller.v1.product.response.ProductDetailResponse;
 import com.dev.core.ecommerce.api.controller.v1.product.response.ProductResponse;
 import com.dev.core.ecommerce.domain.product.Product;
 import com.dev.core.ecommerce.service.product.ProductService;
@@ -26,5 +27,12 @@ public class ProductUseCase {
         var productResponses = ProductResponse.of(productPages.contents(), reviewsRateSummary);
 
         return Page.of(productResponses, productPages.hasNext());
+    }
+
+    public ProductDetailResponse findProduct(Long productId) {
+        var product = productService.findProduct(productId);
+        var rateSummary = reviewService.findRateSummary(ReviewTargetType.PRODUCT, productId);
+
+        return ProductDetailResponse.of(product, rateSummary);
     }
 }

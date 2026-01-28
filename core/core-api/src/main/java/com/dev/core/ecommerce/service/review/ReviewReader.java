@@ -3,7 +3,7 @@ package com.dev.core.ecommerce.service.review;
 import com.dev.core.ecommerce.support.response.Page;
 import com.dev.core.ecommerce.domain.review.Review;
 import com.dev.core.ecommerce.repository.review.ReviewRepository;
-import com.dev.core.ecommerce.repository.review.response.ReviewRateSummary;
+import com.dev.core.ecommerce.repository.review.response.RateSummaryGroupView;
 import com.dev.core.ecommerce.service.review.response.RateSummary;
 import com.dev.core.enums.EntityState;
 import com.dev.core.enums.review.ReviewTargetType;
@@ -33,16 +33,18 @@ public class ReviewReader {
     }
 
     public RateSummary findRateSummary(ReviewTargetType targetType, Long targetId) {
-        return reviewRepository.findRateSummary(targetId, targetType, EntityState.ACTIVE);
+        var rateSummary = reviewRepository.findRateSummary(targetId, targetType, EntityState.ACTIVE);
+
+        return RateSummary.of(rateSummary);
     }
 
     public Map<Long, RateSummary> findReviewsRateSummary(
             ReviewTargetType targetType,
             Collection<Long> targetIds
     ) {
-        var summaries = reviewRepository.findReviewsRateSummary(targetIds, targetType, EntityState.ACTIVE);
+        var rateSummaries = reviewRepository.findRateSummaryGroup(targetIds, targetType, EntityState.ACTIVE);
 
-        return summaries.stream()
-                .collect(toMap(ReviewRateSummary::targetId, RateSummary::of));
+        return rateSummaries.stream()
+                .collect(toMap(RateSummaryGroupView::targetId, RateSummary::of));
     }
 }
