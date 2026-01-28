@@ -3,12 +3,12 @@ package com.dev.core.ecommerce.repository.review.response;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public record ReviewRateSummary(
+public record RateSummaryGroupView(
         Long targetId,
         Long count,
         BigDecimal rate
 ) {
-    public ReviewRateSummary(Long targetId, Long count, Double rate) {
+    public RateSummaryGroupView(Long targetId, Long count, Double rate) {
         this(targetId, count, Objects.isNull(rate) ? BigDecimal.ZERO : BigDecimal.valueOf(rate));
     }
 }

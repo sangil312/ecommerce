@@ -1,8 +1,8 @@
 package com.dev.core.ecommerce.repository.review;
 
 import com.dev.core.ecommerce.domain.review.Review;
-import com.dev.core.ecommerce.service.review.response.RateSummary;
-import com.dev.core.ecommerce.repository.review.response.ReviewRateSummary;
+import com.dev.core.ecommerce.repository.review.response.RateSummaryView;
+import com.dev.core.ecommerce.repository.review.response.RateSummaryGroupView;
 import com.dev.core.enums.EntityState;
 import com.dev.core.enums.review.ReviewTargetType;
 import org.springframework.data.domain.Pageable;
@@ -24,18 +24,19 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     );
 
     @Query("""
-        SELECT
-            COUNT(review.id) AS count,
-            AVG(review.rate) AS rate
+        SELECT new com.dev.core.ecommerce.repository.review.response.RateSummaryView(
+            COUNT(review.id),
+            AVG(review.rate)
+        )
         FROM Review review
         WHERE review.targetId = :targetId
             AND review.targetType = :targetType
             AND review.state = :state
     """)
-    RateSummary findRateSummary(Long targetId, ReviewTargetType targetType, EntityState state);
+    RateSummaryView findRateSummary(Long targetId, ReviewTargetType targetType, EntityState state);
 
     @Query("""
-        SELECT new com.dev.core.ecommerce.repository.review.response.ReviewRateSummary(
+        SELECT new com.dev.core.ecommerce.repository.review.response.RateSummaryGroupView(
             review.targetId,
             COUNT(review.id),
             AVG(review.rate)
@@ -46,7 +47,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             AND review.state = :state
         GROUP BY review.targetId
     """)
-    List<ReviewRateSummary> findReviewsRateSummary(
+    List<RateSummaryGroupView> findRateSummaryGroup(
             Collection<Long> targetIds,
             ReviewTargetType targetType,
             EntityState state

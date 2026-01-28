@@ -1,11 +1,10 @@
 package com.dev.core.ecommerce.api.controller.v1.product;
 
 import com.dev.core.ecommerce.RestDocsSupport;
+import com.dev.core.ecommerce.api.controller.v1.product.response.ProductDetailResponse;
 import com.dev.core.ecommerce.api.controller.v1.product.response.ProductResponse;
 import com.dev.core.ecommerce.api.controller.v1.product.usecase.ProductUseCase;
-import com.dev.core.ecommerce.service.product.ProductBuilder;
 import com.dev.core.ecommerce.support.response.Page;
-import com.dev.core.ecommerce.service.product.ProductService;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,14 +33,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 
 @ExtendWith(MockitoExtension.class)
 class ProductControllerRestDocsTest extends RestDocsSupport {
-    private ProductService productService;
     private ProductUseCase productUseCase;
 
     @BeforeEach
     void setUp() {
-        productService = mock(ProductService.class);
         productUseCase = mock(ProductUseCase.class);
-        mockMvc = mockController(new ProductController(productService, productUseCase));
+        mockMvc = mockController(new ProductController(productUseCase));
     }
 
     @Test
@@ -49,9 +46,9 @@ class ProductControllerRestDocsTest extends RestDocsSupport {
     void findProducts() {
         ProductResponse response = new ProductResponse(
                 1L,
-                "상품 1",
+                "상품1",
                 "https://~",
-                "상품 1 요약",
+                "상품1 요약 설명",
                 BigDecimal.valueOf(1_000),
                 BigDecimal.valueOf(4.5),
                 10L
@@ -104,7 +101,18 @@ class ProductControllerRestDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("상품 상세 조회 API")
     void findProductDetail() {
-        when(productService.findProduct(anyLong())).thenReturn(new ProductBuilder().build());
+        ProductDetailResponse response = new ProductDetailResponse(
+                1L,
+                "상품1",
+                "https://~",
+                "상품1 설명",
+                "상품1 요약 설명",
+                BigDecimal.valueOf(1_000),
+                BigDecimal.valueOf(5.0),
+                10L
+        );
+
+        when(productUseCase.findProduct(anyLong())).thenReturn(response);
 
         given().contentType(ContentType.JSON)
                 .get("/v1/products/{productId}", 1L)
@@ -119,8 +127,12 @@ class ProductControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 객체"),
                                 fieldWithPath("data.productId").type(JsonFieldType.NUMBER).description("상품 ID"),
                                 fieldWithPath("data.name").type(JsonFieldType.STRING).description("상품명"),
+                                fieldWithPath("data.thumbnailUrl").type(JsonFieldType.STRING).description("상품 썸네일 URL"),
                                 fieldWithPath("data.description").type(JsonFieldType.STRING).description("상품 설명"),
+                                fieldWithPath("data.shortDescription").type(JsonFieldType.STRING).description("상품 요약 설명"),
                                 fieldWithPath("data.price").type(JsonFieldType.NUMBER).description("상품 가격"),
+                                fieldWithPath("data.rate").type(JsonFieldType.NUMBER).description("리뷰 평점"),
+                                fieldWithPath("data.rateCount").type(JsonFieldType.NUMBER).description("리뷰 수"),
                                 fieldWithPath("error").type(JsonFieldType.NULL).description("에러 응답 객체").optional()
                         )
                 ));

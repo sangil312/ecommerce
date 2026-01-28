@@ -69,4 +69,5 @@ AGENTS.md
 - 엔드포인트: 소문자-하이픈, 복수형 리소스명 사용 (`/v1/cart/items`)
 - 엔티티: 단수형 리소스명 사용 (Order, Payment 등)
 - API 스팩 DTO: `XxxRequest`, `XxxResponse`
+- Data Access Layer 쿼리 응답 매핑 DTO: `XxxView`
 - 열거형: 개념 의미가 드러나는 명사형 (`OrderStatus` 등)

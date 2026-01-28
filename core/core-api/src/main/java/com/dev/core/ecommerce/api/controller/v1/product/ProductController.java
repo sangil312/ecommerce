@@ -5,7 +5,6 @@ import com.dev.core.ecommerce.api.controller.v1.product.response.ProductResponse
 import com.dev.core.ecommerce.api.controller.v1.product.usecase.ProductUseCase;
 import com.dev.core.ecommerce.api.controller.v1.response.ApiResponse;
 import com.dev.core.ecommerce.api.controller.v1.response.PageResponse;
-import com.dev.core.ecommerce.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductService productService;
     private final ProductUseCase productUseCase;
 
     @GetMapping("/v1/products")
@@ -32,7 +30,7 @@ public class ProductController {
     public ApiResponse<ProductDetailResponse> findProduct(
             @PathVariable Long productId
     ) {
-        var result = productService.findProduct(productId);
-        return ApiResponse.success(ProductDetailResponse.of(result));
+        var result = productUseCase.findProduct(productId);
+        return ApiResponse.success(result);
     }
 }
