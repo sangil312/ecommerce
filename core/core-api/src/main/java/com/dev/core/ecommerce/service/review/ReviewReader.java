@@ -9,13 +9,12 @@ import com.dev.core.enums.EntityState;
 import com.dev.core.enums.review.ReviewTargetType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toMap;
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class ReviewReader {
             Long targetId,
             Pageable pageable
     ) {
-        Slice<Review> reviews = reviewRepository.findByTargetIdAndTargetTypeAndState(
+        var reviews = reviewRepository.findByTargetIdAndTargetTypeAndState(
                 targetId, targetType, EntityState.ACTIVE, pageable);
 
         return Page.of(reviews.getContent(), reviews.hasNext());
@@ -37,18 +36,13 @@ public class ReviewReader {
         return reviewRepository.findRateSummary(targetId, targetType, EntityState.ACTIVE);
     }
 
-    public Map<Long, RateSummary> findRateSummaries(
+    public Map<Long, RateSummary> findReviewsRateSummary(
             ReviewTargetType targetType,
             Collection<Long> targetIds
     ) {
-        var summaries = reviewRepository.findRateSummaries(
-                targetIds, targetType, EntityState.ACTIVE
-        );
+        var summaries = reviewRepository.findReviewsRateSummary(targetIds, targetType, EntityState.ACTIVE);
 
         return summaries.stream()
-                .collect(Collectors.toMap(
-                        ReviewRateSummary::targetId,
-                        it -> new RateSummary(it.count(), it.rate())
-                ));
+                .collect(toMap(ReviewRateSummary::targetId, RateSummary::of));
     }
 }

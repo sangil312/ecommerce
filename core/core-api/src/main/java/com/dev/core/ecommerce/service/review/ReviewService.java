@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Map;
+
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +33,12 @@ public class ReviewService {
 
     public RateSummary findRateSummary(ReviewTargetType targetType, Long targetId) {
         return reviewReader.findRateSummary(targetType, targetId);
+    }
+
+    public Map<Long, RateSummary> findReviewsRateSummary(
+            ReviewTargetType targetType,
+            Collection<Long> targetIds
+    ) {
+        return reviewReader.findReviewsRateSummary(targetType, targetIds);
     }
 }

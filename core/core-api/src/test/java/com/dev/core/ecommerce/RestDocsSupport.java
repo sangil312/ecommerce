@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce;
 
 
-import com.dev.core.ecommerce.controller.ApiControllerAdvice;
+import com.dev.core.ecommerce.api.controller.ApiControllerAdvice;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;

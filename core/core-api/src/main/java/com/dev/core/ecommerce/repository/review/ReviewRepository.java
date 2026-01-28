@@ -35,17 +35,18 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     RateSummary findRateSummary(Long targetId, ReviewTargetType targetType, EntityState state);
 
     @Query("""
-        SELECT
-            review.targetId AS targetId,
-            COUNT(review.id) AS count,
-            AVG(review.rate) AS rate
+        SELECT new com.dev.core.ecommerce.repository.review.response.ReviewRateSummary(
+            review.targetId,
+            COUNT(review.id),
+            AVG(review.rate)
+        )
         FROM Review review
         WHERE review.targetId in :targetIds
             AND review.targetType = :targetType
             AND review.state = :state
         GROUP BY review.targetId
     """)
-    List<ReviewRateSummary> findRateSummaries(
+    List<ReviewRateSummary> findReviewsRateSummary(
             Collection<Long> targetIds,
             ReviewTargetType targetType,
             EntityState state

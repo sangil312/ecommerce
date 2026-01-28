@@ -4,8 +4,11 @@
 - Java 21, Spring Boot (3.5.X)
 - Gradle (Groovy)
 - JPA / Hibernate
-- MySQL / H2 (테스트)
+- MySQL / H2
 - Spring REST Docs
+
+## AI Agent 프로젝트 규칙/지침 파일
+AGENTS.md
 
 ## 모듈 구조 (멀티 모듈)
 - core:core-api
@@ -35,22 +38,35 @@
 - 단위 테스트만: `./gradlew unitTest`
 - 통합 테스트만: `./gradlew integrationTest`
 
-## 레이어 및 트랜잭션 범위
-- 레이어 구조: Presentation, Business, Implement(비지니스 구현), Data Access의 4계층 분리.
+## 레이어 구조 및 컨벤션
+- 레이어 구조: Presentation, Business(비지니스 흐름 제어), Implement(비지니스 구현), Data Access의 4계층 분리.
 - 참조 규칙: 순방향 참조만 허용하며, 하위 레이어를 건너뛰지 않는다.
 - 트랜잭션: Implement Layer에만 `@Transactional`을 사용한다.
-
-## 명명 규칙 및 컨벤션
+- Presentation Layer
+  - 컨트롤러: `XxxController`
+  - 유스케이스: `XxxUseCase`
+    - `@Component` 사용
+    - API 스팩에 따른 응답을 생성하기위한 컴포넌트
+    - 도메인 별 `XxxService`, `XxxReader` 등을 조합하기 위한 컴포넌트 역할 (필요 시 생성 ex. `ProductDetailUseCase`)
+- Business Layer (도메인 비지니스 흐름 제어)
+  - 서비스: `XxxService`
+  - `@Service` 사용
+  - 구현체 컴포넌트를 이용하여 해당 도메인 비지니스 흐름 조율
+- Implement Layer (도메인 비지니스 로직 구현)
+  - 구현체: `XxxWriter`, `XxxReader`, `XxxValidator`, `XxxProcessor` 등
+    - `@Component` 사용
+    - 도메인 비지니스 로직을 구현을 위한 컴포넌트
+    - 같은 도메인의 구현체 컴포넌트끼리는 참조 가능
+    - 개념 & 의미가 분산되지 않도록 접미사 팀 컨벤션 필요 (예시)
+    - `Writer`: 생명주기 관리
+    - `Reader`: 조회 전담
+    - `Validator`: 정책 검증
+    - `Processor`: 특정 비지니스 흐름 처리
+- Data Access Layer
+  - `XxxRepository`
+---
 - 공통 응답 스팩(`ApiResponse`)과 에러 핸들링 정책(core-api/support/error) 확인
 - 엔드포인트: 소문자-하이픈, 복수형 리소스명 사용 (`/v1/cart/items`)
 - 엔티티: 단수형 리소스명 사용 (Order, Payment 등)
-- DTO: `XxxRequest`, `XxxResponse`
-- 서비스: `XxxService`
-  - 비지니스 조율
-- 구현체: `XxxWriter`, `XxxReader`, `XxxValidator`, `XxxProcessor` 등
-  - 개념이 분산되지 않도록 접미사 팀 컨벤션 필요 (예시)
-  - `Writer`: 생명주기 관리
-  - `Reader`: 조회 전담
-  - `Validator`: 정책 검증
-  - `Processor`: 특정 비지니스 흐름 처리
+- API 스팩 DTO: `XxxRequest`, `XxxResponse`
 - 열거형: 개념 의미가 드러나는 명사형 (`OrderStatus` 등)

@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.service.product;
 
-import com.dev.core.ecommerce.common.response.Page;
+import com.dev.core.ecommerce.support.response.Page;
 import com.dev.core.ecommerce.domain.product.Product;
 import com.dev.core.ecommerce.domain.product.ProductCategory;
 import com.dev.core.ecommerce.repository.product.ProductCategoryRepository;

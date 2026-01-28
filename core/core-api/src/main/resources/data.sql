@@ -1,5 +1,5 @@
-INSERT INTO product(id ,name, description, short_description, price)
-VALUES (1, '상품1', '상품 설명1', '상품 짧은 설명1', 1000);
+INSERT INTO product(id ,name, thumbnail_url, description, short_description, price)
+VALUES (1, '상품1', 'https://~', '상품 설명1', '상품 짧은 설명1', 1000);
 
 INSERT INTO category(id ,name)
 VALUES (1, '카테고리1');
@@ -26,4 +26,4 @@ VALUES (1, 1, 1, 1000, 'READY');
 INSERT INTO review(id, user_id, review_key, target_type, target_id, rate, content)
 VALUES
     (1, 1, 'ORDER_ITEM_1', 'PRODUCT', 1L, 5.0, '좋아요'),
-    (1, 1, 'ORDER_ITEM_1', 'PRODUCT', 1L, 4.0, '보통이에요')
+    (2, 1, 'ORDER_ITEM_2', 'PRODUCT', 1L, 4.0, '보통입니다');
