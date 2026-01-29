@@ -491,7 +491,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 404 Not Found
 Content-Type: application/json
-Content-Length: 143
+Content-Length: 150
 
 {
   "resultType" : "ERROR",
@@ -566,7 +566,7 @@ Content-Length: 143
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/orders HTTP/1.1
 Content-Type: application/json
-Content-Length: 39
+Content-Length: 42
 Host: localhost:8080
 
 {
@@ -611,12 +611,12 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 122
+Content-Length: 128
 
 {
   "resultType" : "SUCCESS",
   "data" : {
-    "orderKey" : "a46286c7-2851-4258-a83f-41c3a02c44e6"
+    "orderKey" : "23ac0034-e012-489e-966f-86d3338fe6cf"
   },
   "error" : null
 }</code></pre>
@@ -675,11 +675,11 @@ Content-Length: 122
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/cart-orders HTTP/1.1
 Content-Type: application/json
-Content-Length: 30
+Content-Length: 32
 Host: localhost:8080
 
 {
-  "cartItemIds" : [ 1, 2 ]
+  "cartItemIds" : [ 2, 1 ]
 }</code></pre>
 </div>
 </div>
@@ -713,12 +713,12 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 122
+Content-Length: 128
 
 {
   "resultType" : "SUCCESS",
   "data" : {
-    "orderKey" : "13c917a6-3ab7-430e-912f-f2623e1f19f5"
+    "orderKey" : "217c140c-adc7-486e-9e73-43726c91ad42"
   },
   "error" : null
 }</code></pre>
@@ -782,7 +782,7 @@ Content-Length: 122
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/payments HTTP/1.1
 Content-Type: application/json
-Content-Length: 30
+Content-Length: 32
 Host: localhost:8080
 
 {
@@ -820,7 +820,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 86
+Content-Length: 92
 
 {
   "resultType" : "SUCCESS",
@@ -927,7 +927,7 @@ orderId=order-123&amp;paymentKey=pay-1&amp;amount=1000</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 65
+Content-Length: 69
 
 {
   "resultType" : "SUCCESS",
@@ -1026,7 +1026,7 @@ orderId=order-123&amp;paymentKey=pay-1&amp;amount=1000</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 125
+Content-Length: 132
 
 {
   "resultType" : "SUCCESS",
@@ -1140,7 +1140,7 @@ orderId=order-123&amp;code=FAIL&amp;message=failed</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 65
+Content-Length: 69
 
 {
   "resultType" : "SUCCESS",
@@ -1246,7 +1246,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 320
+Content-Length: 335
 
 {
   "resultType" : "SUCCESS",
@@ -1397,7 +1397,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 292
+Content-Length: 305
 
 {
   "resultType" : "SUCCESS",
@@ -1565,7 +1565,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 238
+Content-Length: 251
 
 {
   "resultType" : "SUCCESS",
@@ -1672,7 +1672,7 @@ Content-Length: 238
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/reviews HTTP/1.1
 Content-Type: application/json
-Content-Length: 91
+Content-Length: 96
 Host: localhost:8080
 
 {
@@ -1731,7 +1731,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 65
+Content-Length: 69
 
 {
   "resultType" : "SUCCESS",
@@ -1787,7 +1787,7 @@ Content-Length: 65
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2026-01-28 19:59:39 +0900
+Last updated 2026-01-29 08:46:32 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

@@ -1,13 +1,13 @@
 package com.dev.core.ecommerce.api.controller.v1.payment;
 
 import com.dev.core.ecommerce.RestDocsSupport;
+import com.dev.core.ecommerce.service.payment.response.PaymentConfirmFail;
+import com.dev.core.ecommerce.service.payment.response.PaymentConfirmResult;
+import com.dev.core.ecommerce.service.payment.response.PaymentConfirmSuccess;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.api.controller.v1.payment.request.CreatePaymentRequest;
 import com.dev.core.ecommerce.service.payment.PaymentService;
 import com.dev.core.enums.payment.PaymentMethod;
-import com.dev.infra.pg.dto.ConfirmFail;
-import com.dev.infra.pg.dto.ConfirmResult;
-import com.dev.infra.pg.dto.ConfirmSuccess;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -71,21 +71,20 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("결제 요청 성공 콜백 API > 결제 승인 성공")
     void callbackSuccess() {
-        ConfirmResult confirmResult = new ConfirmResult(
+        PaymentConfirmResult paymentConfirmResult = new PaymentConfirmResult(
                 true,
-                null,
-                new ConfirmSuccess(
+                new PaymentConfirmSuccess(
                         "pay-1",
                         "order-123",
                         PaymentMethod.CARD,
                         BigDecimal.valueOf(1_000),
-                        "결제 성공",
                         LocalDateTime.now()
-                )
+                ),
+                null
         );
 
         when(paymentService.success(any(User.class), anyString(), anyString(), any(BigDecimal.class)))
-                .thenReturn(confirmResult);
+                .thenReturn(paymentConfirmResult);
 
         given().contentType(ContentType.URLENC)
                 .formParam("orderId", "order-123")
@@ -111,13 +110,14 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("결제 요청 성공 콜백 API > 결제 승인 실패")
     void callbackSuccessFail() {
-        ConfirmResult confirmResult = new ConfirmResult(
+        PaymentConfirmResult paymentConfirmResult = new PaymentConfirmResult(
                 false,
-                new ConfirmFail("ERROR_CODE", "한도 초과"),
-                null);
+                null,
+                new PaymentConfirmFail("ERROR_CODE", "한도 초과")
+        );
 
         when(paymentService.success(any(User.class), anyString(), anyString(), any(BigDecimal.class)))
-                .thenReturn(confirmResult);
+                .thenReturn(paymentConfirmResult);
 
         given().contentType(ContentType.URLENC)
                 .formParam("orderId", "order-123")

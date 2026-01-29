@@ -1,5 +1,7 @@
 package com.dev.core.ecommerce.service.payment;
 
+import com.dev.core.ecommerce.service.payment.response.PaymentConfirmFail;
+import com.dev.core.ecommerce.service.payment.response.PaymentConfirmSuccess;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.ecommerce.domain.order.OrderItem;
@@ -16,8 +18,6 @@ import com.dev.core.ecommerce.domain.payment.Payment;
 import com.dev.core.ecommerce.repository.order.OrderRepository;
 import com.dev.core.ecommerce.repository.payment.PaymentRepository;
 import com.dev.core.enums.payment.TransactionType;
-import com.dev.infra.pg.dto.ConfirmFail;
-import com.dev.infra.pg.dto.ConfirmSuccess;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -103,19 +103,18 @@ class PaymentWriterTest extends IntegrationTestSupport {
     @DisplayName("결제 승인 성공: 결제 상태 SUCCESS, 주문 상태 PAID, 결제 승인 내역 생성")
     void paymentSuccess() {
         // given
-        ConfirmSuccess confirmSuccess = new ConfirmSuccess(
+        PaymentConfirmSuccess paymentConfirmSuccess = new PaymentConfirmSuccess(
                 "ext_payment_key_123",
                 testOrder.getOrderKey(),
                 PaymentMethod.CARD,
                 BigDecimal.valueOf(10_000),
-                "결제 성공",
                 LocalDateTime.now()
         );
 
         Payment savedPayment = createPayment();
 
         // when
-        paymentWriter.paymentSuccess(testUser, savedPayment, confirmSuccess);
+        paymentWriter.paymentSuccess(testUser, savedPayment, paymentConfirmSuccess);
 
         // then 결제 상태 확인
         Payment updatedPayment = paymentRepository.findById(savedPayment.getId()).orElseThrow();
@@ -148,12 +147,11 @@ class PaymentWriterTest extends IntegrationTestSupport {
         deletedPayment = paymentRepository.save(deletedPayment);
         paymentRepository.delete(deletedPayment);
 
-        ConfirmSuccess confirmSuccess = new ConfirmSuccess(
+        PaymentConfirmSuccess paymentConfirmSuccess = new PaymentConfirmSuccess(
                 "ext_payment_key_123",
                 testOrder.getOrderKey(),
                 PaymentMethod.CARD,
                 BigDecimal.valueOf(10_000),
-                "결제 성공",
                 LocalDateTime.now()
         );
 
@@ -161,7 +159,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
 
         // when then
         assertThatThrownBy(() ->
-                paymentWriter.paymentSuccess(testUser, invalidPayment, confirmSuccess)
+                paymentWriter.paymentSuccess(testUser, invalidPayment, paymentConfirmSuccess)
         )
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_NOT_FOUND);
@@ -172,15 +170,14 @@ class PaymentWriterTest extends IntegrationTestSupport {
     @DisplayName("결제 승인 정보 불일치: 결제 상태 ERROR, 결제 승인 내역 생성")
     void paymentConfirmMismatch() {
         // given
-        String externalPaymentKey = "ext_payment_key_mismatch";
+        String externalPaymentKey = "ext_payment_key_123";
         BigDecimal mismatchAmount = BigDecimal.valueOf(5_000);
 
-        ConfirmSuccess mismatchSuccess = new ConfirmSuccess(
+        PaymentConfirmSuccess mismatchSuccess = new PaymentConfirmSuccess(
                 externalPaymentKey,
-                "wrong_order_key",
+                "order_key_123",
                 PaymentMethod.CARD,
                 mismatchAmount,
-                "결제 성공",
                 LocalDateTime.now()
         );
 
@@ -215,12 +212,11 @@ class PaymentWriterTest extends IntegrationTestSupport {
         deletedPayment = paymentRepository.save(deletedPayment);
         paymentRepository.delete(deletedPayment);
 
-        ConfirmSuccess mismatchSuccess = new ConfirmSuccess(
+        PaymentConfirmSuccess mismatchSuccess = new PaymentConfirmSuccess(
                 "ext_key",
-                "wrong_order_key",
+                "order_key_123",
                 PaymentMethod.CARD,
                 BigDecimal.valueOf(5_000),
-                "결제 성공",
                 LocalDateTime.now()
         );
 
@@ -240,15 +236,12 @@ class PaymentWriterTest extends IntegrationTestSupport {
     void paymentFail() {
         // given
         String externalPaymentKey = "ext_payment_key_fail";
-        ConfirmFail confirmFail = new ConfirmFail(
-                "INVALID_STOPPED_CARD",
-                "정지된 카드 입니다."
-        );
+        PaymentConfirmFail paymentConfirmFail = new PaymentConfirmFail("ERROR", "한도초과");
 
         Payment savedPayment = createPayment();
 
         // when
-        paymentWriter.paymentFail(savedPayment, externalPaymentKey, confirmFail);
+        paymentWriter.paymentFail(savedPayment, externalPaymentKey, paymentConfirmFail);
 
         // then 결제 상태 확인
         Payment updatedPayment = paymentRepository.findById(savedPayment.getId()).orElseThrow();
@@ -264,7 +257,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
         assertThat(transactionHistory.getType()).isEqualTo(TransactionType.PAYMENT_FAIL);
         assertThat(transactionHistory.getExternalPaymentKey()).isEqualTo(externalPaymentKey);
         assertThat(transactionHistory.getAmount()).isEqualTo(BigDecimal.valueOf(10_000));
-        assertThat(transactionHistory.getMessage()).isEqualTo("[INVALID_STOPPED_CARD] 정지된 카드 입니다.");
+        assertThat(transactionHistory.getMessage()).isEqualTo("[ERROR] 한도초과");
     }
 
     @Test
@@ -275,16 +268,13 @@ class PaymentWriterTest extends IntegrationTestSupport {
         deletedPayment = paymentRepository.save(deletedPayment);
         paymentRepository.delete(deletedPayment);
 
-        ConfirmFail confirmFail = new ConfirmFail(
-                "INVALID_STOPPED_CARD",
-                "정지된 카드 입니다."
-        );
+        PaymentConfirmFail paymentConfirmFail = new PaymentConfirmFail("ERROR", "한도초과");
 
         Payment invalidPayment = deletedPayment;
 
         // when then
         assertThatThrownBy(() ->
-                paymentWriter.paymentFail(invalidPayment, "ext_key", confirmFail)
+                paymentWriter.paymentFail(invalidPayment, "ext_key", paymentConfirmFail)
         )
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_NOT_FOUND);

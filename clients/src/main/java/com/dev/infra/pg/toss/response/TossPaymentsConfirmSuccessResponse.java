@@ -1,6 +1,5 @@
 package com.dev.infra.pg.toss.response;
 
-import com.dev.core.enums.payment.PaymentMethod;
 import com.dev.infra.pg.dto.ConfirmResult;
 import com.dev.infra.pg.dto.ConfirmSuccess;
 
@@ -18,7 +17,7 @@ public record TossPaymentsConfirmSuccessResponse(
         ConfirmSuccess confirmSuccess = new ConfirmSuccess(
                 paymentKey,
                 orderId,
-                PaymentMethod.fromValue(method),
+                method,
                 totalAmount,
                 "결제 성공",
                 LocalDateTime.now()

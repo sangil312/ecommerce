@@ -1,5 +1,7 @@
 package com.dev.core.ecommerce.service.payment;
 
+import com.dev.core.ecommerce.service.payment.response.PaymentConfirmFail;
+import com.dev.core.ecommerce.service.payment.response.PaymentConfirmSuccess;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.support.error.ApiException;
 import com.dev.core.ecommerce.support.error.ErrorType;
@@ -12,8 +14,6 @@ import com.dev.core.ecommerce.service.order.OrderReader;
 import com.dev.core.enums.order.OrderStatus;
 import com.dev.core.enums.payment.PaymentStatus;
 import com.dev.core.enums.payment.TransactionType;
-import com.dev.infra.pg.dto.ConfirmFail;
-import com.dev.infra.pg.dto.ConfirmSuccess;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -41,7 +41,7 @@ public class PaymentWriter {
     }
 
     @Transactional
-    public void paymentSuccess(User user, Payment validPayment, ConfirmSuccess result) {
+    public void paymentSuccess(User user, Payment validPayment, PaymentConfirmSuccess result) {
         log.info("[PG] 결제 승인 성공 - {}", result.toString());
         var payment = paymentRepository.findById(validPayment.getId())
                 .orElseThrow(() -> new ApiException(ErrorType.PAYMENT_NOT_FOUND));
@@ -67,7 +67,7 @@ public class PaymentWriter {
     }
 
     @Transactional
-    public void paymentMismatch(Payment validPayment, String externalPaymentKey, ConfirmSuccess result) {
+    public void paymentMismatch(Payment validPayment, String externalPaymentKey, PaymentConfirmSuccess result) {
         log.warn("[PG] 결제 승인 정보 불일치 - {}", result.toString());
         var payment = paymentRepository.findById(validPayment.getId())
                 .orElseThrow(() -> new ApiException(ErrorType.PAYMENT_NOT_FOUND));
@@ -89,7 +89,7 @@ public class PaymentWriter {
     }
 
     @Transactional
-    public void paymentFail(Payment validPayment, String externalPaymentKey, ConfirmFail result) {
+    public void paymentFail(Payment validPayment, String externalPaymentKey, PaymentConfirmFail result) {
         log.info("[PG] 결제 승인 실패 - {}", result.toString());
         var payment = paymentRepository.findById(validPayment.getId())
                 .orElseThrow(() -> new ApiException(ErrorType.PAYMENT_NOT_FOUND));
