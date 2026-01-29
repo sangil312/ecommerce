@@ -1,15 +1,15 @@
-package com.dev.infra.pg.dto;
+package com.dev.core.ecommerce.service.payment.response;
 
+import com.dev.core.enums.payment.PaymentMethod;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record ConfirmSuccess(
+public record PaymentConfirmSuccess(
         String externalPaymentKey,
         String orderKey,
-        String method,
+        PaymentMethod method,
         BigDecimal amount,
-        String message,
         LocalDateTime approvedAt
 ) {
 }

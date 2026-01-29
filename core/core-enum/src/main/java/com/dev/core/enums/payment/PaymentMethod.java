@@ -6,7 +6,9 @@ import java.util.Arrays;
 
 @RequiredArgsConstructor
 public enum PaymentMethod {
-    CARD("카드");
+    CARD("카드"),
+    UNDEFINED("정의되지않음")
+    ;
 
     private final String value;
 
@@ -14,6 +16,6 @@ public enum PaymentMethod {
         return Arrays.stream(PaymentMethod.values())
                 .filter(it -> it.value.equals(value))
                 .findFirst()
-                .orElse(null);
+                .orElse(UNDEFINED);
     }
 }

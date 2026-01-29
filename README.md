@@ -5,32 +5,36 @@
 - Gradle (Groovy)
 - JPA / Hibernate
 - MySQL / H2
-- Spring REST Docs
+- Spring REST Docs & JUnit5
+- openfeign & circuitbreaker(resilience4j)
 
 ## AI Agent 프로젝트 규칙/지침 파일
-AGENTS.md
+`ecommerce/AGENTS.md`
 
+## API 문서
+- 테스트 대상: `core:core-api` 모듈
+- API 문서 생성 경로: `ecommerce/docs/index.html`
+- 
 ## 모듈 구조 (멀티 모듈)
-- core:core-api
+![img_1.png](img_1.png)
+- `core:core-api`
     - 애플리케이션 계층과 프레젠테이션(Web API) 계층을 포함합니다.
     - 주요 내용: Spring MVC Controller, 요청/응답 DTO, 도메인 서비스, 공용 응답/에러/인증 지원 코드.
 
-- core:core-enum
+- `core:core-enum`
     - 프로젝트 전반에서 공통으로 사용하는 열거형 타입 모음 모듈입니다.
 
-- support:logging
+- `support:logging`
    - 로깅 관련 공통 설정 모듈입니다. logback 설정 리소스를 포함합니다.
 
-- clients
+- `clients`
   - 외부 연동/클라이언트 모듈입니다.
 
-## 의존성 및 빌드 공통 설정
-- bootJar는 core-api 모듈만 활성화하고, 이 외 모듈은 일반 jar를 생성합니다. 즉, 각 모듈은 라이브러리로 패키징됩니다.
-- 테스트 Tasks: `unitTest`, `integrationTest`, `restDocsTest` 태스크 제공 (JUnit5 기반)
+- JPA 엔티티 & 레포지토리는 필요한 경우 별도 모듈로 분리 진행
 
-## API 문서
-- 테스트 대상: `core/core-api`
-- API 문서 생성 경로: `ecommerce/docs/index.html`
+## 의존성 및 빌드 공통 설정
+- bootJar는 `core-api` 모듈만 활성화하고, 이 외 모듈은 일반 jar를 생성합니다. 즉, 각 모듈은 라이브러리로 패키징됩니다.
+- 테스트 Tasks: `unitTest`, `integrationTest`, `restDocsTest` 태스크 제공 (JUnit5 기반)
 
 ## 테스트 실행
 - 전체 테스트: `./gradlew test`
@@ -65,7 +69,7 @@ AGENTS.md
 - Data Access Layer
   - `XxxRepository`
 ---
-- 공통 응답 스팩(`ApiResponse`)과 에러 핸들링 정책(core-api/support/error) 확인
+- 공통 응답 스팩(`ApiResponse`)과 에러 핸들링 정책(`core:core-api/support/error`) 확인
 - 엔드포인트: 소문자-하이픈, 복수형 리소스명 사용 (`/v1/cart/items`)
 - 엔티티: 단수형 리소스명 사용 (Order, Payment 등)
 - API 스팩 DTO: `XxxRequest`, `XxxResponse`

@@ -1,5 +1,7 @@
 package com.dev.core.ecommerce.service.payment;
 
+import com.dev.core.ecommerce.service.payment.response.PaymentConfirmResult;
+import com.dev.core.ecommerce.service.payment.response.PaymentConfirmSuccess;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.support.error.ApiException;
 import com.dev.core.ecommerce.support.error.ErrorType;
@@ -9,8 +11,6 @@ import com.dev.core.ecommerce.service.order.OrderReader;
 import com.dev.core.enums.order.OrderStatus;
 import com.dev.core.enums.payment.PaymentStatus;
 import com.dev.infra.pg.PGClient;
-import com.dev.infra.pg.dto.ConfirmResult;
-import com.dev.infra.pg.dto.ConfirmSuccess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -37,20 +37,24 @@ public class PaymentProcessor {
         return payment;
     }
 
-    public ConfirmResult requestConfirm(String paymentKey, String orderKey, BigDecimal amount) {
-        return pgClient.requestPaymentConfirm(paymentKey, orderKey, amount);
+    public PaymentConfirmResult requestConfirm(String paymentKey, String orderKey, BigDecimal amount) {
+        var confirmResult = pgClient.requestPaymentConfirm(paymentKey, orderKey, amount);
+
+        return confirmResult.isSuccess()
+                ? PaymentConfirmResult.success(confirmResult.success())
+                : PaymentConfirmResult.fail(confirmResult.fail());
     }
 
-    public void validateConfirmResult(
+    public void validatePaymentConfirm(
             User user,
             Payment validPayment,
             String orderKey,
             String externalPaymentKey,
             BigDecimal amount,
-            ConfirmResult confirmResult
+            PaymentConfirmResult paymentConfirmResult
     ) {
-        if (confirmResult.isSuccess()) {
-            ConfirmSuccess success = confirmResult.success();
+        if (paymentConfirmResult.isSuccess()) {
+            PaymentConfirmSuccess success = paymentConfirmResult.success();
 
             if (!success.orderKey().equals(orderKey) || !success.amount().equals(amount)) {
                 paymentWriter.paymentMismatch(validPayment, externalPaymentKey, success);
@@ -59,7 +63,7 @@ public class PaymentProcessor {
 
             paymentWriter.paymentSuccess(user, validPayment, success);
         } else {
-            paymentWriter.paymentFail(validPayment, externalPaymentKey, confirmResult.fail());
+            paymentWriter.paymentFail(validPayment, externalPaymentKey, paymentConfirmResult.fail());
         }
     }
 }
