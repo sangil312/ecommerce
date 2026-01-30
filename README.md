@@ -1,5 +1,8 @@
 # Ecommerce 토이 프로젝트
 
+## 요구사항 정의
+https://www.notion.so/ecommerce-29556c59324f80c880b8e216714ad445?source=copy_link
+
 ## 기술 스택
 - Java 21, Spring Boot (3.5.X)
 - Gradle (Groovy)
