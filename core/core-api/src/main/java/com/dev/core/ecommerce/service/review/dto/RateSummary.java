@@ -1,7 +1,7 @@
-package com.dev.core.ecommerce.service.review.response;
+package com.dev.core.ecommerce.service.review.dto;
 
-import com.dev.core.ecommerce.repository.review.response.RateSummaryView;
-import com.dev.core.ecommerce.repository.review.response.RateSummaryGroupView;
+import com.dev.core.ecommerce.repository.review.dto.RateSummaryView;
+import com.dev.core.ecommerce.repository.review.dto.RateSummaryGroupView;
 
 import java.math.BigDecimal;
 

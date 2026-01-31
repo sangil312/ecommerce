@@ -9,4 +9,8 @@ public record Page<T>(
     public static <T> Page<T> of(List<T> contents, Boolean hasNext) {
         return new Page<>(contents, hasNext);
     }
+
+    public static <T> Page<T> empty() {
+        return new Page<>(List.of(), false);
+    }
 }

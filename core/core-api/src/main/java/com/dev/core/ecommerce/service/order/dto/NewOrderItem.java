@@ -1,4 +1,4 @@
-package com.dev.core.ecommerce.service.order.request;
+package com.dev.core.ecommerce.service.order.dto;
 
 public record NewOrderItem(
         Long productId,

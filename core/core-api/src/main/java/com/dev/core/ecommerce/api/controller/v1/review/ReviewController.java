@@ -1,9 +1,9 @@
 package com.dev.core.ecommerce.api.controller.v1.review;
 
 import com.dev.core.ecommerce.api.controller.v1.response.ApiResponse;
-import com.dev.core.ecommerce.api.controller.v1.response.PageResponse;
 import com.dev.core.ecommerce.api.controller.v1.review.request.CreateReviewRequest;
-import com.dev.core.ecommerce.api.controller.v1.review.response.ReviewResponse;
+import com.dev.core.ecommerce.api.controller.v1.review.response.ReviewListResponse;
+import com.dev.core.ecommerce.api.controller.v1.review.usecase.ReviewUseCase;
 import com.dev.core.ecommerce.service.review.ReviewService;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.enums.review.ReviewTargetType;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
+    private final ReviewUseCase reviewUseCase;
 
     @PostMapping("/v1/reviews")
     public ApiResponse<Object> create(
@@ -30,12 +31,12 @@ public class ReviewController {
     }
 
     @GetMapping("/v1/reviews")
-    public ApiResponse<PageResponse<ReviewResponse>> findReviews(
+    public ApiResponse<ReviewListResponse> findReviews(
             @RequestParam ReviewTargetType targetType,
             @RequestParam Long targetId,
             Pageable pageable
     ) {
-        var result = reviewService.findReviews(targetType, targetId, pageable);
-        return ApiResponse.success(PageResponse.of(ReviewResponse.of(result.contents()), result.hasNext()));
+        var result = reviewUseCase.findReviews(targetType, targetId, pageable);
+        return ApiResponse.success(result);
     }
 }

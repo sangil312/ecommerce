@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.api.controller.v1.product.response;
 
 import com.dev.core.ecommerce.domain.product.Product;
-import com.dev.core.ecommerce.service.review.response.RateSummary;
+import com.dev.core.ecommerce.service.review.dto.RateSummary;
 
 import java.math.BigDecimal;
 import java.util.Objects;

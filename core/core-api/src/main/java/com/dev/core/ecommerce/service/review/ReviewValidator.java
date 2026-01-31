@@ -6,7 +6,7 @@ import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.ecommerce.domain.review.Review;
 import com.dev.core.ecommerce.repository.order.OrderItemRepository;
 import com.dev.core.ecommerce.repository.review.ReviewRepository;
-import com.dev.core.ecommerce.service.review.request.ReviewTarget;
+import com.dev.core.ecommerce.service.review.dto.ReviewTarget;
 import com.dev.core.enums.EntityState;
 import com.dev.core.enums.order.OrderStatus;
 import lombok.RequiredArgsConstructor;

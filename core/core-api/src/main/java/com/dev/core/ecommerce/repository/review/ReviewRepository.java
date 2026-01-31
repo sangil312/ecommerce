@@ -1,8 +1,8 @@
 package com.dev.core.ecommerce.repository.review;
 
 import com.dev.core.ecommerce.domain.review.Review;
-import com.dev.core.ecommerce.repository.review.response.RateSummaryView;
-import com.dev.core.ecommerce.repository.review.response.RateSummaryGroupView;
+import com.dev.core.ecommerce.repository.review.dto.RateSummaryView;
+import com.dev.core.ecommerce.repository.review.dto.RateSummaryGroupView;
 import com.dev.core.enums.EntityState;
 import com.dev.core.enums.review.ReviewTargetType;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +24,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     );
 
     @Query("""
-        SELECT new com.dev.core.ecommerce.repository.review.response.RateSummaryView(
+        SELECT new com.dev.core.ecommerce.repository.review.dto.RateSummaryView(
             COUNT(review.id),
             AVG(review.rate)
         )
@@ -36,7 +36,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     RateSummaryView findRateSummary(Long targetId, ReviewTargetType targetType, EntityState state);
 
     @Query("""
-        SELECT new com.dev.core.ecommerce.repository.review.response.RateSummaryGroupView(
+        SELECT new com.dev.core.ecommerce.repository.review.dto.RateSummaryGroupView(
             review.targetId,
             COUNT(review.id),
             AVG(review.rate)

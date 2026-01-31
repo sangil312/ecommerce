@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS `orders`;
 DROP TABLE IF EXISTS `order_item`;
 DROP TABLE IF EXISTS `transaction_history`;
 DROP TABLE IF EXISTS `review`;
+DROP TABLE IF EXISTS `review_image`;
 
 CREATE TABLE IF NOT EXISTS `product` (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -127,4 +128,17 @@ CREATE TABLE IF NOT EXISTS `review` (
     state VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
 
     UNIQUE KEY uk_user_id_review_key (user_id, review_key)
+);
+
+CREATE TABLE IF NOT EXISTS `review_image` (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    review_id BIGINT NOT NULL,
+    image_id BIGINT NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    state VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
+
+    UNIQUE KEY uk_review_id_image_id (review_id, image_id)
 );

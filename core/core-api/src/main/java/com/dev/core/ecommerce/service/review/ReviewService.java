@@ -1,11 +1,11 @@
 package com.dev.core.ecommerce.service.review;
 
+import com.dev.core.ecommerce.service.review.dto.ReviewAndImage;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.support.response.Page;
-import com.dev.core.ecommerce.domain.review.Review;
-import com.dev.core.ecommerce.service.review.request.ReviewContent;
-import com.dev.core.ecommerce.service.review.request.ReviewTarget;
-import com.dev.core.ecommerce.service.review.response.RateSummary;
+import com.dev.core.ecommerce.service.review.dto.ReviewContent;
+import com.dev.core.ecommerce.service.review.dto.ReviewTarget;
+import com.dev.core.ecommerce.service.review.dto.RateSummary;
 import com.dev.core.enums.review.ReviewTargetType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -27,11 +27,11 @@ public class ReviewService {
         reviewWriter.createReview(user, reviewKey, target, content);
     }
 
-    public Page<Review> findReviews(ReviewTargetType targetType, Long targetId, Pageable pageable) {
+    public Page<ReviewAndImage> findReviews(ReviewTargetType targetType, Long targetId, Pageable pageable) {
         return reviewReader.findReviewsByTargetType(targetType, targetId, pageable);
     }
 
-    public RateSummary findRateSummary(ReviewTargetType targetType, Long targetId) {
+    public RateSummary findReviewRateSummary(ReviewTargetType targetType, Long targetId) {
         return reviewReader.findRateSummary(targetType, targetId);
     }
 

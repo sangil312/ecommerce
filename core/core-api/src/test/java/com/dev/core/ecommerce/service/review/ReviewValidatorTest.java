@@ -13,7 +13,7 @@ import com.dev.core.ecommerce.repository.order.OrderRepository;
 import com.dev.core.ecommerce.repository.product.ProductRepository;
 import com.dev.core.ecommerce.repository.review.ReviewRepository;
 import com.dev.core.ecommerce.service.product.ProductBuilder;
-import com.dev.core.ecommerce.service.review.request.ReviewTarget;
+import com.dev.core.ecommerce.service.review.dto.ReviewTarget;
 import com.dev.core.enums.review.ReviewTargetType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -57,7 +57,7 @@ class ReviewValidatorTest extends IntegrationTestSupport {
     void validateNewReview() {
         // given
         OrderItem orderItem = createPaidOrderItem(testUser.id(), testProduct);
-        ReviewTarget target = new ReviewTarget(ReviewTargetType.PRODUCT, testProduct.getId());
+        ReviewTarget target = ReviewTarget.of(ReviewTargetType.PRODUCT, testProduct.getId());
 
         // when
         String reviewKey = reviewValidator.validateNewReview(testUser, target);
@@ -70,7 +70,7 @@ class ReviewValidatorTest extends IntegrationTestSupport {
     @DisplayName("리뷰 생성 검증: 주문 내역이 없으면 예외가 발생한다")
     void validateNewReviewWithNoOrder() {
         // given
-        ReviewTarget target = new ReviewTarget(ReviewTargetType.PRODUCT, testProduct.getId());
+        ReviewTarget target = ReviewTarget.of(ReviewTargetType.PRODUCT, testProduct.getId());
 
         // when then
         assertThatThrownBy(() -> reviewValidator.validateNewReview(testUser, target))
@@ -84,7 +84,7 @@ class ReviewValidatorTest extends IntegrationTestSupport {
         // given
         OrderItem orderItem = createPaidOrderItem(testUser.id(), testProduct);
         String reviewKey = "ORDER_ITEM_" + orderItem.getId();
-        ReviewTarget target = new ReviewTarget(ReviewTargetType.PRODUCT, testProduct.getId());
+        ReviewTarget target = ReviewTarget.of(ReviewTargetType.PRODUCT, testProduct.getId());
         reviewRepository.save(
                 Review.create(
                         testUser.id(),
