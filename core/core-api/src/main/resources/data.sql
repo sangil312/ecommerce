@@ -27,3 +27,8 @@ INSERT INTO review(id, user_id, review_key, target_type, target_id, rate, conten
 VALUES
     (1, 1, 'ORDER_ITEM_1', 'PRODUCT', 1L, 5.0, '좋아요'),
     (2, 1, 'ORDER_ITEM_2', 'PRODUCT', 1L, 4.0, '보통입니다');
+
+INSERT INTO review_image(id, user_id, review_id, image_id, image_url)
+VALUES
+    (1, 1, 1, 101, 'https://example.com/reviews/1.jpg'),
+    (2, 1, 2, 102, 'https://example.com/reviews/2.jpg');

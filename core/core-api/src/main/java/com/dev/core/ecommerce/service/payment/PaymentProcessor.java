@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.service.payment;
 
-import com.dev.core.ecommerce.service.payment.response.PaymentConfirmResult;
-import com.dev.core.ecommerce.service.payment.response.PaymentConfirmSuccess;
+import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmResult;
+import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmSuccess;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.support.error.ApiException;
 import com.dev.core.ecommerce.support.error.ErrorType;

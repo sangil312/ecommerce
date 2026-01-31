@@ -3,6 +3,7 @@ package com.dev.core.ecommerce.service.review;
 import com.dev.core.ecommerce.IntegrationTestSupport;
 import com.dev.core.ecommerce.domain.review.Review;
 import com.dev.core.ecommerce.repository.review.ReviewRepository;
+import com.dev.core.ecommerce.service.review.dto.ReviewAndImage;
 import com.dev.core.ecommerce.support.response.Page;
 import com.dev.core.enums.review.ReviewTargetType;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +39,7 @@ class ReviewReaderTest extends IntegrationTestSupport {
         reviewRepository.saveAll(List.of(review1, review2, deletedReview));
 
         // when
-        Page<Review> result = reviewReader.findReviewsByTargetType(
+        Page<ReviewAndImage> result = reviewReader.findReviewsByTargetType(
                 ReviewTargetType.PRODUCT, 1L, PageRequest.of(0, 2));
 
         // then
@@ -46,16 +47,17 @@ class ReviewReaderTest extends IntegrationTestSupport {
         assertThat(result.hasNext()).isFalse();
         assertThat(result.contents())
                 .extracting(
-                        Review::getUserId,
-                        Review::getReviewKey,
-                        Review::getTargetType,
-                        Review::getTargetId,
-                        Review::getRate,
-                        Review::getContent
+                        ReviewAndImage::userId,
+                        ReviewAndImage::reviewKey,
+                        it -> it.target().targetType(),
+                        it -> it.target().id(),
+                        it -> it.content().rate(),
+                        it -> it.content().content(),
+                        ReviewAndImage::images
                 )
                 .containsExactlyInAnyOrder(
-                        tuple(1L, "ORDER_ITEM_1", ReviewTargetType.PRODUCT, 1L, BigDecimal.valueOf(4.5), "good"),
-                        tuple(2L, "ORDER_ITEM_2", ReviewTargetType.PRODUCT, 1L, BigDecimal.valueOf(3.0), "ok")
+                        tuple(1L, "ORDER_ITEM_1", ReviewTargetType.PRODUCT, 1L, BigDecimal.valueOf(4.5), "good", List.of()),
+                        tuple(2L, "ORDER_ITEM_2", ReviewTargetType.PRODUCT, 1L, BigDecimal.valueOf(3.0), "ok", List.of())
                 );
     }
 

@@ -31,7 +31,7 @@ public class ProductUseCase {
 
     public ProductDetailResponse findProduct(Long productId) {
         var product = productService.findProduct(productId);
-        var rateSummary = reviewService.findRateSummary(ReviewTargetType.PRODUCT, productId);
+        var rateSummary = reviewService.findReviewRateSummary(ReviewTargetType.PRODUCT, productId);
 
         return ProductDetailResponse.of(product, rateSummary);
     }

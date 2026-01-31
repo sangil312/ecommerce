@@ -4,8 +4,8 @@ import com.dev.core.ecommerce.IntegrationTestSupport;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.domain.review.Review;
 import com.dev.core.ecommerce.repository.review.ReviewRepository;
-import com.dev.core.ecommerce.service.review.request.ReviewContent;
-import com.dev.core.ecommerce.service.review.request.ReviewTarget;
+import com.dev.core.ecommerce.service.review.dto.ReviewContent;
+import com.dev.core.ecommerce.service.review.dto.ReviewTarget;
 import com.dev.core.enums.review.ReviewTargetType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,8 +31,8 @@ class ReviewWriterTest extends IntegrationTestSupport {
         // given
         User user = new User(1L);
         String reviewKey = "ORDER_ITEM_1";
-        ReviewTarget target = new ReviewTarget(ReviewTargetType.PRODUCT, 10L);
-        ReviewContent content = new ReviewContent(BigDecimal.valueOf(4_500, 3), "좋아요");
+        ReviewTarget target = ReviewTarget.of(ReviewTargetType.PRODUCT, 10L);
+        ReviewContent content = ReviewContent.of(BigDecimal.valueOf(4_500, 3), "좋아요");
 
         // when
         reviewWriter.createReview(user, reviewKey, target, content);

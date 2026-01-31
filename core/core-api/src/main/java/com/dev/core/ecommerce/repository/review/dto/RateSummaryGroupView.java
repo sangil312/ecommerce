@@ -1,4 +1,4 @@
-package com.dev.core.ecommerce.repository.review.response;
+package com.dev.core.ecommerce.repository.review.dto;
 
 import java.math.BigDecimal;
 import java.util.Objects;

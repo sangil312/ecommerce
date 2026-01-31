@@ -5,7 +5,7 @@ import com.dev.core.ecommerce.api.controller.v1.product.response.ProductResponse
 import com.dev.core.ecommerce.domain.product.Product;
 import com.dev.core.ecommerce.service.product.ProductService;
 import com.dev.core.ecommerce.service.review.ReviewService;
-import com.dev.core.ecommerce.service.review.response.RateSummary;
+import com.dev.core.ecommerce.service.review.dto.RateSummary;
 import com.dev.core.ecommerce.support.response.Page;
 import com.dev.core.enums.review.ReviewTargetType;
 import org.junit.jupiter.api.DisplayName;
@@ -94,7 +94,7 @@ class ProductUseCaseTest {
         RateSummary rateSummary = new RateSummary(0L, null);
 
         when(productService.findProduct(productId)).thenReturn(product);
-        when(reviewService.findRateSummary(ReviewTargetType.PRODUCT, productId)).thenReturn(rateSummary);
+        when(reviewService.findReviewRateSummary(ReviewTargetType.PRODUCT, productId)).thenReturn(rateSummary);
 
         // when
         ProductDetailResponse result = productUseCase.findProduct(productId);
@@ -106,6 +106,6 @@ class ProductUseCaseTest {
         assertThat(result.rate()).isEqualByComparingTo(BigDecimal.ZERO);
         assertThat(result.rateCount()).isEqualTo(0L);
         verify(productService).findProduct(productId);
-        verify(reviewService).findRateSummary(ReviewTargetType.PRODUCT, productId);
+        verify(reviewService).findReviewRateSummary(ReviewTargetType.PRODUCT, productId);
     }
 }

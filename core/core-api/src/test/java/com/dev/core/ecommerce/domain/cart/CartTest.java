@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.domain.cart;
 
-import com.dev.core.ecommerce.service.order.request.NewOrder;
+import com.dev.core.ecommerce.service.order.dto.NewOrder;
 import com.dev.core.ecommerce.service.product.ProductBuilder;
 import org.junit.jupiter.api.Test;
 

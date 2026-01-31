@@ -1,4 +1,4 @@
-package com.dev.core.ecommerce.service.payment.response;
+package com.dev.core.ecommerce.service.payment.dto;
 
 import com.dev.core.enums.payment.PaymentMethod;
 

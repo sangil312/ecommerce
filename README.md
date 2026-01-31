@@ -56,6 +56,7 @@
   - 서비스: `XxxService`
   - `@Service` 사용
   - 구현체 컴포넌트를 이용하여 해당 도메인 비지니스 흐름 조율
+  - `XxxService`에서의 응답은 엔티티 객체 or 도메인 DTO로 제한
 - Implement Layer (도메인 비지니스 로직 구현)
   - 구현체: `XxxWriter`, `XxxReader`, `XxxValidator`, `XxxProcessor` 등
     - `@Component` 사용
