@@ -17,7 +17,7 @@ https://www.notion.so/ecommerce-29556c59324f80c880b8e216714ad445?source=copy_lin
 ## API 문서
 - 테스트 대상: `core:core-api` 모듈
 - API 문서 생성 경로: `ecommerce/docs/index.html`
-- 
+
 ## 모듈 구조 (멀티 모듈)
 ![img_1.png](img_1.png)
 - `core:core-api`
