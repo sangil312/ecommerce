@@ -53,7 +53,8 @@ class ReviewControllerRestDocsTest extends RestDocsSupport {
                 ReviewTargetType.PRODUCT,
                 1L,
                 BigDecimal.valueOf(4.5),
-                "좋아요"
+                "좋아요",
+                List.of(1L, 2L)
         );
 
         given().contentType(ContentType.JSON)
@@ -66,7 +67,9 @@ class ReviewControllerRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("targetType").type(JsonFieldType.STRING).description("리뷰 대상 타입"),
                                 fieldWithPath("targetId").type(JsonFieldType.NUMBER).description("리뷰 대상 ID"),
                                 fieldWithPath("rate").type(JsonFieldType.NUMBER).description("리뷰 평점"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("리뷰 내용")
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("리뷰 내용"),
+                                fieldWithPath("imageIds").type(JsonFieldType.ARRAY).description("리뷰 이미지 ID 목록")
+                                        .optional()
                         ),
                         responseFields(
                                 fieldWithPath("resultType").type(JsonFieldType.STRING).description("요청 결과"),
@@ -142,4 +145,3 @@ class ReviewControllerRestDocsTest extends RestDocsSupport {
                 ));
     }
 }
-

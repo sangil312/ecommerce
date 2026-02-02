@@ -22,4 +22,13 @@ public class ReviewImage extends BaseEntity {
     private Long reviewId;
     private Long imageId;
     private String imageUrl;
+
+    public static ReviewImage create(Long userId, Long reviewId, Long imageId, String imageUrl) {
+        ReviewImage reviewImage = new ReviewImage();
+        reviewImage.userId = userId;
+        reviewImage.reviewId = reviewId;
+        reviewImage.imageId = imageId;
+        reviewImage.imageUrl = imageUrl;
+        return reviewImage;
+    }
 }

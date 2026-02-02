@@ -7,6 +7,7 @@ import com.dev.core.ecommerce.api.controller.v1.review.usecase.ReviewUseCase;
 import com.dev.core.ecommerce.service.review.ReviewService;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.enums.review.ReviewTargetType;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +25,9 @@ public class ReviewController {
     @PostMapping("/v1/reviews")
     public ApiResponse<Object> create(
             User user,
-            @RequestBody CreateReviewRequest request
+            @Valid @RequestBody CreateReviewRequest request
     ) {
-        reviewService.creat(user, request.toTarget(), request.toContent());
+        reviewService.creat(user, request.toTarget(), request.toContent(), request.imageIds());
         return ApiResponse.success();
     }
 
