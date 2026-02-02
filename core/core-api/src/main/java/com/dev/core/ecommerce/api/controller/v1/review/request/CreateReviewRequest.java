@@ -1,28 +1,37 @@
 package com.dev.core.ecommerce.api.controller.v1.review.request;
 
-import com.dev.core.ecommerce.support.error.ApiException;
-import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.ecommerce.service.review.dto.ReviewContent;
 import com.dev.core.ecommerce.service.review.dto.ReviewTarget;
 import com.dev.core.enums.review.ReviewTargetType;
-import org.springframework.util.StringUtils;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public record CreateReviewRequest(
+        @NotNull
         ReviewTargetType targetType,
+
+        @NotNull
         Long targetId,
+
+        @DecimalMin("0.0") @DecimalMax("5.0")
+        @NotNull
         BigDecimal rate,
-        String content
+
+        @NotBlank
+        String content,
+
+        List<Long> imageIds
 ) {
     public ReviewTarget toTarget() {
         return ReviewTarget.of(targetType, targetId);
     }
 
     public ReviewContent toContent() {
-        if (rate.compareTo(BigDecimal.ZERO) <= 0) throw new ApiException(ErrorType.INVALID_REQUEST);
-        if (rate.compareTo(BigDecimal.valueOf(5.0)) > 0) throw new ApiException(ErrorType.INVALID_REQUEST);
-        if (!StringUtils.hasText(content)) throw new ApiException(ErrorType.INVALID_REQUEST);
         return ReviewContent.of(rate, content);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 
@@ -22,9 +23,9 @@ public class ReviewService {
     private final ReviewWriter reviewWriter;
     private final ReviewReader reviewReader;
 
-    public void creat(User user, ReviewTarget target, ReviewContent content) {
+    public void creat(User user, ReviewTarget target, ReviewContent content, List<Long> imageIds) {
         String reviewKey = reviewValidator.validateNewReview(user, target);
-        reviewWriter.createReview(user, reviewKey, target, content);
+        reviewWriter.createReview(user, reviewKey, target, content, imageIds);
     }
 
     public Page<ReviewAndImage> findReviews(ReviewTargetType targetType, Long targetId, Pageable pageable) {

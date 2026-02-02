@@ -1,0 +1,10 @@
+package com.dev.core.ecommerce.repository.file;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+
+public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
+    List<ImageEntity> findByUserIdAndIdIn(Long userId, List<Long> imageIds);
+}
