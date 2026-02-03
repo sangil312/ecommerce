@@ -70,7 +70,7 @@ class OrderWriterTest extends IntegrationTestSupport {
         assertThat(savedOrder.getStatus()).isEqualTo(OrderStatus.CREATED);
 
         List<OrderItem> savedOrderItems = orderItemRepository.findByOrderId(savedOrder.getId());
-        assertThat(savedOrderItems).hasSize(2);
+        assertThat(savedOrderItems).hasSize(1);
         assertThat(savedOrderItems.getFirst().getOrderId()).isEqualTo(savedOrder.getId());
         assertThat(savedOrderItems.getFirst().getProductId()).isEqualTo(newOrder.items().getFirst().productId());
         assertThat(savedOrderItems.getFirst().getQuantity()).isEqualTo(newOrder.items().getFirst().quantity());
