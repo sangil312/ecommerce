@@ -16,7 +16,7 @@ public class CartReader {
     private final CartItemRepository cartItemRepository;
 
     public Cart findCart(User user, Collection<Long> cartItemIds) {
-        var cartItems = cartItemRepository.findWithProduct(user.id(), cartItemIds, EntityState.ACTIVE);
+        var cartItems = cartItemRepository.findByUserIdAndIdInAndState(user.id(), cartItemIds, EntityState.ACTIVE);
         return Cart.of(user.id(), cartItems);
     }
 }

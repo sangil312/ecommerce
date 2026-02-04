@@ -2,9 +2,9 @@ package com.dev.core.ecommerce.api.controller.v1.payment;
 
 import com.dev.core.ecommerce.RestDocsSupport;
 import com.dev.core.ecommerce.api.controller.v1.payment.usecase.PaymentUseCase;
-import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmFail;
-import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmResult;
-import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmSuccess;
+import com.dev.core.ecommerce.service.payment.dto.PaymentApproveFail;
+import com.dev.core.ecommerce.service.payment.dto.PaymentApproveResult;
+import com.dev.core.ecommerce.service.payment.dto.PaymentApproveSuccess;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.api.controller.v1.payment.request.CreatePaymentRequest;
 import com.dev.core.ecommerce.service.payment.PaymentService;
@@ -70,9 +70,9 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("결제 요청 성공 콜백 API > 결제 승인 성공")
     void callbackSuccess() {
-        PaymentConfirmResult paymentConfirmResult = new PaymentConfirmResult(
+        PaymentApproveResult paymentApproveResult = new PaymentApproveResult(
                 true,
-                new PaymentConfirmSuccess(
+                new PaymentApproveSuccess(
                         "pay-1",
                         "order-123",
                         PaymentMethod.CARD,
@@ -83,7 +83,7 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
         );
 
         when(paymentService.success(any(User.class), anyString(), anyString(), any(BigDecimal.class)))
-                .thenReturn(paymentConfirmResult);
+                .thenReturn(paymentApproveResult);
 
         given().contentType(ContentType.URLENC)
                 .formParam("orderId", "order-123")
@@ -109,14 +109,14 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("결제 요청 성공 콜백 API > 결제 승인 실패")
     void callbackSuccessFail() {
-        PaymentConfirmResult paymentConfirmResult = new PaymentConfirmResult(
+        PaymentApproveResult paymentApproveResult = new PaymentApproveResult(
                 false,
                 null,
-                new PaymentConfirmFail("ERROR_CODE", "한도 초과")
+                new PaymentApproveFail("ERROR_CODE", "한도 초과")
         );
 
         when(paymentService.success(any(User.class), anyString(), anyString(), any(BigDecimal.class)))
-                .thenReturn(paymentConfirmResult);
+                .thenReturn(paymentApproveResult);
 
         given().contentType(ContentType.URLENC)
                 .formParam("orderId", "order-123")

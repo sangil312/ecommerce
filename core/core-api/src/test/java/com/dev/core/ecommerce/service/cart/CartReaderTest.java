@@ -39,8 +39,8 @@ class CartReaderTest extends IntegrationTestSupport {
         Product product2 = new ProductBuilder().name("상품2").price(BigDecimal.valueOf(2_000)).build();
         productRepository.saveAll(List.of(product1, product2));
 
-        CartItem cartItem1 = CartItem.create(user.id(), product1, 1L);
-        CartItem cartItem2 = CartItem.create(user.id(), product2, 2L);
+        CartItem cartItem1 = CartItem.create(user.id(), product1.getId(), 1L);
+        CartItem cartItem2 = CartItem.create(user.id(), product2.getId(), 2L);
         cartItemRepository.saveAll(List.of(cartItem1, cartItem2));
 
         //when
@@ -49,10 +49,10 @@ class CartReaderTest extends IntegrationTestSupport {
         //then
         assertThat(cart.userId()).isEqualTo(user.id());
         assertThat(cart.items()).hasSize(2)
-                .extracting(CartItem::getUserId, CartItem::getProduct,  CartItem::getQuantity)
+                .extracting(CartItem::getUserId, CartItem::getProductId,  CartItem::getQuantity)
                 .containsExactlyInAnyOrder(
-                        tuple(user.id(), product1, cartItem1.getQuantity()),
-                        tuple(user.id(), product2, cartItem2.getQuantity())
+                        tuple(user.id(), product1.getId(), cartItem1.getQuantity()),
+                        tuple(user.id(), product2.getId(), cartItem2.getQuantity())
                 );
 
     }

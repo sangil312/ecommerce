@@ -1,10 +1,7 @@
 package com.dev.core.ecommerce.domain.cart;
 
 import com.dev.core.ecommerce.support.BaseEntity;
-import com.dev.core.ecommerce.domain.product.Product;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
@@ -22,15 +19,13 @@ import lombok.NoArgsConstructor;
 )
 public class CartItem extends BaseEntity {
     private Long userId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Product product;
+    private Long productId;
     private Long quantity;
 
-    public static CartItem create(Long userId, Product product, Long quantity) {
+    public static CartItem create(Long userId, Long productId, Long quantity) {
         CartItem cartItem = new CartItem();
         cartItem.userId = userId;
-        cartItem.product = product;
+        cartItem.productId = productId;
         cartItem.quantity = quantity;
         return cartItem;
     }

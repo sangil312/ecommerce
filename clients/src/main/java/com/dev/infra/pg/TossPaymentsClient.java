@@ -1,9 +1,9 @@
 package com.dev.infra.pg;
 
-import com.dev.infra.pg.dto.ConfirmResult;
-import com.dev.infra.pg.dto.ConfirmFail;
+import com.dev.infra.pg.dto.ApproveResult;
+import com.dev.infra.pg.dto.ApproveFail;
 import com.dev.infra.pg.toss.TossPaymentsException;
-import com.dev.infra.pg.toss.request.ConfirmRequest;
+import com.dev.infra.pg.toss.request.ApproveRequest;
 import com.dev.infra.pg.toss.response.TossPaymentsFailResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +20,9 @@ public class TossPaymentsClient implements PGClient {
     private final CircuitBreaker circuitBreaker;
 
     @Override
-    public ConfirmResult requestPaymentConfirm(String paymentKey, String orderKey, BigDecimal amount) {
+    public ApproveResult requestPaymentApprove(String paymentKey, String orderKey, BigDecimal amount) {
         log.info("[PG] 결제 승인 요청: paymentKey: {}, orderKey: {}, amount: {}", paymentKey, orderKey, amount);
-        ConfirmRequest request = new ConfirmRequest(paymentKey, orderKey, amount);
+        ApproveRequest request = new ApproveRequest(paymentKey, orderKey, amount);
 
         return circuitBreaker.run(
                 () -> confirm(request),
@@ -30,7 +30,7 @@ public class TossPaymentsClient implements PGClient {
         );
     }
 
-    private ConfirmResult confirm(ConfirmRequest request) {
+    private ApproveResult confirm(ApproveRequest request) {
         try {
             return tossPaymentsClientApi.confirm(request).toPaymentResult();
         } catch (TossPaymentsException e) {
@@ -48,13 +48,13 @@ public class TossPaymentsClient implements PGClient {
         }
     }
 
-    private ConfirmResult fallback(Throwable ex, ConfirmRequest request) {
+    private ApproveResult fallback(Throwable ex, ApproveRequest request) {
         log.error("[PG] 결제 승인 실패: paymentKey: {}, orderKey: {}, amount: {}, Exception: {}",
                 request.paymentKey(), request.orderId(), request.amount(), ex.getMessage());
 
-        return new ConfirmResult(
+        return new ApproveResult(
                 false,
-                new ConfirmFail("", "결제 승인 요청 오류 발생"),
+                new ApproveFail("", "결제 승인 요청 오류 발생"),
                 null
         );
     }

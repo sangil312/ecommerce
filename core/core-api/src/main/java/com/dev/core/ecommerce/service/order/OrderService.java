@@ -20,10 +20,10 @@ public class OrderService {
     }
 
     public Order findOrder(User user, String orderKey, OrderStatus status) {
-        return orderReader.findOrder(user, orderKey, status);
+        return orderReader.findOrder(user.id(), orderKey, status);
     }
 
     public OrderAndItem findOrderAndItems(User user, String orderKey, OrderStatus status) {
-        return orderReader.findOrderAndItems(user, orderKey, status);
+        return orderReader.findOrderAndItems(user.id(), orderKey, status);
     }
 }

@@ -1,6 +1,6 @@
 package com.dev.core.ecommerce.service.payment;
 
-import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmResult;
+import com.dev.core.ecommerce.service.payment.dto.PaymentApproveResult;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.domain.order.Order;
 import lombok.RequiredArgsConstructor;
@@ -12,25 +12,32 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class PaymentService {
     private final PaymentWriter paymentWriter;
-    private final PaymentProcessor  paymentProcessor;
+    private final PaymentValidator paymentValidator;
+    private final PaymentProcessor paymentProcessor;
 
     public Long createPayment(Order order) {
         return paymentWriter.paymentCreate(order);
     }
 
-    public PaymentConfirmResult success(
+    public PaymentApproveResult success(
             User user,
             String orderKey,
             String externalPaymentKey,
             BigDecimal amount
     ) {
-        var validPayment = paymentProcessor.validatePayment(user, orderKey, amount);
+        var validPayment = paymentValidator.validatePayment(user.id(), orderKey, amount);
 
-        var paymentConfirmResult = paymentProcessor.requestConfirm(externalPaymentKey, orderKey, amount);
+        var paymentApproveResult = paymentProcessor.requestApprove(externalPaymentKey, orderKey, amount);
 
-        paymentProcessor.validatePaymentConfirm(user, validPayment, orderKey, externalPaymentKey, amount, paymentConfirmResult);
+        paymentProcessor.process(
+                validPayment,
+                orderKey,
+                externalPaymentKey,
+                amount,
+                paymentApproveResult
+        );
 
-        return paymentConfirmResult;
+        return paymentApproveResult;
     }
 
     public void fail(Order order, String code, String message) {
