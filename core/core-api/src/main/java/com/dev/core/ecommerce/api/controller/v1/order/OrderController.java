@@ -22,7 +22,7 @@ public class OrderController {
             User user,
             @Valid @RequestBody CreateOrderRequest request
     ) {
-        var orderKey = orderService.create(user, request.toNewOrder(user));
+        var orderKey = orderService.createOrder(user, request.toNewOrder(user));
         return ApiResponse.success(new CreateOrderResponse(orderKey));
     }
 

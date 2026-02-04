@@ -23,8 +23,8 @@ public class ReviewService {
     private final ReviewWriter reviewWriter;
     private final ReviewReader reviewReader;
 
-    public void creat(User user, ReviewTarget target, ReviewContent content, List<Long> imageIds) {
-        String reviewKey = reviewValidator.validateNewReview(user, target);
+    public void creatReview(User user, ReviewTarget target, ReviewContent content, List<Long> imageIds) {
+        var reviewKey = reviewValidator.validateNewReview(user, target);
         reviewWriter.createReview(user, reviewKey, target, content, imageIds);
     }
 

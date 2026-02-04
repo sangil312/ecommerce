@@ -1,6 +1,7 @@
 package com.dev.core.ecommerce.api.controller.v1.payment;
 
 import com.dev.core.ecommerce.RestDocsSupport;
+import com.dev.core.ecommerce.api.controller.v1.payment.usecase.PaymentUseCase;
 import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmFail;
 import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmResult;
 import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmSuccess;
@@ -40,14 +41,12 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
     @BeforeEach
     void setUp() {
         paymentService = mock(PaymentService.class);
-        mockMvc = mockController(new PaymentController(paymentService));
+        mockMvc = mockController(new PaymentController(paymentService, mock(PaymentUseCase.class)));
     }
 
     @Test
     @DisplayName("결제 생성 API")
     void create() {
-        when(paymentService.create(any(User.class), anyString())).thenReturn(1L);
-
         given().contentType(ContentType.JSON)
                 .body(new CreatePaymentRequest("order-123"))
                 .post("/v1/payments")

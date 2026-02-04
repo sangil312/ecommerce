@@ -1,5 +1,6 @@
 package com.dev.core.ecommerce.api.controller.v1.payment;
 
+import com.dev.core.ecommerce.api.controller.v1.payment.usecase.PaymentUseCase;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.api.controller.v1.payment.request.CreatePaymentRequest;
 import com.dev.core.ecommerce.api.controller.v1.payment.response.CallbackSuccessResponse;
@@ -19,13 +20,14 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class PaymentController {
     private final PaymentService paymentService;
+    private final PaymentUseCase paymentUseCase;
 
     @PostMapping("/v1/payments")
     public ApiResponse<CreatePaymentResponse> create(
             User user,
             @Valid @RequestBody CreatePaymentRequest request
     ) {
-        var paymentId = paymentService.create(user, request.orderKey());
+        var paymentId = paymentUseCase.createPayment(user, request.orderKey());
         return ApiResponse.success(new CreatePaymentResponse(paymentId));
     }
 
@@ -51,7 +53,7 @@ public class PaymentController {
             @RequestParam String code,
             @RequestParam String message
     ) {
-        paymentService.fail(user, orderId, code, message);
+        paymentUseCase.failPayment(user, orderId, code, message);
         return ApiResponse.success();
     }
 }
