@@ -13,7 +13,7 @@ import java.util.Collection;
 public class CartService {
     private final CartReader cartReader;
 
-    public Cart find(User user, Collection<Long> cartItemIds) {
+    public Cart findCart(User user, Collection<Long> cartItemIds) {
         return cartReader.findCart(user, cartItemIds);
     }
 }

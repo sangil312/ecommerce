@@ -27,7 +27,7 @@ public class ReviewController {
             User user,
             @Valid @RequestBody CreateReviewRequest request
     ) {
-        reviewService.creat(user, request.toTarget(), request.toContent(), request.imageIds());
+        reviewService.creatReview(user, request.toTarget(), request.toContent(), request.imageIds());
         return ApiResponse.success();
     }
 

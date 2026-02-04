@@ -54,7 +54,7 @@ class OrderControllerRestDocsTest extends RestDocsSupport {
     void create() {
         String orderKey = UUID.randomUUID().toString();
 
-        when(orderService.create(any(User.class), any(NewOrder.class))).thenReturn(orderKey);
+        when(orderService.createOrder(any(User.class), any(NewOrder.class))).thenReturn(orderKey);
 
         given().contentType(ContentType.JSON)
                 .body(new CreateOrderRequest(1L, 2L))

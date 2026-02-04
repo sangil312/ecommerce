@@ -3,8 +3,6 @@ package com.dev.core.ecommerce.service.payment;
 import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmResult;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.domain.order.Order;
-import com.dev.core.enums.order.OrderStatus;
-import com.dev.core.ecommerce.service.order.OrderReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +12,9 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class PaymentService {
     private final PaymentWriter paymentWriter;
-    private final OrderReader orderReader;
     private final PaymentProcessor  paymentProcessor;
 
-    public Long create(User user, String orderKey) {
-        Order order = orderReader.findOrder(user, orderKey, OrderStatus.CREATED);
+    public Long createPayment(Order order) {
         return paymentWriter.paymentCreate(order);
     }
 
@@ -37,8 +33,7 @@ public class PaymentService {
         return paymentConfirmResult;
     }
 
-    public void fail(User user, String orderKey, String code, String message) {
-        Order order = orderReader.findOrder(user, orderKey, OrderStatus.CREATED);
+    public void fail(Order order, String code, String message) {
         paymentWriter.callBackFail(order, code, message);
     }
 }
