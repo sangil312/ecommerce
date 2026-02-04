@@ -13,6 +13,12 @@ include::{snippets}/common-error/response-fields.adoc[]
 
 == Order API
 
+=== 주문서 조회
+include::{snippets}/orders-find-checkout/http-request.adoc[]
+include::{snippets}/orders-find-checkout/path-parameters.adoc[]
+include::{snippets}/orders-find-checkout/http-response.adoc[]
+include::{snippets}/orders-find-checkout/response-fields.adoc[]
+
 === 주문 생성
 include::{snippets}/orders-create/http-request.adoc[]
 include::{snippets}/orders-create/request-fields.adoc[]

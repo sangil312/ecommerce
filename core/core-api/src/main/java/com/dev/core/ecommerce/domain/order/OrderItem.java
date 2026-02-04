@@ -24,6 +24,7 @@ public class OrderItem extends BaseEntity {
     private Long productId;
     private Long quantity;
     private String productName;
+    private String thumbnailUrl;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;
 
@@ -32,6 +33,7 @@ public class OrderItem extends BaseEntity {
             Long productId,
             Long quantity,
             String productName,
+            String thumbnailUrl,
             BigDecimal unitPrice,
             BigDecimal totalPrice
     ) {
@@ -40,6 +42,7 @@ public class OrderItem extends BaseEntity {
         orderItem.productId = productId;
         orderItem.quantity = quantity;
         orderItem.productName = productName;
+        orderItem.thumbnailUrl = thumbnailUrl;
         orderItem.unitPrice = unitPrice;
         orderItem.totalPrice = totalPrice;
         return orderItem;

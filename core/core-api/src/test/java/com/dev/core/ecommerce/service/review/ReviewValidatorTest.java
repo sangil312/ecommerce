@@ -112,6 +112,7 @@ class ReviewValidatorTest extends IntegrationTestSupport {
                 product.getId(),
                 1L,
                 product.getName(),
+                product.getThumbnailUrl(),
                 product.getPrice(),
                 product.getPrice()
         );
