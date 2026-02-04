@@ -57,6 +57,7 @@ class PaymentProcessorTest extends IntegrationTestSupport {
                         1L,
                         1L,
                         "테스트 상품",
+                        "thumbnail-url",
                         BigDecimal.valueOf(10_000),
                         BigDecimal.valueOf(10_000)
                 )
@@ -106,6 +107,7 @@ class PaymentProcessorTest extends IntegrationTestSupport {
                         1L,
                         1L,
                         "테스트 상품",
+                        "thumbnail-url",
                         BigDecimal.valueOf(10_000),
                         BigDecimal.valueOf(10_000)
                 )
@@ -157,6 +159,7 @@ class PaymentProcessorTest extends IntegrationTestSupport {
                         1L,
                         1L,
                         "테스트 상품",
+                        "thumbnail-url",
                         BigDecimal.valueOf(10_000),
                         BigDecimal.valueOf(10_000)
                 )

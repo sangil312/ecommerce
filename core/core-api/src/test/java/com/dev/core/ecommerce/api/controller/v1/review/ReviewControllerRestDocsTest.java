@@ -5,7 +5,7 @@ import com.dev.core.ecommerce.api.controller.v1.review.usecase.ReviewUseCase;
 import com.dev.core.ecommerce.api.controller.v1.review.request.CreateReviewRequest;
 import com.dev.core.ecommerce.api.controller.v1.review.response.ReviewImageResponse;
 import com.dev.core.ecommerce.api.controller.v1.review.response.ReviewListResponse;
-import com.dev.core.ecommerce.api.controller.v1.review.response.ReviewResponse2;
+import com.dev.core.ecommerce.api.controller.v1.review.response.ReviewResponse;
 import com.dev.core.ecommerce.service.review.ReviewService;
 import com.dev.core.ecommerce.service.review.dto.RateSummary;
 import com.dev.core.enums.review.ReviewTargetType;
@@ -82,7 +82,7 @@ class ReviewControllerRestDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("리뷰 목록 조회 API")
     void findReviews() {
-        ReviewResponse2 review = new ReviewResponse2(
+        ReviewResponse review = new ReviewResponse(
                 1L,
                 ReviewTargetType.PRODUCT,
                 1L,

@@ -1,7 +1,7 @@
 package com.dev.core.ecommerce.api.controller.v1.review.usecase;
 
 import com.dev.core.ecommerce.api.controller.v1.review.response.ReviewListResponse;
-import com.dev.core.ecommerce.api.controller.v1.review.response.ReviewResponse2;
+import com.dev.core.ecommerce.api.controller.v1.review.response.ReviewResponse;
 import com.dev.core.ecommerce.service.product.ProductService;
 import com.dev.core.ecommerce.service.review.ReviewService;
 import com.dev.core.enums.review.ReviewTargetType;
@@ -27,7 +27,7 @@ public class ReviewUseCase {
 
         var reviewsPage = reviewService.findReviews(targetType, targetId, pageable);
 
-        var responses = ReviewResponse2.of(reviewsPage.contents(), product.getName());
+        var responses = ReviewResponse.of(reviewsPage.contents(), product.getName());
 
         return ReviewListResponse.of(product.getName(), rateSummary, responses, reviewsPage.hasNext());
     }

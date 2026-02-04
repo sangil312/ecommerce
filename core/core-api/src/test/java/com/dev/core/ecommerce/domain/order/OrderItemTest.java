@@ -13,11 +13,12 @@ class OrderItemTest {
     void crate() {
         BigDecimal unitPrice = BigDecimal.valueOf(1_000L);
         BigDecimal totalPrice = BigDecimal.valueOf(1_000L);
-        OrderItem orderItem = OrderItem.create(1L, 1L, 1L, "상품1", unitPrice, totalPrice);
+        OrderItem orderItem = OrderItem.create(1L, 1L, 1L, "상품1", "thumbnail-url", unitPrice, totalPrice);
 
         assertThat(orderItem.getOrderId()).isEqualTo(1L);
         assertThat(orderItem.getProductId()).isEqualTo(1L);
         assertThat(orderItem.getProductName()).isEqualTo("상품1");
+        assertThat(orderItem.getThumbnailUrl()).isEqualTo("thumbnail-url");
         assertThat(orderItem.getQuantity()).isEqualTo(1L);
         assertThat(orderItem.getUnitPrice()).isEqualTo(unitPrice);
         assertThat(orderItem.getTotalPrice()).isEqualTo(totalPrice);
