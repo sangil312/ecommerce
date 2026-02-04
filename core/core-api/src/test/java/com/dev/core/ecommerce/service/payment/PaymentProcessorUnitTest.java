@@ -1,23 +1,21 @@
 package com.dev.core.ecommerce.service.payment;
 
-import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.support.error.ApiException;
 import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.ecommerce.domain.payment.Payment;
 import com.dev.core.enums.payment.PaymentMethod;
-import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmFail;
-import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmResult;
-import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmSuccess;
+import com.dev.core.ecommerce.service.payment.dto.PaymentApproveFail;
+import com.dev.core.ecommerce.service.payment.dto.PaymentApproveResult;
+import com.dev.core.ecommerce.service.payment.dto.PaymentApproveSuccess;
 import com.dev.infra.pg.PGClient;
-import com.dev.infra.pg.dto.ConfirmFail;
-import com.dev.infra.pg.dto.ConfirmResult;
-import com.dev.infra.pg.dto.ConfirmSuccess;
+import com.dev.infra.pg.dto.ApproveFail;
+import com.dev.infra.pg.dto.ApproveResult;
+import com.dev.infra.pg.dto.ApproveSuccess;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -25,14 +23,12 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -44,18 +40,21 @@ class PaymentProcessorUnitTest {
     @Mock
     private PaymentWriter paymentWriter;
 
+    @Mock
+    private PaymentPostProcessor paymentPostProcessor;
+
     @InjectMocks
     private PaymentProcessor paymentProcessor;
 
     @Test
     @DisplayName("PG 승인 요청 성공: success 결과 매핑")
-    void requestConfirmSuccess() {
+    void requestApproveSuccess() {
         // given
         String externalPaymentKey = "ext_key";
         String orderKey = "order_123";
         BigDecimal amount = BigDecimal.valueOf(10_000);
 
-        ConfirmSuccess confirmSuccess = new ConfirmSuccess(
+        ApproveSuccess approveSuccess = new ApproveSuccess(
                 externalPaymentKey,
                 orderKey,
                 "CARD",
@@ -63,13 +62,13 @@ class PaymentProcessorUnitTest {
                 "OK",
                 LocalDateTime.now()
         );
-        ConfirmResult confirmResult = new ConfirmResult(true, null, confirmSuccess);
+        ApproveResult approveResult = new ApproveResult(true, null, approveSuccess);
 
-        when(pgClient.requestPaymentConfirm(externalPaymentKey, orderKey, amount))
-                .thenReturn(confirmResult);
+        when(pgClient.requestPaymentApprove(externalPaymentKey, orderKey, amount))
+                .thenReturn(approveResult);
 
         // when
-        PaymentConfirmResult result = paymentProcessor.requestConfirm(externalPaymentKey, orderKey, amount);
+        PaymentApproveResult result = paymentProcessor.requestApprove(externalPaymentKey, orderKey, amount);
 
         // then
         assertTrue(result.isSuccess());
@@ -78,7 +77,8 @@ class PaymentProcessorUnitTest {
         assertEquals(externalPaymentKey, result.success().externalPaymentKey());
         assertEquals(orderKey, result.success().orderKey());
         assertEquals(amount, result.success().amount());
-        verify(pgClient).requestPaymentConfirm(externalPaymentKey, orderKey, amount);
+
+        verify(pgClient).requestPaymentApprove(externalPaymentKey, orderKey, amount);
     }
 
     @Test
@@ -88,14 +88,14 @@ class PaymentProcessorUnitTest {
         String externalPaymentKey = "ext_key";
         String orderKey = "order_123";
         BigDecimal amount = BigDecimal.valueOf(10_000);
-        ConfirmFail confirmFail = new ConfirmFail("ERROR", "FAIL");
-        ConfirmResult confirmResult = new ConfirmResult(false, confirmFail, null);
+        ApproveFail approveFail = new ApproveFail("ERROR", "FAIL");
+        ApproveResult approveResult = new ApproveResult(false, approveFail, null);
 
-        when(pgClient.requestPaymentConfirm(externalPaymentKey, orderKey, amount))
-                .thenReturn(confirmResult);
+        when(pgClient.requestPaymentApprove(externalPaymentKey, orderKey, amount))
+                .thenReturn(approveResult);
 
         // when
-        PaymentConfirmResult result = paymentProcessor.requestConfirm(externalPaymentKey, orderKey, amount);
+        PaymentApproveResult result = paymentProcessor.requestApprove(externalPaymentKey, orderKey, amount);
 
         // then
         assertFalse(result.isSuccess());
@@ -103,122 +103,114 @@ class PaymentProcessorUnitTest {
         assertNull(result.success());
         assertEquals("ERROR", result.fail().code());
         assertEquals("FAIL", result.fail().message());
-        verify(pgClient).requestPaymentConfirm(externalPaymentKey, orderKey, amount);
+
+        verify(pgClient).requestPaymentApprove(externalPaymentKey, orderKey, amount);
     }
 
     @Test
-    @DisplayName("PG 승인 성공: 요청 데이터와 일치 시 paymentSuccess 호출")
+    @DisplayName("PG 승인 성공: 요청 데이터와 일치 시 approveSuccess 호출")
     void validatePaymentConfirmSuccess() {
         // given
-        User user = new User(1L);
-        Payment payment = Mockito.mock(Payment.class);
+        Payment payment = mock(Payment.class);
         String orderKey = "order_123";
         String externalPaymentKey = "ext_key";
         BigDecimal amount = BigDecimal.valueOf(10_000);
 
-        PaymentConfirmSuccess paymentConfirmSuccess = new PaymentConfirmSuccess(
+        PaymentApproveSuccess paymentApproveSuccess = new PaymentApproveSuccess(
                 externalPaymentKey, orderKey, PaymentMethod.CARD, amount, LocalDateTime.now()
         );
 
-        PaymentConfirmResult paymentConfirmResult = new PaymentConfirmResult(true, paymentConfirmSuccess, null);
+        PaymentApproveResult paymentApproveResult = new PaymentApproveResult(true, paymentApproveSuccess, null);
 
         // when
-        paymentProcessor.validatePaymentConfirm(
-                user, payment, orderKey, externalPaymentKey, amount, paymentConfirmResult
-        );
+        paymentProcessor.process(payment, orderKey, externalPaymentKey, amount, paymentApproveResult);
 
         // then
-        verify(paymentWriter).paymentSuccess(user, payment, paymentConfirmSuccess);
-        verify(paymentWriter, never()).paymentFail(any(), any(), any());
-        verify(paymentWriter, never()).paymentMismatch(any(), any(), any());
+        verify(paymentWriter).approveSuccess(payment.getUserId(), payment, paymentApproveSuccess);
+        verify(paymentPostProcessor).processSuccess(any(), any(), any());
+        verify(paymentWriter, never()).approveFail(any(), any(), any());
+        verify(paymentWriter, never()).approveMismatch(any(), any(), any());
     }
 
     @Test
-    @DisplayName("PG 승인 성공: orderKey 불일치 시 paymentMismatch 호출 및 예외 발생")
+    @DisplayName("PG 승인 성공: orderKey 불일치 시 approveMismatch 호출 및 예외 발생")
     void validatePaymentConfirmOrderKeyMismatch() {
         // given
-        User user = new User(1L);
-        Payment payment = Mockito.mock(Payment.class);
-        PaymentConfirmSuccess paymentConfirmSuccess = new PaymentConfirmSuccess(
+        Payment payment = mock(Payment.class);
+        PaymentApproveSuccess paymentApproveSuccess = new PaymentApproveSuccess(
                 "ext_key", "wrong_order_key", PaymentMethod.CARD,
                 BigDecimal.valueOf(10_000), LocalDateTime.now()
         );
-        PaymentConfirmResult paymentConfirmResult = new PaymentConfirmResult(true, paymentConfirmSuccess, null);
+        PaymentApproveResult paymentApproveResult = new PaymentApproveResult(true, paymentApproveSuccess, null);
 
         // when then
         assertThatThrownBy(() ->
-                paymentProcessor.validatePaymentConfirm(
-                        user,
+                paymentProcessor.process(
                         payment,
                         "order_123",
                         "ext_key",
-                        BigDecimal.valueOf(10_000), paymentConfirmResult
+                        BigDecimal.valueOf(10_000), paymentApproveResult
                 )
         )
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_APPROVE_MISMATCH);
 
-        verify(paymentWriter).paymentMismatch(payment, "ext_key", paymentConfirmSuccess);
-        verify(paymentWriter, never()).paymentSuccess(any(), any(), any());
-        verify(paymentWriter, never()).paymentFail(any(), any(), any());
+        verify(paymentWriter).approveMismatch(payment, "ext_key", paymentApproveSuccess);
+        verify(paymentWriter, never()).approveSuccess(any(), any(), any());
+        verify(paymentWriter, never()).approveFail(any(), any(), any());
     }
 
     @Test
-    @DisplayName("PG 승인 성공: amount 불일치 시 paymentMismatch 호출 및 예외 발생")
+    @DisplayName("PG 승인 성공: amount 불일치 시 approveMismatch 호출 및 예외 발생")
     void validatePaymentConfirmAmountMismatch() {
         // given
-        User user = new User(1L);
-        Payment payment = Mockito.mock(Payment.class);
+        Payment payment = mock(Payment.class);
         BigDecimal mismatchAmount = BigDecimal.valueOf(5_000);
 
-        PaymentConfirmSuccess paymentConfirmSuccess = new PaymentConfirmSuccess(
+        PaymentApproveSuccess paymentApproveSuccess = new PaymentApproveSuccess(
                 "ext_key",
                 "order_123",
                 PaymentMethod.CARD,
                 mismatchAmount, LocalDateTime.now()
         );
 
-        PaymentConfirmResult paymentConfirmResult = new PaymentConfirmResult(true, paymentConfirmSuccess, null);
+        PaymentApproveResult paymentApproveResult = new PaymentApproveResult(true, paymentApproveSuccess, null);
 
         // when then
         assertThatThrownBy(() ->
-                paymentProcessor.validatePaymentConfirm(
-                        user,
+                paymentProcessor.process(
                         payment,
                         "order_123",
                         "ext_key",
-                        BigDecimal.valueOf(10_000), paymentConfirmResult
+                        BigDecimal.valueOf(10_000), paymentApproveResult
                 )
         )
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_APPROVE_MISMATCH);
 
-        verify(paymentWriter).paymentMismatch(payment, "ext_key", paymentConfirmSuccess);
-        verify(paymentWriter, never()).paymentSuccess(any(), any(), any());
-        verify(paymentWriter, never()).paymentFail(any(), any(), any());
+        verify(paymentWriter).approveMismatch(payment, "ext_key", paymentApproveSuccess);
+        verify(paymentWriter, never()).approveSuccess(any(), any(), any());
+        verify(paymentWriter, never()).approveFail(any(), any(), any());
     }
 
     @Test
-    @DisplayName("PG 승인 실패: paymentFail 호출")
+    @DisplayName("PG 승인 실패: approveFail 호출")
     void validatePaymentConfirmFail() {
         // given
-        User user = new User(1L);
-        Payment payment = Mockito.mock(Payment.class);
-        PaymentConfirmFail paymentConfirmFail = new PaymentConfirmFail("ERROR", "한도초과");
-        PaymentConfirmResult paymentConfirmResult = new PaymentConfirmResult(false, null, paymentConfirmFail);
+        Payment payment = mock(Payment.class);
+        PaymentApproveFail paymentApproveFail = new PaymentApproveFail("ERROR", "?쒕룄珥덇낵");
+        PaymentApproveResult paymentApproveResult = new PaymentApproveResult(false, null, paymentApproveFail);
 
         // when
-        paymentProcessor.validatePaymentConfirm(
-                user,
+        paymentProcessor.process(
                 payment,
                 "order_123",
                 "ext_key",
-                BigDecimal.valueOf(10_000), paymentConfirmResult
+                BigDecimal.valueOf(10_000), paymentApproveResult
         );
 
         // then
-        verify(paymentWriter).paymentFail(payment, "ext_key", paymentConfirmFail);
-        verify(paymentWriter, never()).paymentSuccess(any(), any(), any());
+        verify(paymentWriter).approveFail(payment, "ext_key", paymentApproveFail);
+        verify(paymentWriter, never()).approveSuccess(any(), any(), any());
     }
 }
-

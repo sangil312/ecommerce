@@ -3,7 +3,6 @@ package com.dev.core.ecommerce.service.order;
 import com.dev.core.ecommerce.repository.order.OrderItemRepository;
 import com.dev.core.ecommerce.repository.order.OrderRepository;
 import com.dev.core.ecommerce.service.order.dto.OrderAndItem;
-import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.domain.order.Order;
 import com.dev.core.ecommerce.support.error.ApiException;
 import com.dev.core.ecommerce.support.error.ErrorType;
@@ -21,10 +20,10 @@ public class OrderReader {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
 
-    public Order findOrder(User user, String orderKey, OrderStatus status) {
+    public Order findOrder(Long userId, String orderKey, OrderStatus status) {
         var order = orderRepository.findByOrderKeyAndStatusAndState(orderKey, status, EntityState.ACTIVE)
                 .orElseThrow(() -> new ApiException(ErrorType.ORDER_NOT_FOUND));
-        if (!Objects.equals(order.getUserId(), user.id())) throw new ApiException(ErrorType.ORDER_NOT_FOUND);
+        if (!Objects.equals(order.getUserId(), userId)) throw new ApiException(ErrorType.ORDER_NOT_FOUND);
 
         var existsOrderItem = orderItemRepository.existsByOrderId(order.getId());
         if (!existsOrderItem) throw new ApiException(ErrorType.ORDER_NOT_FOUND);
@@ -32,10 +31,10 @@ public class OrderReader {
         return order;
     }
 
-    public OrderAndItem findOrderAndItems(User user, String orderKey, OrderStatus status) {
+    public OrderAndItem findOrderAndItems(Long userId, String orderKey, OrderStatus status) {
         var order = orderRepository.findByOrderKeyAndStatusAndState(orderKey, status, EntityState.ACTIVE)
                 .orElseThrow(() -> new ApiException(ErrorType.ORDER_NOT_FOUND));
-        if (!Objects.equals(order.getUserId(), user.id())) throw new ApiException(ErrorType.ORDER_NOT_FOUND);
+        if (!Objects.equals(order.getUserId(), userId)) throw new ApiException(ErrorType.ORDER_NOT_FOUND);
 
         var orderItems = orderItemRepository.findByOrderId(order.getId());
         if (orderItems.isEmpty()) throw new ApiException(ErrorType.ORDER_NOT_FOUND);

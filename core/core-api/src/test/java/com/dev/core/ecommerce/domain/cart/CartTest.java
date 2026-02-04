@@ -1,7 +1,6 @@
 package com.dev.core.ecommerce.domain.cart;
 
 import com.dev.core.ecommerce.service.order.dto.NewOrder;
-import com.dev.core.ecommerce.service.product.ProductBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -13,8 +12,8 @@ class CartTest {
 
     @Test
     void of() {
-        CartItem cartItem1 = CartItem.create(1L, new ProductBuilder().build(), 1L);
-        CartItem cartItem2 = CartItem.create(1L, new ProductBuilder().build(), 1L);
+        CartItem cartItem1 = CartItem.create(1L, 1L, 1L);
+        CartItem cartItem2 = CartItem.create(1L, 1L, 1L);
 
         Cart cart = Cart.of(1L, List.of(cartItem1, cartItem2));
 
@@ -24,8 +23,8 @@ class CartTest {
 
     @Test
     void toNewOrder() {
-        CartItem cartItem1 = CartItem.create(1L, new ProductBuilder().build(), 1L);
-        CartItem cartItem2 = CartItem.create(1L, new ProductBuilder().build(), 1L);
+        CartItem cartItem1 = CartItem.create(1L, 1L, 1L);
+        CartItem cartItem2 = CartItem.create(1L, 1L, 1L);
 
         Cart cart = Cart.of(1L, List.of(cartItem1, cartItem2));
 

@@ -1,8 +1,7 @@
 package com.dev.core.ecommerce.service.payment;
 
-import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmFail;
-import com.dev.core.ecommerce.service.payment.dto.PaymentConfirmSuccess;
-import com.dev.core.ecommerce.support.auth.User;
+import com.dev.core.ecommerce.service.payment.dto.PaymentApproveFail;
+import com.dev.core.ecommerce.service.payment.dto.PaymentApproveSuccess;
 import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.ecommerce.domain.order.OrderItem;
 import com.dev.core.ecommerce.domain.payment.TransactionHistory;
@@ -48,13 +47,12 @@ class PaymentWriterTest extends IntegrationTestSupport {
     @Autowired
     private TransactionHistoryRepository transactionHistoryRepository;
 
-    private User testUser;
+    private final Long userId = 1L;
     private Order testOrder;
 
     @BeforeEach
     void setUp() {
-        testUser = new User(1L);
-        testOrder = orderRepository.save(Order.create(testUser.id(), BigDecimal.valueOf(1_000)));
+        testOrder = orderRepository.save(Order.create(userId, BigDecimal.valueOf(1_000)));
         orderItemRepository.save(
                 OrderItem.create(
                         testOrder.getId(),
@@ -102,9 +100,9 @@ class PaymentWriterTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("결제 승인 성공: 결제 상태 SUCCESS, 주문 상태 PAID, 결제 승인 내역 생성")
-    void paymentSuccess() {
+    void approveSuccess() {
         // given
-        PaymentConfirmSuccess paymentConfirmSuccess = new PaymentConfirmSuccess(
+        PaymentApproveSuccess paymentApproveSuccess = new PaymentApproveSuccess(
                 "ext_payment_key_123",
                 testOrder.getOrderKey(),
                 PaymentMethod.CARD,
@@ -115,7 +113,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
         Payment savedPayment = createPayment();
 
         // when
-        paymentWriter.paymentSuccess(testUser, savedPayment, paymentConfirmSuccess);
+        paymentWriter.approveSuccess(userId, savedPayment, paymentApproveSuccess);
 
         // then 결제 상태 확인
         Payment updatedPayment = paymentRepository.findById(savedPayment.getId()).orElseThrow();
@@ -131,7 +129,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
         // then 거래 내역 확인
         TransactionHistory transactionHistory = transactionHistoryRepository
                 .findByPaymentId(updatedPayment.getId()).orElseThrow();
-        assertThat(transactionHistory.getUserId()).isEqualTo(testUser.id());
+        assertThat(transactionHistory.getUserId()).isEqualTo(userId);
         assertThat(transactionHistory.getOrderId()).isEqualTo(testOrder.getId());
         assertThat(transactionHistory.getPaymentId()).isEqualTo(savedPayment.getId());
         assertThat(transactionHistory.getType()).isEqualTo(TransactionType.PAYMENT);
@@ -142,13 +140,13 @@ class PaymentWriterTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("결제 승인 성공: 존재하지 않는 결제면 예외 발생")
-    void paymentSuccessWithPaymentNotFound() {
+    void paymentSuccessWithApproveNotFound() {
         // given
-        Payment deletedPayment = Payment.create(testUser.id(), testOrder.getId(), BigDecimal.valueOf(10_000));
+        Payment deletedPayment = Payment.create(userId, testOrder.getId(), BigDecimal.valueOf(10_000));
         deletedPayment = paymentRepository.save(deletedPayment);
         paymentRepository.delete(deletedPayment);
 
-        PaymentConfirmSuccess paymentConfirmSuccess = new PaymentConfirmSuccess(
+        PaymentApproveSuccess paymentApproveSuccess = new PaymentApproveSuccess(
                 "ext_payment_key_123",
                 testOrder.getOrderKey(),
                 PaymentMethod.CARD,
@@ -160,7 +158,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
 
         // when then
         assertThatThrownBy(() ->
-                paymentWriter.paymentSuccess(testUser, invalidPayment, paymentConfirmSuccess)
+                paymentWriter.approveSuccess(userId, invalidPayment, paymentApproveSuccess)
         )
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_NOT_FOUND);
@@ -174,7 +172,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
         String externalPaymentKey = "ext_payment_key_123";
         BigDecimal mismatchAmount = BigDecimal.valueOf(5_000);
 
-        PaymentConfirmSuccess mismatchSuccess = new PaymentConfirmSuccess(
+        PaymentApproveSuccess mismatchSuccess = new PaymentApproveSuccess(
                 externalPaymentKey,
                 "order_key_123",
                 PaymentMethod.CARD,
@@ -185,7 +183,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
         Payment savedPayment = createPayment();
 
         // when
-        paymentWriter.paymentMismatch(savedPayment, externalPaymentKey, mismatchSuccess);
+        paymentWriter.approveMismatch(savedPayment, externalPaymentKey, mismatchSuccess);
 
         // then 결제 상태 확인
         Payment updatedPayment = paymentRepository.findById(savedPayment.getId()).orElseThrow();
@@ -196,7 +194,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
         // then 거래 내역 확인
         TransactionHistory transactionHistory = transactionHistoryRepository
                 .findByPaymentId(updatedPayment.getId()).orElseThrow();
-        assertThat(transactionHistory.getUserId()).isEqualTo(testUser.id());
+        assertThat(transactionHistory.getUserId()).isEqualTo(userId);
         assertThat(transactionHistory.getOrderId()).isEqualTo(testOrder.getId());
         assertThat(transactionHistory.getPaymentId()).isEqualTo(savedPayment.getId());
         assertThat(transactionHistory.getType()).isEqualTo(TransactionType.PAYMENT_FAIL);
@@ -209,11 +207,11 @@ class PaymentWriterTest extends IntegrationTestSupport {
     @DisplayName("결제 승인 정보 불일치 시 존재하지 않는 결제면 예외 발생")
     void paymentConfirmMismatchWithPaymentNotFound() {
         // given
-        Payment deletedPayment = Payment.create(testUser.id(), testOrder.getId(), BigDecimal.valueOf(10_000));
+        Payment deletedPayment = Payment.create(userId, testOrder.getId(), BigDecimal.valueOf(10_000));
         deletedPayment = paymentRepository.save(deletedPayment);
         paymentRepository.delete(deletedPayment);
 
-        PaymentConfirmSuccess mismatchSuccess = new PaymentConfirmSuccess(
+        PaymentApproveSuccess mismatchSuccess = new PaymentApproveSuccess(
                 "ext_key",
                 "order_key_123",
                 PaymentMethod.CARD,
@@ -225,7 +223,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
 
         // when then
         assertThatThrownBy(() ->
-                paymentWriter.paymentMismatch(invalidPayment, "ext_key", mismatchSuccess)
+                paymentWriter.approveMismatch(invalidPayment, "ext_key", mismatchSuccess)
         )
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_NOT_FOUND);
@@ -234,15 +232,15 @@ class PaymentWriterTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("결제 승인 실패: 결제 상태 PENDING, 결제 승인 실패 내역 생성")
-    void paymentFail() {
+    void approveFail() {
         // given
         String externalPaymentKey = "ext_payment_key_fail";
-        PaymentConfirmFail paymentConfirmFail = new PaymentConfirmFail("ERROR", "한도초과");
+        PaymentApproveFail paymentApproveFail = new PaymentApproveFail("ERROR", "한도초과");
 
         Payment savedPayment = createPayment();
 
         // when
-        paymentWriter.paymentFail(savedPayment, externalPaymentKey, paymentConfirmFail);
+        paymentWriter.approveFail(savedPayment, externalPaymentKey, paymentApproveFail);
 
         // then 결제 상태 확인
         Payment updatedPayment = paymentRepository.findById(savedPayment.getId()).orElseThrow();
@@ -252,7 +250,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
         // then 거래 내역 확인
         TransactionHistory transactionHistory = transactionHistoryRepository
                 .findByPaymentId(updatedPayment.getId()).orElseThrow();
-        assertThat(transactionHistory.getUserId()).isEqualTo(testUser.id());
+        assertThat(transactionHistory.getUserId()).isEqualTo(userId);
         assertThat(transactionHistory.getOrderId()).isEqualTo(testOrder.getId());
         assertThat(transactionHistory.getPaymentId()).isEqualTo(savedPayment.getId());
         assertThat(transactionHistory.getType()).isEqualTo(TransactionType.PAYMENT_FAIL);
@@ -263,19 +261,19 @@ class PaymentWriterTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("결제 승인 실패: 존재하지 않는 결제면 예외 발생")
-    void paymentFailWithPaymentNotFound() {
+    void paymentFailWithApproveNotFound() {
         // given
-        Payment deletedPayment = Payment.create(testUser.id(), testOrder.getId(), BigDecimal.valueOf(10_000));
+        Payment deletedPayment = Payment.create(userId, testOrder.getId(), BigDecimal.valueOf(10_000));
         deletedPayment = paymentRepository.save(deletedPayment);
         paymentRepository.delete(deletedPayment);
 
-        PaymentConfirmFail paymentConfirmFail = new PaymentConfirmFail("ERROR", "한도초과");
+        PaymentApproveFail paymentApproveFail = new PaymentApproveFail("ERROR", "한도초과");
 
         Payment invalidPayment = deletedPayment;
 
         // when then
         assertThatThrownBy(() ->
-                paymentWriter.paymentFail(invalidPayment, "ext_key", paymentConfirmFail)
+                paymentWriter.approveFail(invalidPayment, "ext_key", paymentApproveFail)
         )
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_NOT_FOUND);
@@ -299,7 +297,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
         // then 거래 내역 확인
         TransactionHistory transactionHistory = transactionHistoryRepository
                 .findByPaymentId(updatedPayment.getId()).orElseThrow();
-        assertThat(transactionHistory.getUserId()).isEqualTo(testUser.id());
+        assertThat(transactionHistory.getUserId()).isEqualTo(userId);
         assertThat(transactionHistory.getOrderId()).isEqualTo(testOrder.getId());
         assertThat(transactionHistory.getPaymentId()).isEqualTo(updatedPayment.getId());
         assertThat(transactionHistory.getType()).isEqualTo(TransactionType.PAYMENT);
@@ -313,7 +311,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
     void callBackFailWithPaymentNotFound() {
         // given
         Order orderWithoutPayment = orderRepository.save(
-                Order.create(testUser.id(), BigDecimal.valueOf(5_000))
+                Order.create(userId, BigDecimal.valueOf(5_000))
         );
 
         // when then
@@ -326,7 +324,7 @@ class PaymentWriterTest extends IntegrationTestSupport {
 
     private Payment createPayment() {
         return paymentRepository.save(
-                Payment.create(testUser.id(), testOrder.getId(), BigDecimal.valueOf(10_000))
+                Payment.create(userId, testOrder.getId(), BigDecimal.valueOf(10_000))
         );
     }
 }

@@ -15,7 +15,7 @@ public class OrderUseCase {
     private final CartService cartService;
 
     public String createFromCart(User user, Collection<Long> cartItemIds) {
-        var cart = cartService.find(user, cartItemIds);
-        return orderService.create(user, cart.toNewOrder());
+        var cart = cartService.findCart(user, cartItemIds);
+        return orderService.createOrder(user, cart.toNewOrder());
     }
 }

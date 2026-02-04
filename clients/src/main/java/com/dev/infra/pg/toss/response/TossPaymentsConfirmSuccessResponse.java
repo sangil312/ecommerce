@@ -1,7 +1,7 @@
 package com.dev.infra.pg.toss.response;
 
-import com.dev.infra.pg.dto.ConfirmResult;
-import com.dev.infra.pg.dto.ConfirmSuccess;
+import com.dev.infra.pg.dto.ApproveResult;
+import com.dev.infra.pg.dto.ApproveSuccess;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,8 +13,8 @@ public record TossPaymentsConfirmSuccessResponse(
         String status,
         BigDecimal totalAmount
 ) {
-    public ConfirmResult toPaymentResult() {
-        ConfirmSuccess confirmSuccess = new ConfirmSuccess(
+    public ApproveResult toPaymentResult() {
+        ApproveSuccess approveSuccess = new ApproveSuccess(
                 paymentKey,
                 orderId,
                 method,
@@ -22,6 +22,6 @@ public record TossPaymentsConfirmSuccessResponse(
                 "결제 성공",
                 LocalDateTime.now()
         );
-        return new ConfirmResult(true, null, confirmSuccess);
+        return new ApproveResult(true, null, approveSuccess);
     }
 }

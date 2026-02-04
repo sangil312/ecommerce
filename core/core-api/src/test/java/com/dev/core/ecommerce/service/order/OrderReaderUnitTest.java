@@ -5,7 +5,6 @@ import com.dev.core.ecommerce.domain.order.OrderItem;
 import com.dev.core.ecommerce.repository.order.OrderItemRepository;
 import com.dev.core.ecommerce.repository.order.OrderRepository;
 import com.dev.core.ecommerce.service.order.dto.OrderAndItem;
-import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.support.error.ApiException;
 import com.dev.core.ecommerce.support.error.ErrorType;
 import com.dev.core.enums.EntityState;
@@ -38,12 +37,13 @@ class OrderReaderUnitTest {
     @InjectMocks
     private OrderReader orderReader;
 
+    private final Long userId = 1L;
+
     @Test
     @DisplayName("주문서 조회: 주문과 주문 상품을 함께 응답")
     void findOrderAndItems() {
         // given
-        User user = new User(1L);
-        Order order = Order.create(user.id(), BigDecimal.valueOf(10_000));
+        Order order = Order.create(userId, BigDecimal.valueOf(10_000));
         OrderStatus status = OrderStatus.CREATED;
         String orderKey = order.getOrderKey();
         List<OrderItem> items = List.of(
@@ -63,7 +63,7 @@ class OrderReaderUnitTest {
         when(orderItemRepository.findByOrderId(order.getId())).thenReturn(items);
 
         // when
-        OrderAndItem result = orderReader.findOrderAndItems(user, orderKey, status);
+        OrderAndItem result = orderReader.findOrderAndItems(userId, orderKey, status);
 
         // then
         assertThat(result.orderId()).isEqualTo(order.getId());
@@ -81,7 +81,6 @@ class OrderReaderUnitTest {
     @DisplayName("주문서 조회: 주문이 없으면 예외 발생")
     void findOrderAndItemsWithInvalidOrderThrowException() {
         // given
-        User user = new User(1L);
         OrderStatus status = OrderStatus.CREATED;
         String orderKey = "invalid-order-key";
 
@@ -89,7 +88,7 @@ class OrderReaderUnitTest {
                 .thenReturn(Optional.empty());
 
         // when then
-        assertThatThrownBy(() -> orderReader.findOrderAndItems(user, orderKey, status))
+        assertThatThrownBy(() -> orderReader.findOrderAndItems(userId, orderKey, status))
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.ORDER_NOT_FOUND);
 
@@ -100,8 +99,7 @@ class OrderReaderUnitTest {
     @DisplayName("주문서 조회: 주문 상품이 없으면 예외 발생")
     void findOrderAndItemsWithEmptyItemsThrowException() {
         // given
-        User user = new User(1L);
-        Order order = Order.create(user.id(), BigDecimal.valueOf(10_000));
+        Order order = Order.create(userId, BigDecimal.valueOf(10_000));
         OrderStatus status = OrderStatus.CREATED;
         String orderKey = order.getOrderKey();
 
@@ -111,7 +109,7 @@ class OrderReaderUnitTest {
                 .thenReturn(List.of());
 
         // when then
-        assertThatThrownBy(() -> orderReader.findOrderAndItems(user, orderKey, status))
+        assertThatThrownBy(() -> orderReader.findOrderAndItems(userId, orderKey, status))
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.ORDER_NOT_FOUND);
 
@@ -123,16 +121,15 @@ class OrderReaderUnitTest {
     @DisplayName("주문서 조회: 사용자 불일치면 예외 발생")
     void findOrderAndItemsWithUserMismatchThrowException() {
         // given
-        User user = new User(1L);
-        Order order = Order.create(2L, BigDecimal.valueOf(10_000));
+        Order diffrentOrder = Order.create(2L, BigDecimal.valueOf(10_000));
         OrderStatus status = OrderStatus.CREATED;
-        String orderKey = order.getOrderKey();
+        String orderKey = diffrentOrder.getOrderKey();
 
         when(orderRepository.findByOrderKeyAndStatusAndState(orderKey, status, EntityState.ACTIVE))
-                .thenReturn(Optional.of(order));
+                .thenReturn(Optional.of(diffrentOrder));
 
         // when then
-        assertThatThrownBy(() -> orderReader.findOrderAndItems(user, orderKey, status))
+        assertThatThrownBy(() -> orderReader.findOrderAndItems(userId, orderKey, status))
                 .isInstanceOf(ApiException.class)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.ORDER_NOT_FOUND);
 

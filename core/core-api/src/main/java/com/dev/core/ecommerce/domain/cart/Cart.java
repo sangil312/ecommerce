@@ -15,7 +15,7 @@ public record Cart(
 
     public NewOrder toNewOrder() {
         List<NewOrderItem> newOrderItems = items.stream()
-                .map(it -> new NewOrderItem(it.getProduct().getId(), it.getQuantity()))
+                .map(it -> new NewOrderItem(it.getProductId(), it.getQuantity()))
                 .toList();
 
         return new NewOrder(userId, newOrderItems);
