@@ -47,6 +47,7 @@ class OrderReaderTest extends IntegrationTestSupport {
                         1L,
                         1L,
                         "테스트 상품",
+                        "thumbnail-url",
                         BigDecimal.valueOf(10_000),
                         BigDecimal.valueOf(10_000)
                 )

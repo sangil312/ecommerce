@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS `order_item` (
     order_id BIGINT NOT NULL,
     product_id BIGINT NOT NULL,
     product_name VARCHAR(150) NOT NULL,
+    thumbnail_url VARCHAR(255) NOT NULL,
     quantity BIGINT NOT NULL,
     unit_price DECIMAL(15, 2) NOT NULL,
     total_price DECIMAL(15, 2) NOT NULL,

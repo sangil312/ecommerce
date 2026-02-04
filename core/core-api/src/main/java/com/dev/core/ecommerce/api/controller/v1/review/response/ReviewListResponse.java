@@ -7,13 +7,13 @@ import java.util.List;
 public record ReviewListResponse(
         String productName,
         RateSummary rateSummary,
-        List<ReviewResponse2> contents,
+        List<ReviewResponse> contents,
         Boolean hasNext
 ) {
     public static ReviewListResponse of(
             String productName,
             RateSummary rateSummary,
-            List<ReviewResponse2> reviewResponsePage,
+            List<ReviewResponse> reviewResponsePage,
             Boolean hasNext
     ) {
 

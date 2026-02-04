@@ -55,6 +55,7 @@ public class OrderWriter {
                             product.getId(),
                             item.quantity(),
                             product.getName(),
+                            product.getThumbnailUrl(),
                             product.getPrice(),
                             totalPrice
                     );
