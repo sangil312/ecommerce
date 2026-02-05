@@ -100,7 +100,10 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
                         ),
                         responseFields(
                                 fieldWithPath("resultType").type(JsonFieldType.STRING).description("요청 결과"),
-                                fieldWithPath("data").type(JsonFieldType.NULL).description("응답 객체").optional(),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 객체"),
+                                fieldWithPath("data.isSuccess").type(JsonFieldType.BOOLEAN).description("결제 승인 성공 여부"),
+                                fieldWithPath("data.code").type(JsonFieldType.NULL).description("결제 실패 코드").optional(),
+                                fieldWithPath("data.message").type(JsonFieldType.NULL).description("결제 실패 메세지").optional(),
                                 fieldWithPath("error").type(JsonFieldType.NULL).description("에러 응답 객체").optional()
                         )
                 ));
@@ -134,6 +137,7 @@ class PaymentControllerRestDocsTest extends RestDocsSupport {
                         responseFields(
                                 fieldWithPath("resultType").type(JsonFieldType.STRING).description("요청 결과"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 객체"),
+                                fieldWithPath("data.isSuccess").type(JsonFieldType.BOOLEAN).description("결제 승인 성공 여부"),
                                 fieldWithPath("data.code").type(JsonFieldType.STRING).description("결제 실패 코드"),
                                 fieldWithPath("data.message").type(JsonFieldType.STRING).description("결제 실패 메세지"),
                                 fieldWithPath("error").type(JsonFieldType.NULL).description("에러 응답 객체").optional()

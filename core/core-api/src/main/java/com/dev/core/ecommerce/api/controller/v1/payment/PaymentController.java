@@ -3,7 +3,7 @@ package com.dev.core.ecommerce.api.controller.v1.payment;
 import com.dev.core.ecommerce.api.controller.v1.payment.usecase.PaymentUseCase;
 import com.dev.core.ecommerce.support.auth.User;
 import com.dev.core.ecommerce.api.controller.v1.payment.request.CreatePaymentRequest;
-import com.dev.core.ecommerce.api.controller.v1.payment.response.CallbackSuccessResponse;
+import com.dev.core.ecommerce.api.controller.v1.payment.response.PaymentApproveResponse;
 import com.dev.core.ecommerce.api.controller.v1.payment.response.CreatePaymentResponse;
 import com.dev.core.ecommerce.api.controller.v1.response.ApiResponse;
 import com.dev.core.ecommerce.service.payment.PaymentService;
@@ -32,18 +32,14 @@ public class PaymentController {
     }
 
     @PostMapping("/v1/payments/callback/success")
-    public ApiResponse<Object> callbackSuccess(
+    public ApiResponse<PaymentApproveResponse> callbackSuccess(
             User user,
             @RequestParam String orderId,
             @RequestParam String paymentKey,
             @RequestParam BigDecimal amount
     ) {
         var paymentResult = paymentService.success(user, orderId, paymentKey, amount);
-        return paymentResult.isSuccess()
-                ? ApiResponse.success()
-                : ApiResponse.success(
-                        new CallbackSuccessResponse(paymentResult.fail().code(), paymentResult.fail().message())
-                );
+        return ApiResponse.success(PaymentApproveResponse.of(paymentResult));
     }
 
     @PostMapping("/v1/payments/callback/fail")
