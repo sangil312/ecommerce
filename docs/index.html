@@ -492,7 +492,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 404 Not Found
 Content-Type: application/json
-Content-Length: 143
+Content-Length: 150
 
 {
   "resultType" : "ERROR",
@@ -565,7 +565,7 @@ Content-Length: 143
 <h3 id="_주문서_조회"><a class="anchor" href="#_주문서_조회"></a>주문서 조회</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/orders/33fa96d2-6182-46d2-b413-de921037c41f/checkout HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/orders/a8550f4d-f838-4ef1-9d5b-e350989ca9b7/checkout HTTP/1.1
 Content-Type: application/json
 Host: localhost:8080</code></pre>
 </div>
@@ -597,12 +597,12 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 360
+Content-Length: 375
 
 {
   "resultType" : "SUCCESS",
   "data" : {
-    "orderKey" : "33fa96d2-6182-46d2-b413-de921037c41f",
+    "orderKey" : "a8550f4d-f838-4ef1-9d5b-e350989ca9b7",
     "totalPrice" : 10000,
     "items" : [ {
       "productId" : 1,
@@ -718,7 +718,7 @@ Content-Length: 360
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/orders HTTP/1.1
 Content-Type: application/json
-Content-Length: 39
+Content-Length: 42
 Host: localhost:8080
 
 {
@@ -763,12 +763,12 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 122
+Content-Length: 128
 
 {
   "resultType" : "SUCCESS",
   "data" : {
-    "orderKey" : "8396dc56-2092-43a3-b773-530341f68fe2"
+    "orderKey" : "cc19dca2-e945-4228-b13f-073ba4ec3dbe"
   },
   "error" : null
 }</code></pre>
@@ -827,7 +827,7 @@ Content-Length: 122
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/cart-orders HTTP/1.1
 Content-Type: application/json
-Content-Length: 30
+Content-Length: 32
 Host: localhost:8080
 
 {
@@ -865,12 +865,12 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 122
+Content-Length: 128
 
 {
   "resultType" : "SUCCESS",
   "data" : {
-    "orderKey" : "fbd9fdee-1064-4866-acc6-64194af4d767"
+    "orderKey" : "ed3fbced-108d-49e3-b35e-50811480de70"
   },
   "error" : null
 }</code></pre>
@@ -934,7 +934,7 @@ Content-Length: 122
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/payments HTTP/1.1
 Content-Type: application/json
-Content-Length: 30
+Content-Length: 32
 Host: localhost:8080
 
 {
@@ -972,7 +972,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 86
+Content-Length: 92
 
 {
   "resultType" : "SUCCESS",
@@ -1079,11 +1079,15 @@ orderId=order-123&amp;paymentKey=pay-1&amp;amount=1000</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 65
+Content-Length: 138
 
 {
   "resultType" : "SUCCESS",
-  "data" : null,
+  "data" : {
+    "isSuccess" : true,
+    "code" : null,
+    "message" : null
+  },
   "error" : null
 }</code></pre>
 </div>
@@ -1115,9 +1119,27 @@ Content-Length: 65
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 객체</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.isSuccess</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결제 승인 성공 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.code</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">응답 객체</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결제 실패 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결제 실패 메세지</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>error</code></p></td>
@@ -1178,11 +1200,12 @@ orderId=order-123&amp;paymentKey=pay-1&amp;amount=1000</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 125
+Content-Length: 158
 
 {
   "resultType" : "SUCCESS",
   "data" : {
+    "isSuccess" : false,
     "code" : "ERROR_CODE",
     "message" : "한도 초과"
   },
@@ -1220,6 +1243,12 @@ Content-Length: 125
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">응답 객체</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.isSuccess</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결제 승인 성공 여부</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.code</code></p></td>
@@ -1292,7 +1321,7 @@ orderId=order-123&amp;code=FAIL&amp;message=failed</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 65
+Content-Length: 69
 
 {
   "resultType" : "SUCCESS",
@@ -1398,7 +1427,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 320
+Content-Length: 335
 
 {
   "resultType" : "SUCCESS",
@@ -1549,7 +1578,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 292
+Content-Length: 305
 
 {
   "resultType" : "SUCCESS",
@@ -1717,7 +1746,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 505
+Content-Length: 529
 
 {
   "resultType" : "SUCCESS",
@@ -1889,7 +1918,7 @@ Content-Length: 505
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/reviews HTTP/1.1
 Content-Type: application/json
-Content-Length: 116
+Content-Length: 122
 Host: localhost:8080
 
 {
@@ -1955,7 +1984,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 65
+Content-Length: 69
 
 {
   "resultType" : "SUCCESS",
@@ -2011,7 +2040,7 @@ Content-Length: 65
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2026-02-04 19:58:15 +0900
+Last updated 2026-02-05 08:49:16 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
