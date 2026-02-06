@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS `product_category` (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     state VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
 
-    UNIQUE KEY uk_product_id_category_id (product_id, category_id)
+    UNIQUE KEY uk_product_id_category_id (product_id, category_id),
+    INDEX idx_category_id (category_id)
 );
 
 CREATE TABLE IF NOT EXISTS `orders` (
@@ -69,7 +70,8 @@ CREATE TABLE IF NOT EXISTS `order_item` (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     state VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
 
-    UNIQUE KEY uk_order_id_product_id (order_id, product_id)
+    UNIQUE KEY uk_order_id_product_id (order_id, product_id),
+    INDEX idx_order_id (order_id)
 );
 
 CREATE TABLE IF NOT EXISTS `cart_item` (
@@ -129,7 +131,8 @@ CREATE TABLE IF NOT EXISTS `review` (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     state VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
 
-    UNIQUE KEY uk_user_id_review_key (user_id, review_key)
+    UNIQUE KEY uk_user_id_review_key (user_id, review_key),
+    INDEX idx_target_id (target_id)
 );
 
 CREATE TABLE IF NOT EXISTS `image` (
@@ -154,5 +157,6 @@ CREATE TABLE IF NOT EXISTS `review_image` (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     state VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
 
-    UNIQUE KEY uk_review_id_image_id (review_id, image_id)
+    UNIQUE KEY uk_review_id_image_id (review_id, image_id),
+    INDEX idx_review_id (review_id)
 );
